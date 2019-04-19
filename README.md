@@ -5,7 +5,7 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/spatie/laravel-endpoint-resources.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/:package_name)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-endpoint-resources.svg?style=flat-square)](https://packagist.org/packages/spatie/:package_name)
 
-Add endpoints to your Laravel Api Resources without a hassle
+Add endpoints to your Laravel api resources without a hassle
 
 ## Installation
 

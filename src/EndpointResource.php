@@ -44,10 +44,10 @@ final class EndpointResource extends JsonResource
         return $this;
     }
 
-    public function addAction(string $method, array $action, array $parameters = null): EndpointResource
+    public function addAction(string $httpVerb, array $action, array $parameters = null): EndpointResource
     {
         $this->endPointTypes->push(new ActionEndpointType(
-            $method,
+            $httpVerb,
             $action,
             $parameters
         ));
