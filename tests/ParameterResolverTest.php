@@ -20,7 +20,7 @@ final class ParameterResolverTest extends TestCase
             'name' => 'phono',
         ]);
 
-        $route = $this->dummyRoutes->route('GET', '{phonyModel}/{dummyModel}', [DummyController::class, 'attach']);
+        $route = $this->fakeRouter->route('GET', '{phonyModel}/{dummyModel}', [DummyController::class, 'attach']);
 
         $parameterResolver = new ParameterResolver($dummyModel, [$phonyModel]);
 
@@ -41,7 +41,7 @@ final class ParameterResolverTest extends TestCase
             'name' => 'dumbo',
         ]);
 
-        $route = $this->dummyRoutes->route('GET', '{dummyModel}', [DummyController::class, 'show']);
+        $route = $this->fakeRouter->route('GET', '{dummyModel}', [DummyController::class, 'show']);
 
         $parameterResolver = new ParameterResolver($otherDummyModel, ['dummyModel' => $dummyModel]);
 
@@ -57,7 +57,7 @@ final class ParameterResolverTest extends TestCase
             'name' => 'dumbo',
         ]);
 
-        $route = $this->dummyRoutes->route('GET', '{dummyModel}', [DummyController::class, 'show']);
+        $route = $this->fakeRouter->route('GET', '{dummyModel}', [DummyController::class, 'show']);
 
         $parameterResolver = new ParameterResolver(null, [$dummyModel]);
 
@@ -73,7 +73,7 @@ final class ParameterResolverTest extends TestCase
             'name' => 'dumbo',
         ]);
 
-        $route = $this->dummyRoutes->route('GET', '{dummyModel}/{action}', [DummyController::class, 'execute']);
+        $route = $this->fakeRouter->route('GET', '{dummyModel}/{action}', [DummyController::class, 'execute']);
 
         $parameterResolver = new ParameterResolver($dummyModel, ['action' => 'doSomething']);
 
@@ -90,7 +90,7 @@ final class ParameterResolverTest extends TestCase
             'name' => 'dumbo',
         ]);
 
-        $route = $this->dummyRoutes->route('GET', '{dummyModel}/{action}', [DummyController::class, 'update']);
+        $route = $this->fakeRouter->route('GET', '{dummyModel}/{action}', [DummyController::class, 'update']);
 
         $parameterResolver = new ParameterResolver($dummyModel);
 
@@ -110,7 +110,7 @@ final class ParameterResolverTest extends TestCase
             'name' => 'otherDumbo',
         ]);
 
-        $route = $this->dummyRoutes->route('GET', '{dummyModel}/{otherDummyModel}', [DummyController::class, 'switch']);
+        $route = $this->fakeRouter->route('GET', '{dummyModel}/{otherDummyModel}', [DummyController::class, 'switch']);
 
         $parameterResolver = new ParameterResolver(null, ['dummyModel' => $dummyModel, 'otherDummyModel' => $otherDummyModel]);
 
@@ -131,7 +131,7 @@ final class ParameterResolverTest extends TestCase
             'name' => 'otherDumbo',
         ]);
 
-        $route = $this->dummyRoutes->route('GET', '{dummyModel}/{otherDummyModel}', [DummyController::class, 'switch']);
+        $route = $this->fakeRouter->route('GET', '{dummyModel}/{otherDummyModel}', [DummyController::class, 'switch']);
 
         $parameterResolver = new ParameterResolver($otherDummyModel, ['dummyModel' => $dummyModel]);
 
@@ -140,46 +140,5 @@ final class ParameterResolverTest extends TestCase
             'otherDummyModel' => $otherDummyModel,
         ], $parameterResolver->forRoute($route));
     }
-    
-    /** @test */
-    public function it_can_check_if_routes_can_be_constructed()
-    {
-        $dummyModel = DummyModel::create([
-            'name' => 'dumbo',
-        ]);
 
-        $phonyModel = PhonyModel::create([
-            'name' => 'phono',
-        ]);
-
-        $route = $this->dummyRoutes->route('GET', '{dummyModel}', [DummyController::class, 'attach']);
-
-        $parameterResolver = new ParameterResolver($dummyModel, [$phonyModel]);
-
-        $this->assertTrue($parameterResolver->canRouteBeConstructed($route));
-    }
-
-    /** @test */
-    public function it_will_fail_when_a_route_cannot_be_constructed()
-    {
-        $dummyModel = DummyModel::create([
-            'name' => 'dumbo',
-        ]);
-
-        $route = $this->dummyRoutes->route('GET', '{dummyModel}/{phonyModel}', [DummyController::class, 'attach']);
-
-        $parameterResolver = new ParameterResolver($dummyModel);
-
-        $this->assertFalse($parameterResolver->canRouteBeConstructed($route));
-    }
-
-    /** @test */
-    public function it_will_take_nullable_parameters_into_account_when_checking_if_a_route_can_be_constructed()
-    {
-        $route = $this->dummyRoutes->route('GET', '{dummyModel?}', [DummyController::class, 'attach']);
-
-        $parameterResolver = new ParameterResolver(null);
-
-        $this->assertTrue($parameterResolver->canRouteBeConstructed($route));
-    }
 }

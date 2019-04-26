@@ -26,7 +26,7 @@ final class RouteEndpointTypeTest extends TestCase
     /** @test */
     public function it_can_create_an_route_endpoint_type()
     {
-        $route = $this->dummyRoutes->route('GET', '', [DummyController::class, 'index']);
+        $route = $this->fakeRouter->route('GET', '', [DummyController::class, 'index']);
 
         $endpointType = new RouteEndpointType($route);
 
@@ -43,7 +43,7 @@ final class RouteEndpointTypeTest extends TestCase
     /** @test */
     public function it_can_create_an_route_endpoint_type_with_parameters()
     {
-        $route = $this->dummyRoutes->route('GET', '{dummyModel}', [DummyController::class, 'show']);
+        $route = $this->fakeRouter->route('GET', '{dummyModel}', [DummyController::class, 'show']);
 
         $endpointType = new RouteEndpointType($route);
 
@@ -60,7 +60,7 @@ final class RouteEndpointTypeTest extends TestCase
     /** @test */
     public function it_will_try_to_resolve_parameters_for_the_model()
     {
-        $route = $this->dummyRoutes->route('GET', '{dummyModel}', [DummyController::class, 'show']);
+        $route = $this->fakeRouter->route('GET', '{dummyModel}', [DummyController::class, 'show']);
 
         $endpointType = new RouteEndpointType($route, [$this->dummy]);
 
@@ -77,7 +77,7 @@ final class RouteEndpointTypeTest extends TestCase
     /** @test */
     public function it_will_choose_the_correct_method_for_routing()
     {
-        $route = $this->dummyRoutes->route(['GET', 'HEAD'], '', [DummyController::class, 'index']);
+        $route = $this->fakeRouter->route(['GET', 'HEAD'], '', [DummyController::class, 'index']);
 
         $endpointType = new RouteEndpointType($route);
 
@@ -94,7 +94,7 @@ final class RouteEndpointTypeTest extends TestCase
     /** @test */
     public function it_can_combine_the_resource_model_and_parameters_for_binding_to_routes()
     {
-        $route = $this->dummyRoutes->route('GET', '{dummyModel}/{phonyModel}', [DummyController::class, 'attach']);
+        $route = $this->fakeRouter->route('GET', '{dummyModel}/{phonyModel}', [DummyController::class, 'attach']);
 
         $phonyModel = PhonyModel::create([
             'id' => 2,
@@ -119,7 +119,7 @@ final class RouteEndpointTypeTest extends TestCase
     /** @test */
     public function it_works_nicely_with_route_defaults()
     {
-        $route = $this->dummyRoutes->route('GET', '{dummyModel}/{phonyModel}', [DummyController::class, 'attach']);
+        $route = $this->fakeRouter->route('GET', '{dummyModel}/{phonyModel}', [DummyController::class, 'attach']);
 
         $phonyModel = PhonyModel::create([
             'id' => 2,

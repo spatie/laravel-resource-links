@@ -15,10 +15,14 @@ final class RouteEndpointType extends EndpointType
     /** @var array */
     private $defaultParameters;
 
-    public function __construct(Route $route, array $defaultParameters = null)
+    /** @var string|null */
+    protected $httpVerb;
+
+    public function __construct(Route $route, array $defaultParameters = null, string $httpVerb = null)
     {
         $this->route = $route;
         $this->defaultParameters = $defaultParameters ?? [];
+        $this->httpVerb = $httpVerb;
     }
 
     public function getEndpoints(Model $model = null): array
@@ -38,7 +42,7 @@ final class RouteEndpointType extends EndpointType
 
         return [
             $this->route->getActionMethod() => [
-                'method' => $this->getHttpVerbForRoute($this->route),
+                'method' => $this->httpVerb ??$this->getHttpVerbForRoute($this->route),
                 'action' => $action,
             ],
         ];

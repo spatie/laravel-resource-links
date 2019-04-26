@@ -9,15 +9,24 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
 
+// TODO: - rename Dummy en Phony to something suitable
+// TODO: - reduce the amount of routes in DummyController
+// Todo: - Fix ActionEndpointType tests
+// Todo: - rewrite documentation
+// Todo: - Make it possible to add a non array as parameters for endpoints
+// Todo: - Invokable controllers support
+
 final class EndpointResource extends JsonResource
 {
+    use StoresEndpointTypes;
+
     /** @var \Illuminate\Support\Collection */
     private $endPointTypes;
 
     /** @var \Illuminate\Database\Eloquent\Model */
     private $model;
 
-    public function __construct(?Model $model)
+    public function __construct(Model $model = null)
     {
         parent::__construct($model);
 
@@ -30,28 +39,5 @@ final class EndpointResource extends JsonResource
         return $this->endPointTypes->mapWithKeys(function (EndPointType $endpointType) {
             return $endpointType->getEndpoints($this->model);
         });
-    }
-
-    public function addController(string $controller, array $parameters = null): EndpointResource
-    {
-        $providedParameters = $parameters ?? request()->route()->parameters();
-
-        $this->endPointTypes->push(new ControllerEndpointType(
-            $controller,
-            $providedParameters
-        ));
-
-        return $this;
-    }
-
-    public function addAction(string $httpVerb, array $action, array $parameters = null): EndpointResource
-    {
-        $this->endPointTypes->push(new ActionEndpointType(
-            $httpVerb,
-            $action,
-            $parameters
-        ));
-
-        return $this;
     }
 }

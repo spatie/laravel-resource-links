@@ -26,8 +26,8 @@ final class ControllerEndpointTypeTest extends TestCase
     /** @test */
     public function it_will_only_give_endpoints_which_can_be_constructed()
     {
-        $this->dummyRoutes->route('GET', '', [DummyController::class, 'index']);
-        $this->dummyRoutes->route('GET', '{dummyModel}', [DummyController::class, 'show']);
+        $this->fakeRouter->route('GET', '', [DummyController::class, 'index']);
+        $this->fakeRouter->route('GET', '{dummyModel}', [DummyController::class, 'show']);
 
         $endpointType = new ControllerEndpointType(DummyController::class);
 
@@ -44,8 +44,8 @@ final class ControllerEndpointTypeTest extends TestCase
     /** @test */
     public function it_will_create_all_possible_routes_when_a_model_is_available()
     {
-        $this->dummyRoutes->route('GET', '', [DummyController::class, 'index']);
-        $this->dummyRoutes->route('GET', '{dummyModel}', [DummyController::class, 'show']);
+        $this->fakeRouter->route('GET', '', [DummyController::class, 'index']);
+        $this->fakeRouter->route('GET', '{dummyModel}', [DummyController::class, 'show']);
 
         $dummyModel = DummyModel::create([
             'name' => 'Dumbo',
@@ -70,8 +70,8 @@ final class ControllerEndpointTypeTest extends TestCase
     /** @test */
     public function it_will_only_create_routes_based_upon_the_end_point_methods_property()
     {
-        $this->dummyRoutes->route('GET', '/a/{dummyModel}', [PhonyController::class, 'endpoint']);
-        $this->dummyRoutes->route('GET', '/b/{dummyModel}', [PhonyController::class, 'nonEndpoint']);
+        $this->fakeRouter->route('GET', '/a/{dummyModel}', [PhonyController::class, 'endpoint']);
+        $this->fakeRouter->route('GET', '/b/{dummyModel}', [PhonyController::class, 'nonEndpoint']);
 
         $dummyModel = DummyModel::create([
             'name' => 'Dumbo',
@@ -92,8 +92,8 @@ final class ControllerEndpointTypeTest extends TestCase
     /** @test */
     public function it_will_only_create_routes_based_upon_the_global_end_point_methods_property()
     {
-        $this->dummyRoutes->route('GET', '/a/', [PhonyController::class, 'globalEndpoint']);
-        $this->dummyRoutes->route('GET', '/b/', [PhonyController::class, 'nonGlobalEndpoint']);
+        $this->fakeRouter->route('GET', '/a/', [PhonyController::class, 'globalEndpoint']);
+        $this->fakeRouter->route('GET', '/b/', [PhonyController::class, 'nonGlobalEndpoint']);
 
         $endpointType = new ControllerEndpointType(PhonyController::class);
 

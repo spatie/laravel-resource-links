@@ -6,7 +6,7 @@ use Illuminate\Routing\Route;
 use Illuminate\Routing\RouteCollection;
 use Illuminate\Routing\Router;
 
-final class DummyRoutes
+final class FakeRouter
 {
     /** @var \Illuminate\Routing\Router */
     private $router;
@@ -34,7 +34,7 @@ final class DummyRoutes
         return $route;
     }
 
-    protected function addRoute(Route $route)
+    private function addRoute(Route $route)
     {
         $this->routeCollection->add($route);
 

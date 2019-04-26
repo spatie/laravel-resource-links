@@ -7,13 +7,13 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Spatie\LaravelEndpointResources\Tests\Dummy\DummyModel;
-use Spatie\LaravelEndpointResources\Tests\Dummy\DummyRoutes;
+use Spatie\LaravelEndpointResources\Tests\Dummy\FakeRouter;
 use Spatie\LaravelEndpointResources\Tests\Dummy\PhonyModel;
 
 abstract class TestCase extends BaseTestCase
 {
-    /** @var \Spatie\LaravelEndpointResources\Tests\Dummy\DummyRoutes */
-    protected $dummyRoutes;
+    /** @var \Spatie\LaravelEndpointResources\Tests\Dummy\FakeRouter */
+    protected $fakeRouter;
 
     protected function setUp() : void
     {
@@ -22,7 +22,7 @@ abstract class TestCase extends BaseTestCase
         $this->setUpEnvironment();
         $this->setUpDatabase();
 
-        $this->dummyRoutes = DummyRoutes::setup();
+        $this->fakeRouter = FakeRouter::setup();
     }
 
     private function setUpDatabase(){

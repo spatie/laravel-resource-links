@@ -4,53 +4,57 @@ namespace Spatie\LaravelEndpointResources\EndpointTypes;
 
 use Exception;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Routing\Route;
+use Illuminate\Routing\Router;
 
 final class ActionEndpointType extends EndpointType
 {
-    /** @var string */
-    private $httpVerb;
-
     /** @var array */
     private $action;
 
     /** @var array */
     private $parameters;
 
-    public function __construct(string $httpVerb, array $action, array $parameters = null)
+    /** @var string|null */
+    private $httpVerb;
+
+    public function __construct(array $action, array $parameters = null, string $httpVerb = null)
     {
-        $this->httpVerb = $httpVerb;
         $this->action = $action;
         $this->parameters = $parameters ?? [];
+        $this->httpVerb = $httpVerb;
     }
 
     public function getEndpoints(Model $model = null): array
     {
-        if (! in_array($this->httpVerb, ['GET', 'PUT', 'PATCH', 'POST', 'HEAD', 'DELETE'])) {
-            throw new Exception("HttpVerb {$this->httpVerb} does not exist!");
+        $formattedAction = $this->formatAction();
+
+        $route = resolve(Router::class)
+            ->getRoutes()
+            ->getByAction($formattedAction);
+
+        if ($route === null) {
+            throw new Exception("Route {$formattedAction} does not exists!");
         }
 
-        $this->addModelToParameters($model);
+        $parameters = $this->getParameters($model);
 
-        return [
-            $this->action[1] => [
-                'method' => $this->httpVerb,
-                'action' => action($this->action, $this->parameters),
-            ],
-        ];
+        $endpointType = new RouteEndpointType($route, $parameters, $this->httpVerb);
+
+        return $endpointType->getEndpoints($model);
     }
 
-    private function addModelToParameters(?Model $model)
+    private function formatAction(): string
+    {
+        return trim('\\' . implode('@', $this->action), '\\');
+    }
+
+    private function getParameters(?Model $model)
     {
         if (! optional($model)->exists) {
-            return;
+            return $this->parameters;
         }
 
-        foreach ($this->parameters as $parameter) {
-            if (get_class($parameter) === get_class($model)) {
-                return;
-            }
-        }
-
-        $this->parameters[] = $model;
+        return array_merge($this->parameters, [$model]);
     }
 }

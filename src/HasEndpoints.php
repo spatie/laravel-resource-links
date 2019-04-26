@@ -7,7 +7,7 @@ use Spatie\LaravelEndpointResources\EndpointTypes\ControllerEndpointType;
 
 trait HasEndpoints
 {
-    public function endpoints(string $controller = null, array $parameters = null) : EndpointResource
+    public function endpoints(string $controller = null, array $parameters = null): EndpointResource
     {
         $endPointResource = new EndpointResource($this->resource);
 
@@ -16,6 +16,17 @@ trait HasEndpoints
         }
 
         return $endPointResource;
+    }
+
+    public static function globalEndpoints(string $controller = null, array $parameters = null): GlobalEndpointResource
+    {
+        $globalEndpointResource = new GlobalEndpointResource();
+
+        if ($controller !== null) {
+            $globalEndpointResource->addController($controller, $parameters);
+        }
+
+        return $globalEndpointResource;
     }
 
     public static function getGlobalEndpoints(

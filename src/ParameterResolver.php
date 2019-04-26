@@ -39,17 +39,6 @@ final class ParameterResolver
             })->all();
     }
 
-    public function canRouteBeConstructed(Route $route): bool
-    {
-        try {
-            action($route->getActionName(), $this->forRoute($route));
-
-            return true;
-        } catch (UrlGenerationException $e) {
-            return false;
-        }
-    }
-
     private function getProvidedParameters(): array
     {
         return optional($this->model)->exists
