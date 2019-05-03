@@ -137,8 +137,7 @@ final class ParameterResolverTest extends TestCase
 
         $this->assertEquals([
             'testModel' => $testModel,
-            'otherTestModel' => $otherTestModel,
+            'otherTestModel' => $testModel,
         ], $parameterResolver->forRoute($route));
     }
-
 }

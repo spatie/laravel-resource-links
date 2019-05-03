@@ -28,7 +28,7 @@ final class GlobalEndpointResource extends JsonResource
         return $this->endPointTypes->mapWithKeys(function (EndPointType $endpointType) {
             return $endpointType instanceof ControllerEndpointType
                 ? $endpointType->getGlobalEndpoints()
-                : $endpointType->getEndpoints(null);
+                : $endpointType->getEndpoints();
         });
     }
 }

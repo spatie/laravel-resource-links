@@ -3,45 +3,31 @@
 
 namespace Spatie\LaravelEndpointResources;
 
+use Illuminate\Support\Arr;
 use Spatie\LaravelEndpointResources\EndpointTypes\ControllerEndpointType;
 
 trait HasEndpoints
 {
-    public function endpoints(string $controller = null, array $parameters = null): EndpointResource
+    public function endpoints(string $controller = null, $parameters = null): EndpointResource
     {
         $endPointResource = new EndpointResource($this->resource);
 
         if ($controller !== null) {
-            $endPointResource->addController($controller, $parameters);
+            $endPointResource->addController($controller, Arr::wrap($parameters));
         }
 
         return $endPointResource;
     }
 
-    public static function globalEndpoints(string $controller = null, array $parameters = null): GlobalEndpointResource
+    public static function globalEndpoints(string $controller = null, $parameters = null): GlobalEndpointResource
     {
         $globalEndpointResource = new GlobalEndpointResource();
 
         if ($controller !== null) {
-            $globalEndpointResource->addController($controller, $parameters);
+            $globalEndpointResource->addController($controller, Arr::wrap($parameters));
         }
 
         return $globalEndpointResource;
-    }
-
-    public static function getGlobalEndpoints(
-        string $controller = null,
-        array $parameters = null
-    ): array {
-        $parameters = $parameters ?? request()->route()->parameters();
-
-        $endpointType = new ControllerEndpointType($controller, $parameters);
-
-        return [
-            'meta' => [
-                'endpoints' => $endpointType->getGlobalEndpoints(),
-            ],
-        ];
     }
 
     public static function meta()

@@ -2,6 +2,7 @@
 
 namespace Spatie\LaravelEndpointResources\Tests\EndpointTypes;
 
+use Illuminate\Support\Arr;
 use Spatie\LaravelEndpointResources\EndpointTypes\RouteEndpointType;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestController;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestModel;

@@ -42,7 +42,7 @@ final class ParameterResolver
     private function getProvidedParameters(): array
     {
         return optional($this->model)->exists
-            ? array_merge([$this->model], $this->defaultParameters)
+            ? array_merge($this->defaultParameters, [$this->model])
             : $this->defaultParameters;
     }
 

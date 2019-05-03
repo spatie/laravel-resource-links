@@ -25,7 +25,8 @@ abstract class TestCase extends BaseTestCase
         $this->fakeRouter = FakeRouter::setup();
     }
 
-    private function setUpDatabase(){
+    private function setUpDatabase()
+    {
         Schema::create('test_models', function (Blueprint $table) {
             $table->bigIncrements('id');
 
