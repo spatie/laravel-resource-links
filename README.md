@@ -124,19 +124,19 @@ Now every UserResource has an additional EndpointResource which in responses wil
 "endpoints":{  
     "show":{  
        "method":"GET",
-       "action":"https://app.laravel/admin/users/2"
+       "action":"https://app.laravel/admin/users/1"
     },
     "edit":{  
        "method":"GET",
-       "action":"https://app.laravel/admin/users/2/edit"
+       "action":"https://app.laravel/admin/users/1/edit"
     },
     "update":{  
        "method":"PUT",
-       "action":"https://app.laravel/admin/users/2"
+       "action":"https://app.laravel/admin/users/1"
     },
     "delete":{  
        "method":"DELETE",
-       "action":"https://app.laravel/admin/users/2"
+       "action":"https://app.laravel/admin/users/1"
     }
 ```
 
@@ -174,12 +174,11 @@ class UserResource extends JsonResource
     
     public static function collection($resource)
     {
-        return parent::collection($resource)
-            ->additional([
-                'meta' => [
-                    'endpoints' => self::globalEndpoints(UsersController::class)
-                 ],
-             ]);
+        return parent::collection($resource)->additional([
+            'meta' => [
+                'endpoints' => self::globalEndpoints(UsersController::class)
+             ],
+         ]);
     }
 }
 ```
@@ -226,13 +225,13 @@ class UserResource extends JsonResource
     public static function meta()
     {
         return [
-        	'endpoints' => self::globalEndpoints(UsersController::class)
-        ]
+            'endpoints' => self::globalEndpoints(UsersController::class)
+        ];
     }
 }
 ```
 
-This meta function will be added when you use the `HasEndpoints` trait.
+This meta function will always be added when you use the `HasEndpoints` trait.
 
 
 ### Route parameters
@@ -250,12 +249,12 @@ class UserResource extends JsonResource
 
     public function toArray($request)
     {
-        return [
-            'endpoints' => $this->endpoints(UsersController::class, [
-            		'user' => Auth::user(),
-            ]),
-            ...
-        ];
+    return [
+        'endpoints' => $this->endpoints(UsersController::class, [
+            'user' => Auth::user(),
+        ]),
+        ...
+    ];
     }
 }
 ```
@@ -273,14 +272,13 @@ class UserResource extends JsonResource
     
     public static function collection($resource)
     {
-        return parent::collection($resource)
-            ->additional([
-                'meta' => [
-                    'endpoints' => self::globalEndpoints(UsersController::class, [
-                        'user' => Auth::user()
-                    ])
-                 ],
-             ]);
+        return parent::collection($resource)->additional([
+            'meta' => [
+                'endpoints' => self::globalEndpoints(UsersController::class, [
+                    'user' => Auth::user()
+                ])
+             ],
+         ]);
     }
 }
 ```
@@ -299,8 +297,7 @@ class OtherResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'endpoints' => $this->endpoints()
-                ->addAction([UsersController::class, 'create']),
+            'endpoints' => $this->endpoints()->addAction([UsersController::class, 'create']),
         ];
     }
 }
@@ -356,13 +353,12 @@ class UserResource extends JsonResource
     
     public static function collection($resource)
     {
-        return parent::collection($resource)
-            ->additional([
-                'meta' => [
-                    'endpoints' => self::globalEndpoints(UsersController::class)
-                    	->addAction([UsersController::class, 'update'], $user, 'PUT'),
-                 ],
-             ]);
+        return parent::collection($resource)->additional([
+            'meta' => [
+                'endpoints' => self::globalEndpoints(UsersController::class)
+                    ->addAction([UsersController::class, 'update'], $user, 'PUT'),
+             ],
+         ]);
     }
 }
 ```
