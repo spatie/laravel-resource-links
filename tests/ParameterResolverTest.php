@@ -3,82 +3,82 @@
 namespace Spatie\LaravelEndpointResources\Tests;
 
 use Spatie\LaravelEndpointResources\ParameterResolver;
-use Spatie\LaravelEndpointResources\Tests\Dummy\DummyController;
-use Spatie\LaravelEndpointResources\Tests\Dummy\DummyModel;
-use Spatie\LaravelEndpointResources\Tests\Dummy\PhonyModel;
+use Spatie\LaravelEndpointResources\Tests\Fakes\TestController;
+use Spatie\LaravelEndpointResources\Tests\Fakes\TestModel;
+use Spatie\LaravelEndpointResources\Tests\Fakes\SecondTestModel;
 
 final class ParameterResolverTest extends TestCase
 {
     /** @test */
     public function it_will_resolve_required_parameters_for_a_route()
     {
-        $dummyModel = DummyModel::create([
+        $testModel = TestModel::create([
             'name' => 'dumbo',
         ]);
 
-        $phonyModel = PhonyModel::create([
+        $secondTestModel = SecondTestModel::create([
             'name' => 'phono',
         ]);
 
-        $route = $this->fakeRouter->route('GET', '{phonyModel}/{dummyModel}', [DummyController::class, 'attach']);
+        $route = $this->fakeRouter->route('GET', '{secondTestModel}/{testModel}', [TestController::class, 'attach']);
 
-        $parameterResolver = new ParameterResolver($dummyModel, [$phonyModel]);
+        $parameterResolver = new ParameterResolver($testModel, [$secondTestModel]);
 
         $this->assertEquals([
-            'phonyModel' => $phonyModel,
-            'dummyModel' => $dummyModel,
+            'secondTestModel' => $secondTestModel,
+            'testModel' => $testModel,
         ], $parameterResolver->forRoute($route));
     }
 
     /** @test */
     public function it_will_insert_the_correct_model()
     {
-        $dummyModel = DummyModel::create([
+        $testModel = TestModel::create([
             'name' => 'dumbo',
         ]);
 
-        $otherDummyModel = DummyModel::create([
+        $otherTestModel = TestModel::create([
             'name' => 'dumbo',
         ]);
 
-        $route = $this->fakeRouter->route('GET', '{dummyModel}', [DummyController::class, 'show']);
+        $route = $this->fakeRouter->route('GET', '{testModel}', [TestController::class, 'show']);
 
-        $parameterResolver = new ParameterResolver($otherDummyModel, ['dummyModel' => $dummyModel]);
+        $parameterResolver = new ParameterResolver($otherTestModel, ['testModel' => $testModel]);
 
         $this->assertEquals([
-            'dummyModel' => $dummyModel,
+            'testModel' => $testModel,
         ], $parameterResolver->forRoute($route));
     }
 
     /** @test */
     public function it_can_deduce_the_correct_model_if_none_is_given()
     {
-        $dummyModel = DummyModel::create([
+        $testModel = TestModel::create([
             'name' => 'dumbo',
         ]);
 
-        $route = $this->fakeRouter->route('GET', '{dummyModel}', [DummyController::class, 'show']);
+        $route = $this->fakeRouter->route('GET', '{testModel}', [TestController::class, 'show']);
 
-        $parameterResolver = new ParameterResolver(null, [$dummyModel]);
+        $parameterResolver = new ParameterResolver(null, [$testModel]);
 
         $this->assertEquals([
-            'dummyModel' => $dummyModel,
+            'testModel' => $testModel,
         ], $parameterResolver->forRoute($route));
     }
 
     /** @test */
     public function it_plays_nice_with_other_parameters_than_models()
     {
-        $dummyModel = DummyModel::create([
+        $testModel = TestModel::create([
             'name' => 'dumbo',
         ]);
 
-        $route = $this->fakeRouter->route('GET', '{dummyModel}/{action}', [DummyController::class, 'execute']);
+        $route = $this->fakeRouter->route('GET', '{testModel}/{action}', [TestController::class, 'execute']);
 
-        $parameterResolver = new ParameterResolver($dummyModel, ['action' => 'doSomething']);
+        $parameterResolver = new ParameterResolver($testModel, ['action' => 'doSomething']);
 
         $this->assertEquals([
-            'dummyModel' => $dummyModel,
+            'testModel' => $testModel,
             'action' => 'doSomething',
         ], $parameterResolver->forRoute($route));
     }
@@ -86,58 +86,58 @@ final class ParameterResolverTest extends TestCase
     /** @test */
     public function it_also_plays_nice_with_parameters_needed_from_the_container()
     {
-        $dummyModel = DummyModel::create([
+        $testModel = TestModel::create([
             'name' => 'dumbo',
         ]);
 
-        $route = $this->fakeRouter->route('GET', '{dummyModel}/{action}', [DummyController::class, 'update']);
+        $route = $this->fakeRouter->route('GET', '{testModel}/{action}', [TestController::class, 'update']);
 
-        $parameterResolver = new ParameterResolver($dummyModel);
+        $parameterResolver = new ParameterResolver($testModel);
 
         $this->assertEquals([
-            'dummyModel' => $dummyModel,
+            'testModel' => $testModel,
         ], $parameterResolver->forRoute($route));
     }
     
     /** @test */
     public function it_can_have_multiple_parameters_of_the_same_type()
     {
-        $dummyModel = DummyModel::create([
+        $testModel = TestModel::create([
             'name' => 'dumbo',
         ]);
 
-        $otherDummyModel = DummyModel::create([
+        $otherTestModel = TestModel::create([
             'name' => 'otherDumbo',
         ]);
 
-        $route = $this->fakeRouter->route('GET', '{dummyModel}/{otherDummyModel}', [DummyController::class, 'switch']);
+        $route = $this->fakeRouter->route('GET', '{testModel}/{otherTestModel}', [TestController::class, 'switch']);
 
-        $parameterResolver = new ParameterResolver(null, ['dummyModel' => $dummyModel, 'otherDummyModel' => $otherDummyModel]);
+        $parameterResolver = new ParameterResolver(null, ['testModel' => $testModel, 'otherTestModel' => $otherTestModel]);
 
         $this->assertEquals([
-            'dummyModel' => $dummyModel,
-            'otherDummyModel' => $otherDummyModel,
+            'testModel' => $testModel,
+            'otherTestModel' => $otherTestModel,
         ], $parameterResolver->forRoute($route));
     }
     
     /** @test */
     public function when_the_parameter_name_is_not_specified_the_resource_will_be_taken()
     {
-        $dummyModel = DummyModel::create([
+        $testModel = TestModel::create([
             'name' => 'dumbo',
         ]);
 
-        $otherDummyModel = DummyModel::create([
+        $otherTestModel = TestModel::create([
             'name' => 'otherDumbo',
         ]);
 
-        $route = $this->fakeRouter->route('GET', '{dummyModel}/{otherDummyModel}', [DummyController::class, 'switch']);
+        $route = $this->fakeRouter->route('GET', '{testModel}/{otherTestModel}', [TestController::class, 'switch']);
 
-        $parameterResolver = new ParameterResolver($otherDummyModel, ['dummyModel' => $dummyModel]);
+        $parameterResolver = new ParameterResolver($otherTestModel, ['testModel' => $testModel]);
 
         $this->assertEquals([
-            'dummyModel' => $dummyModel,
-            'otherDummyModel' => $otherDummyModel,
+            'testModel' => $testModel,
+            'otherTestModel' => $otherTestModel,
         ], $parameterResolver->forRoute($route));
     }
 

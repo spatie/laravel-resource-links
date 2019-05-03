@@ -43,4 +43,16 @@ trait HasEndpoints
             ],
         ];
     }
+
+    public static function meta()
+    {
+        return [];
+    }
+
+    public static function collection($resource)
+    {
+        return parent::collection($resource)->additional([
+            'meta' => self::meta(),
+        ]);
+    }
 }

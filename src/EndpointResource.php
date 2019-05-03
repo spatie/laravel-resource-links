@@ -12,9 +12,8 @@ use Illuminate\Support\Collection;
 // TODO: - rename Dummy en Phony to something suitable
 // TODO: - reduce the amount of routes in DummyController
 // Todo: - Fix ActionEndpointType tests
-// Todo: - rewrite documentation
 // Todo: - Make it possible to add a non array as parameters for endpoints
-// Todo: - Invokable controllers support
+// Todo: - Invokable controllers support -> this is hard
 
 final class EndpointResource extends JsonResource
 {

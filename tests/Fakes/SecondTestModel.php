@@ -1,12 +1,12 @@
 <?php
 
-namespace Spatie\LaravelEndpointResources\Tests\Dummy;
+namespace Spatie\LaravelEndpointResources\Tests\Fakes;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Schema;
 
-final class PhonyModel extends Model
+final class SecondTestModel extends Model
 {
     public $timestamps = false;
 }

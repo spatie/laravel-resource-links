@@ -2,12 +2,13 @@
 
 namespace Spatie\LaravelEndpointResources;
 
+use Illuminate\Http\Resources\Json\JsonResource;
 use Spatie\LaravelEndpointResources\EndpointTypes\ActionEndpointType;
 use Spatie\LaravelEndpointResources\EndpointTypes\ControllerEndpointType;
 
 trait StoresEndpointTypes
 {
-    public function addController(string $controller, array $parameters = null): EndpointResource
+    public function addController(string $controller, array $parameters = null): JsonResource
     {
         $providedParameters = $parameters ?? request()->route()->parameters();
 
@@ -19,7 +20,7 @@ trait StoresEndpointTypes
         return $this;
     }
 
-    public function addAction(array $action, array $parameters = null, string $httpVerb = null): EndpointResource
+    public function addAction(array $action, array $parameters = null, string $httpVerb = null): JsonResource
     {
         $providedParameters = $parameters ?? request()->route()->parameters();
 

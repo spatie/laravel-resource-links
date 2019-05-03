@@ -3,21 +3,21 @@
 namespace Spatie\LaravelEndpointResources\Tests\EndpointTypes;
 
 use Spatie\LaravelEndpointResources\EndpointTypes\RouteEndpointType;
-use Spatie\LaravelEndpointResources\Tests\Dummy\DummyController;
-use Spatie\LaravelEndpointResources\Tests\Dummy\DummyModel;
-use Spatie\LaravelEndpointResources\Tests\Dummy\PhonyModel;
+use Spatie\LaravelEndpointResources\Tests\Fakes\TestController;
+use Spatie\LaravelEndpointResources\Tests\Fakes\TestModel;
+use Spatie\LaravelEndpointResources\Tests\Fakes\SecondTestModel;
 use Spatie\LaravelEndpointResources\Tests\TestCase;
 
 final class RouteEndpointTypeTest extends TestCase
 {
-    /** @var \Spatie\LaravelEndpointResources\Tests\Dummy\DummyModel */
-    private $dummy;
+    /** @var \Spatie\LaravelEndpointResources\Tests\Fakes\TestModel */
+    private $testModel;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->dummy = DummyModel::create([
+        $this->testModel = TestModel::create([
             'id' => 1,
             'name' => 'Dumbo',
         ]);
@@ -26,7 +26,7 @@ final class RouteEndpointTypeTest extends TestCase
     /** @test */
     public function it_can_create_an_route_endpoint_type()
     {
-        $route = $this->fakeRouter->route('GET', '', [DummyController::class, 'index']);
+        $route = $this->fakeRouter->route('GET', '', [TestController::class, 'index']);
 
         $endpointType = new RouteEndpointType($route);
 
@@ -35,7 +35,7 @@ final class RouteEndpointTypeTest extends TestCase
         $this->assertEquals([
             'index' => [
                 'method' => 'GET',
-                'action' => action([DummyController::class, 'index'])
+                'action' => action([TestController::class, 'index'])
             ]
         ], $endpoints);
     }
@@ -43,16 +43,16 @@ final class RouteEndpointTypeTest extends TestCase
     /** @test */
     public function it_can_create_an_route_endpoint_type_with_parameters()
     {
-        $route = $this->fakeRouter->route('GET', '{dummyModel}', [DummyController::class, 'show']);
+        $route = $this->fakeRouter->route('GET', '{testModel}', [TestController::class, 'show']);
 
         $endpointType = new RouteEndpointType($route);
 
-        $endpoints = $endpointType->getEndpoints($this->dummy);
+        $endpoints = $endpointType->getEndpoints($this->testModel);
 
         $this->assertEquals([
             'show' => [
                 'method' => 'GET',
-                'action' => action([DummyController::class, 'show'], $this->dummy)
+                'action' => action([TestController::class, 'show'], $this->testModel)
             ]
         ], $endpoints);
     }
@@ -60,16 +60,16 @@ final class RouteEndpointTypeTest extends TestCase
     /** @test */
     public function it_will_try_to_resolve_parameters_for_the_model()
     {
-        $route = $this->fakeRouter->route('GET', '{dummyModel}', [DummyController::class, 'show']);
+        $route = $this->fakeRouter->route('GET', '{testModel}', [TestController::class, 'show']);
 
-        $endpointType = new RouteEndpointType($route, [$this->dummy]);
+        $endpointType = new RouteEndpointType($route, [$this->testModel]);
 
         $endpoints = $endpointType->getEndpoints();
 
         $this->assertEquals([
             'show' => [
                 'method' => 'GET',
-                'action' => action([DummyController::class, 'show'], $this->dummy)
+                'action' => action([TestController::class, 'show'], $this->testModel)
             ]
         ], $endpoints);
     }
@@ -77,7 +77,7 @@ final class RouteEndpointTypeTest extends TestCase
     /** @test */
     public function it_will_choose_the_correct_method_for_routing()
     {
-        $route = $this->fakeRouter->route(['GET', 'HEAD'], '', [DummyController::class, 'index']);
+        $route = $this->fakeRouter->route(['GET', 'HEAD'], '', [TestController::class, 'index']);
 
         $endpointType = new RouteEndpointType($route);
 
@@ -86,7 +86,7 @@ final class RouteEndpointTypeTest extends TestCase
         $this->assertEquals([
             'index' => [
                 'method' => 'GET',
-                'action' => action([DummyController::class, 'index'])
+                'action' => action([TestController::class, 'index'])
             ]
         ], $endpoints);
     }
@@ -94,23 +94,23 @@ final class RouteEndpointTypeTest extends TestCase
     /** @test */
     public function it_can_combine_the_resource_model_and_parameters_for_binding_to_routes()
     {
-        $route = $this->fakeRouter->route('GET', '{dummyModel}/{phonyModel}', [DummyController::class, 'attach']);
+        $route = $this->fakeRouter->route('GET', '{testModel}/{secondTestModel}', [TestController::class, 'attach']);
 
-        $phonyModel = PhonyModel::create([
+        $secondTestModel = SecondTestModel::create([
             'id' => 2,
             'name' => 'Phono'
         ]);
 
-        $endpointType = new RouteEndpointType($route, [$phonyModel]);
+        $endpointType = new RouteEndpointType($route, [$secondTestModel]);
 
-        $endpoints = $endpointType->getEndpoints($this->dummy);
+        $endpoints = $endpointType->getEndpoints($this->testModel);
 
         $this->assertEquals([
             'attach' => [
                 'method' => 'GET',
                 'action' => action(
-                    [DummyController::class, 'attach'],
-                    [$this->dummy, $phonyModel]
+                    [TestController::class, 'attach'],
+                    [$this->testModel, $secondTestModel]
                 ),
             ],
         ], $endpoints);
@@ -119,25 +119,25 @@ final class RouteEndpointTypeTest extends TestCase
     /** @test */
     public function it_works_nicely_with_route_defaults()
     {
-        $route = $this->fakeRouter->route('GET', '{dummyModel}/{phonyModel}', [DummyController::class, 'attach']);
+        $route = $this->fakeRouter->route('GET', '{testModel}/{secondTestModel}', [TestController::class, 'attach']);
 
-        $phonyModel = PhonyModel::create([
+        $secondTestModel = SecondTestModel::create([
             'id' => 2,
             'name' => 'Phono'
         ]);
 
-        app('url')->defaults(['phonyModel' => $phonyModel->id]);
+        app('url')->defaults(['secondTestModel' => $secondTestModel->id]);
 
         $endpointType = new RouteEndpointType($route);
 
-        $endpoints = $endpointType->getEndpoints($this->dummy);
+        $endpoints = $endpointType->getEndpoints($this->testModel);
 
         $this->assertEquals([
             'attach' => [
                 'method' => 'GET',
                 'action' => action(
-                    [DummyController::class, 'attach'],
-                    [$this->dummy]
+                    [TestController::class, 'attach'],
+                    [$this->testModel]
                 ),
             ],
         ], $endpoints);

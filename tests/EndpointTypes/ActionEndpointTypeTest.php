@@ -3,21 +3,21 @@
 namespace Spatie\LaravelEndpointResources\Tests\EndpointTypes;
 
 use Spatie\LaravelEndpointResources\EndpointTypes\ActionEndpointType;
-use Spatie\LaravelEndpointResources\Tests\Dummy\DummyController;
-use Spatie\LaravelEndpointResources\Tests\Dummy\DummyModel;
-use Spatie\LaravelEndpointResources\Tests\Dummy\PhonyModel;
+use Spatie\LaravelEndpointResources\Tests\Fakes\TestController;
+use Spatie\LaravelEndpointResources\Tests\Fakes\TestModel;
+use Spatie\LaravelEndpointResources\Tests\Fakes\SecondTestModel;
 use Spatie\LaravelEndpointResources\Tests\TestCase;
 
 final class ActionEndpointTypeTest extends TestCase
 {
-    /** @var \Spatie\LaravelEndpointResources\Tests\Dummy\DummyModel */
-    private $dummy;
+    /** @var \Spatie\LaravelEndpointResources\Tests\Fakes\TestModel */
+    private $testModel;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->dummy = DummyModel::create([
+        $this->testModel = TestModel::create([
             'id' => 1,
             'name' => 'Dumbo',
         ]);
@@ -26,16 +26,16 @@ final class ActionEndpointTypeTest extends TestCase
     /** @test */
     public function it_will_deduce_the_route_http_verb()
     {
-        $this->fakeRouter->route('GET', '', [DummyController::class, 'index']);
+        $this->fakeRouter->route('GET', '', [TestController::class, 'index']);
 
-        $endpointType = new ActionEndpointType([DummyController::class, 'index']);
+        $endpointType = new ActionEndpointType([TestController::class, 'index']);
 
         $endpoints = $endpointType->getEndpoints();
 
         $this->assertEquals([
             'index' => [
                 'method' => 'GET',
-                'action' => action([DummyController::class, 'index']),
+                'action' => action([TestController::class, 'index']),
             ],
         ], $endpoints);
     }
@@ -43,16 +43,16 @@ final class ActionEndpointTypeTest extends TestCase
     /** @test */
     public function it_can_create_an_action_endpoint_type()
     {
-        $this->fakeRouter->route('GET', '', [DummyController::class, 'index']);
+        $this->fakeRouter->route('GET', '', [TestController::class, 'index']);
 
-        $endpointType = new ActionEndpointType([DummyController::class, 'index']);
+        $endpointType = new ActionEndpointType([TestController::class, 'index']);
 
         $endpoints = $endpointType->getEndpoints();
 
         $this->assertEquals([
             'index' => [
                 'method' => 'GET',
-                'action' => action([DummyController::class, 'index']),
+                'action' => action([TestController::class, 'index']),
             ],
         ], $endpoints);
     }
@@ -60,16 +60,16 @@ final class ActionEndpointTypeTest extends TestCase
     /** @test */
     public function it_can_create_an_action_endpoint_type_with_parameters()
     {
-        $this->fakeRouter->route('GET', '{dummyModel}', [DummyController::class, 'show']);
+        $this->fakeRouter->route('GET', '{testModel}', [TestController::class, 'show']);
 
-        $endpointType = new ActionEndpointType([DummyController::class, 'show']);
+        $endpointType = new ActionEndpointType([TestController::class, 'show']);
 
-        $endpoints = $endpointType->getEndpoints($this->dummy);
+        $endpoints = $endpointType->getEndpoints($this->testModel);
 
         $this->assertEquals([
             'show' => [
                 'method' => 'GET',
-                'action' => action([DummyController::class, 'show'], $this->dummy),
+                'action' => action([TestController::class, 'show'], $this->testModel),
             ],
         ], $endpoints);
     }
@@ -77,21 +77,21 @@ final class ActionEndpointTypeTest extends TestCase
     /** @test */
     public function it_will_not_overwrite_a_model_given_as_resource()
     {
-        $this->fakeRouter->route('GET', '{dummyModel}', [DummyController::class, 'show']);
+        $this->fakeRouter->route('GET', '{testModel}', [TestController::class, 'show']);
 
-        $otherDummyModel = DummyModel::create([
+        $otherTestModel = TestModel::create([
             'id' => 2,
             'name' => 'Dumbi',
         ]);
 
-        $endpointType = new ActionEndpointType([DummyController::class, 'show'], [$otherDummyModel]);
+        $endpointType = new ActionEndpointType([TestController::class, 'show'], [$otherTestModel]);
 
-        $endpoints = $endpointType->getEndpoints($this->dummy);
+        $endpoints = $endpointType->getEndpoints($this->testModel);
 
         $this->assertEquals([
             'show' => [
                 'method' => 'GET',
-                'action' => action([DummyController::class, 'show'], $this->dummy),
+                'action' => action([TestController::class, 'show'], $this->testModel),
             ],
         ], $endpoints);
     }
@@ -99,23 +99,23 @@ final class ActionEndpointTypeTest extends TestCase
     /** @test */
     public function it_can_combine_model_and_parameters_for_binding_to_routes()
     {
-        $this->fakeRouter->route('GET', '{dummyModel}/{phonyModel}', [DummyController::class, 'attach']);
+        $this->fakeRouter->route('GET', '{testModel}/{secondTestModel}', [TestController::class, 'attach']);
 
-        $phonyModel = PhonyModel::create([
+        $secondTestModel = SecondTestModel::create([
             'id' => 2,
             'name' => 'Phono',
         ]);
 
-        $endpointType = new ActionEndpointType([DummyController::class, 'attach'], [$phonyModel], 'GET');
+        $endpointType = new ActionEndpointType([TestController::class, 'attach'], [$secondTestModel], 'GET');
 
-        $endpoints = $endpointType->getEndpoints($this->dummy);
+        $endpoints = $endpointType->getEndpoints($this->testModel);
 
         $this->assertEquals([
             'attach' => [
                 'method' => 'GET',
                 'action' => action(
-                    [DummyController::class, 'attach'],
-                    [$this->dummy, $phonyModel]
+                    [TestController::class, 'attach'],
+                    [$this->testModel, $secondTestModel]
                 ),
             ],
         ], $endpoints);

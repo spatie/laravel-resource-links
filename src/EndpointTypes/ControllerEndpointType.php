@@ -32,7 +32,7 @@ final class ControllerEndpointType extends EndpointType
 
         $endpoints = property_exists($controller, 'endPointMethods')
             ? $controller->endPointMethods
-            : ['show', 'update', 'delete'];
+            : ['show', 'edit', 'update', 'delete'];
 
         return $this->resolveEndpoints(
             $endpoints,
@@ -46,7 +46,7 @@ final class ControllerEndpointType extends EndpointType
 
         $endpoints = property_exists($controller, 'globalEndPointMethods')
             ? $controller->globalEndPointMethods
-            : ['index', 'store'];
+            : ['index', 'store', 'create'];
 
         return $this->resolveEndpoints($endpoints);
     }

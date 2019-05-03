@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as BaseTestCase;
-use Spatie\LaravelEndpointResources\Tests\Dummy\DummyModel;
-use Spatie\LaravelEndpointResources\Tests\Dummy\FakeRouter;
-use Spatie\LaravelEndpointResources\Tests\Dummy\PhonyModel;
+use Spatie\LaravelEndpointResources\Tests\Fakes\TestModel;
+use Spatie\LaravelEndpointResources\Tests\Fakes\FakeRouter;
+use Spatie\LaravelEndpointResources\Tests\Fakes\SecondTestModel;
 
 abstract class TestCase extends BaseTestCase
 {
-    /** @var \Spatie\LaravelEndpointResources\Tests\Dummy\FakeRouter */
+    /** @var \Spatie\LaravelEndpointResources\Tests\Fakes\FakeRouter */
     protected $fakeRouter;
 
     protected function setUp() : void
@@ -26,13 +26,13 @@ abstract class TestCase extends BaseTestCase
     }
 
     private function setUpDatabase(){
-        Schema::create('dummy_models', function (Blueprint $table) {
+        Schema::create('test_models', function (Blueprint $table) {
             $table->bigIncrements('id');
 
             $table->string('name');
         });
 
-        Schema::create('phony_models', function (Blueprint $table) {
+        Schema::create('second_test_models', function (Blueprint $table) {
             $table->bigIncrements('id');
 
             $table->string('name');

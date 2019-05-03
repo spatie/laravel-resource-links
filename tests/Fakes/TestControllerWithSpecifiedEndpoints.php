@@ -1,20 +1,20 @@
 <?php
 
-namespace Spatie\LaravelEndpointResources\Tests\Dummy;
+namespace Spatie\LaravelEndpointResources\Tests\Fakes;
 
 use Illuminate\Http\Request;
 
-final class PhonyController
+final class TestControllerWithSpecifiedEndpoints
 {
     public $endPointMethods = ['endpoint'];
     public $globalEndPointMethods = ['globalEndpoint'];
 
-    public function endpoint(DummyModel $model)
+    public function endpoint(TestModel $testModel)
     {
         return '';
     }
 
-    public function nonEndpoint(DummyModel $model)
+    public function nonEndpoint(TestModel $testModel)
     {
         return '';
     }
