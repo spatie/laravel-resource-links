@@ -8,9 +8,12 @@ use Spatie\LaravelEndpointResources\EndpointTypes\ControllerEndpointType;
 
 trait HasEndpoints
 {
+    /** @var bool */
+    protected $includeGlobalEndpoints = false;
+
     public function endpoints(string $controller = null, $parameters = null): EndpointResource
     {
-        $endPointResource = new EndpointResource($this->resource);
+        $endPointResource = new EndpointResource($this->resource, $this->includeGlobalEndpoints);
 
         if ($controller !== null) {
             $endPointResource->addController($controller, Arr::wrap($parameters));
@@ -35,10 +38,22 @@ trait HasEndpoints
         return [];
     }
 
+    public function includeGlobalEndpoints()
+    {
+        $this->includeGlobalEndpoints = true;
+
+        return $this;
+    }
+
     public static function collection($resource)
     {
         return parent::collection($resource)->additional([
             'meta' => self::meta(),
         ]);
+    }
+
+    public static function make(...$parameters)
+    {
+        return parent::make(...$parameters)->includeGlobalEndpoints();
     }
 }
