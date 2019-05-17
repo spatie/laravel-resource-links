@@ -7,17 +7,31 @@ final class TestControllerWithSpecifiedEndpoints
     public $endPointMethods = ['endpoint'];
     public $globalEndPointMethods = ['globalEndpoint'];
 
-    public function endpoint(TestModel $testModel) {}
+    public function endpoint(TestModel $testModel)
+    {
+    }
 
-    public function nonEndpoint(TestModel $testModel) {}
+    public function nonEndpoint(TestModel $testModel)
+    {
+    }
 
-    public function globalEndpoint() {}
+    public function globalEndpoint()
+    {
+    }
 
-    public function nonGlobalEndpoint() {}
+    public function nonGlobalEndpoint()
+    {
+    }
 
-    public function endpointWithTwoParameters(SecondTestModel $secondTestModel, TestModel $testModel) {}
+    public function endpointWithTwoParameters(SecondTestModel $secondTestModel, TestModel $testModel)
+    {
+    }
 
-    public function endpointWithTwoIdenticalParameters(TestModel $testModel, TestModel $otherTestModel) {}
+    public function endpointWithTwoIdenticalParameters(TestModel $testModel, TestModel $otherTestModel)
+    {
+    }
 
-    public function endpointWithoutTypes($withoutType) {}
+    public function endpointWithoutTypes($withoutType)
+    {
+    }
 }

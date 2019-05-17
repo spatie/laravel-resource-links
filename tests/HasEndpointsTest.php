@@ -28,8 +28,7 @@ class HasEndpointsTest extends TestCase
     /** @test */
     public function it_will_generate_endpoints_when_making_a_resource()
     {
-        $testResource = new class(null) extends JsonResource
-        {
+        $testResource = new class(null) extends JsonResource {
             use HasEndpoints;
 
             public function __construct($resource)
@@ -79,8 +78,7 @@ class HasEndpointsTest extends TestCase
     /** @test */
     public function it_will_generate_endpoints_when_collecting_a_resource()
     {
-        $testResource = new class(null) extends JsonResource
-        {
+        $testResource = new class(null) extends JsonResource {
             use HasEndpoints;
 
             public function __construct($resource)
@@ -132,8 +130,7 @@ class HasEndpointsTest extends TestCase
     /** @test */
     public function it_can_merge_global_endpoints_with_local_endpoints()
     {
-        $testResource = new class(null) extends JsonResource
-        {
+        $testResource = new class(null) extends JsonResource {
             use HasEndpoints;
 
             public function __construct($resource)
