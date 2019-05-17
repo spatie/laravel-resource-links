@@ -368,7 +368,6 @@ class OtherResource extends JsonResource
 
 We'll try to deduce the parameters for constructing the endpoint. But you can also manually set the parameters:
 
-
 ``` php
 class OtherResource extends JsonResource
 {
