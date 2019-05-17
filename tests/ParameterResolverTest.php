@@ -140,4 +140,28 @@ final class ParameterResolverTest extends TestCase
             'otherTestModel' => $testModel,
         ], $parameterResolver->forRoute($route));
     }
+    
+    /** @test */
+    public function it_cannot_deduce_parameters_without_type_and_name()
+    {
+        $route = $this->fakeRouter->route('GET', '{withoutType}', [TestController::class, 'clean']);
+
+        $parameterResolver = new ParameterResolver(null);
+
+        $this->assertEquals([], $parameterResolver->forRoute($route));
+    }
+
+    /** @test */
+    public function it_can_deduce_parameters_with_type_and_name()
+    {
+        $route = $this->fakeRouter->route('GET', '{withoutType}', [TestController::class, 'clean']);
+
+        $parameterResolver = new ParameterResolver(null, [
+            'withoutType' => 42
+        ]);
+
+        $this->assertEquals([
+            'withoutType' => 42
+        ], $parameterResolver->forRoute($route));
+    }
 }

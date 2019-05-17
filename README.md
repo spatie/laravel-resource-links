@@ -98,7 +98,7 @@ composer require spatie/laravel-endpoint-resources
 
 ## Usage
 
-In your resources, add the `HasEndpoints` trait and a new attribute where the endpoints will be stored.
+In your resources, add the `HasEndpoints` trait and a new attribute where the endpoints will be stored:
 
 ``` php
 class UserResource extends JsonResource
@@ -118,7 +118,7 @@ class UserResource extends JsonResource
 ```
 
 
-Now every UserResource has an additional EndpointResource which in responses will look like
+Now every UserResource has an additional EndpointResource which in responses will look like:
 
 ``` json
 "endpoints":{  
@@ -193,6 +193,10 @@ Now when we create an UserResource collection, the meta section will look like t
             "method":"GET",
             "action":"https://app.laravel/admin/users"
          },
+          "create":{  
+            "method":"POST",
+            "action":"https://app.laravel/admin/users/create"
+         }
          "store":{  
             "method":"POST",
             "action":"https://app.laravel/admin/users"
@@ -237,7 +241,7 @@ This meta function will always be added when you use the `HasEndpoints` trait.
 
 When creating a single resource `UserResource::make($user)` you sometimes only want to have an object with a data section and without a meta section. So you can, for example, convert the resource to an array.
 
-In this case, global endpoints will not be included, but only the endpoints specific to the resource. You can merge global endpoints with the other endpoints like so:
+In this case, global endpoints will be excluded, and only the endpoints specific to the resource will be included. You can merge global endpoints with the other endpoints like so:
 
 ``` php
 class UserResource extends JsonResource
@@ -306,7 +310,7 @@ An endpoint resource will try to deduce the parameters for a route as best as po
 
 If no model is given or more parameters are required, then we'll start searching the parameters of the current route for parameters that can be used to construct the endpoint.
 
-It is not always possible to automatically deduce all the parameters for a route, that's why it is possible to specify the parameters for an endpoint.
+It is not always possible to automatically deduce all the parameters for a route, that's why it is possible to specify the parameters for an endpoint:
 
 ```php
 class UserResource extends JsonResource
@@ -324,10 +328,9 @@ class UserResource extends JsonResource
     }
 }
 ```
-An endpoint will not be added when a route cannot be constructed because not all parameters are present.
 
 
-You can also set the parameters for a global endpoints.
+You can also set the parameters for a global endpoints:
    
 ``` php
 class UserResource extends JsonResource
@@ -349,7 +352,7 @@ class UserResource extends JsonResource
 }
 ```
 
-Endpoint resources will stop automatically deducing parameters when you manually give a set of parameters.
+An endpoint will only be added when all parameters required are present. Endpoint resources will stop automatically deducing parameters when you manually give a set of parameters.
 
 ### Action endpoints
 
@@ -369,7 +372,7 @@ class OtherResource extends JsonResource
 }
 ```
 
-We'll also try to deduce the parameters for constructing the endpoint for the action. But you can also manually set the parameters:
+We'll try to deduce the parameters for constructing the endpoint. But you can also manually set the parameters:
 
 
 ``` php
@@ -389,7 +392,7 @@ class OtherResource extends JsonResource
 }
 ```
  
-The HTTP verb for the action will be deduced from the route in Laravel. Should you have an action with two verbs, then you can always specify the verb for a particular action
+The HTTP verb for the action will be deduced from the route in Laravel. Should you have an action with two verbs, then you can always specify the verb for a particular action:
 
 ``` php
 class OtherResource extends JsonResource

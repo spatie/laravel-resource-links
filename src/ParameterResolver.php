@@ -54,8 +54,12 @@ final class ParameterResolver
             return $providedParameters[$signatureParameter->getName()];
         }
 
-        foreach ($providedParameters as $providedParameter) {
+        foreach ($providedParameters as $providedParameterName => $providedParameter) {
             if (! is_object($providedParameter)) {
+                continue;
+            }
+
+            if ($signatureParameter->getType() === null) {
                 continue;
             }
 

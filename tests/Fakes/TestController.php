@@ -38,4 +38,9 @@ final class TestController
     {
         return $testModel->name;
     }
+
+    public function clean($withoutType)
+    {
+        return $withoutType;
+    }
 }
