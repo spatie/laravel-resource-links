@@ -51,6 +51,13 @@ final class EndpointResource extends JsonResource
         return $this;
     }
 
+    public function mergeGlobalEndpoints() : JsonResource
+    {
+        $this->endpointResourceType = EndpointResourceType::MULTI;
+
+        return $this;
+    }
+
     public function toArray($request)
     {
         return $this->endPointTypes->mapWithKeys(function (EndPointType $endpointType) {
@@ -74,11 +81,11 @@ final class EndpointResource extends JsonResource
     private function resolveControllerEndpoints(ControllerEndpointType $endpointType): array
     {
         if ($this->endpointResourceType === EndpointResourceType::LOCAL) {
-            return $endpointType->getGlobalEndpoints();
+            return $endpointType->getEndpoints($this->model);
         }
 
         if ($this->endpointResourceType === EndpointResourceType::GLOBAL) {
-            return $endpointType->getEndpoints($this->model);
+            return $endpointType->getGlobalEndpoints();
         }
 
         if ($this->endpointResourceType === EndpointResourceType::MULTI) {

@@ -49,6 +49,8 @@ abstract class TestCase extends BaseTestCase
             'prefix' => '',
         ]);
 
+        $this->app['config']->set('app.key', 'kuFyUdCwrgWJjLWURIbkemJlFLGatcmo');
+
         Model::unguard();
     }
 }

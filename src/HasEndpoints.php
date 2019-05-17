@@ -7,16 +7,9 @@ use Illuminate\Support\Arr;
 
 trait HasEndpoints
 {
-    /** @var bool */
-    protected $mergeGlobalEndpoints = false;
-
     public function endpoints(string $controller = null, $parameters = null): EndpointResource
     {
-        $endPointResourceType = $this->mergeGlobalEndpoints
-            ? EndpointResourceType::MULTI
-            : EndpointResourceType::LOCAL;
-
-        $endPointResource = new EndpointResource($this->resource, $endPointResourceType);
+        $endPointResource = new EndpointResource($this->resource, EndpointResourceType::LOCAL);
 
         if ($controller !== null) {
             $endPointResource->addController($controller, Arr::wrap($parameters));
@@ -41,22 +34,25 @@ trait HasEndpoints
         return [];
     }
 
-    public function mergeGlobalEndpoints()
-    {
-        $this->mergeGlobalEndpoints = true;
-
-        return $this;
-    }
-
     public static function collection($resource)
     {
-        return parent::collection($resource)->additional([
-            'meta' => self::meta(),
-        ]);
+        if ($meta = self::meta()) {
+            return parent::collection($resource)->additional([
+                'meta' => $meta,
+            ]);
+        }
+
+        return parent::collection($resource);
     }
 
     public static function make(...$parameters)
     {
-        return parent::make(...$parameters)->mergeGlobalEndpoints();
+        if ($meta = self::meta()) {
+            return parent::make(...$parameters)->additional([
+                'meta' => $meta,
+            ]);
+        }
+
+        return parent::make(...$parameters);
     }
 }

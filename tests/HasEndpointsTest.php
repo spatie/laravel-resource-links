@@ -22,11 +22,11 @@ class HasEndpointsTest extends TestCase
         ]);
 
         $this->fakeRouter->route('GET', '/local/{id}', [TestControllerWithSpecifiedEndpoints::class, 'endpoint']);
-        $this->fakeRouter->route('GET', '/global/{id}', [TestControllerWithSpecifiedEndpoints::class, 'globalEndpoint']);
+        $this->fakeRouter->route('GET', '/global', [TestControllerWithSpecifiedEndpoints::class, 'globalEndpoint']);
     }
 
     /** @test */
-    public function it_will_generate_local_endpoints()
+    public function it_will_generate_endpoints_when_making_a_resource()
     {
         $testResource = new class(null) extends JsonResource
         {
@@ -40,53 +40,132 @@ class HasEndpointsTest extends TestCase
             public function toArray($request)
             {
                 return [
-                    'endpoints' => $this->endpoints(TestControllerWithSpecifiedEndpoints::class, $this->resource),
+                    'endpoints' => $this->endpoints(TestControllerWithSpecifiedEndpoints::class),
                 ];
-            }
-        };
-
-        $this->assertEquals([
-            'endpoint' => [
-                'method' => 'GET',
-                'action' => action([TestControllerWithSpecifiedEndpoints::class, 'endpoint'], $this->testModel),
-            ],
-        ], $this->getEndpoints($testResource));
-    }
-
-    /** @test */
-    public function it_will_generate_global_endpoints()
-    {
-        $testResource = new class(null) extends JsonResource
-        {
-            use HasEndpoints;
-
-            public function __construct($resource)
-            {
-                parent::__construct($resource);
-            }
-
-            public function toArray($request)
-            {
-                return [];
             }
 
             public static function meta()
             {
                 return [
-                    'endpoints' => self::globalEndpoints(TestControllerWithSpecifiedEndpoints::class, [])
+                    'endpoints' => self::globalEndpoints(TestControllerWithSpecifiedEndpoints::class),
                 ];
             }
         };
 
-        dd($testResource::collection(TestModel::all())->toResponse(request()));
+        $this->fakeRouter->route('GET', '/index', function () use ($testResource) {
+            return $testResource::make(TestModel::first());
+        });
+
+        $this->get('/index')->assertJson([
+            'data' => [
+                'endpoints' => [
+                    'endpoint' => [
+                        'method' => 'GET',
+                        'action' => action([TestControllerWithSpecifiedEndpoints::class, 'endpoint'], $this->testModel),
+                    ],
+                ],
+            ],
+            'meta' => [
+                'endpoints' => [
+                    'globalEndpoint' => [
+                        'method' => 'GET',
+                        'action' => action([TestControllerWithSpecifiedEndpoints::class, 'globalEndpoint']),
+                    ],
+                ],
+            ],
+        ]);
     }
 
-    private function getEndpoints(JsonResource $resource): array
+    /** @test */
+    public function it_will_generate_endpoints_when_collecting_a_resource()
     {
-        $data = $resource::make($this->testModel)
-            ->toResponse(request())
-            ->getData(true);
+        $testResource = new class(null) extends JsonResource
+        {
+            use HasEndpoints;
 
-        return $data['data']['endpoints'];
+            public function __construct($resource)
+            {
+                parent::__construct($resource);
+            }
+
+            public function toArray($request)
+            {
+                return [
+                    'endpoints' => $this->endpoints(TestControllerWithSpecifiedEndpoints::class),
+                ];
+            }
+
+            public static function meta()
+            {
+                return [
+                    'endpoints' => self::globalEndpoints(TestControllerWithSpecifiedEndpoints::class),
+                ];
+            }
+        };
+
+        $this->fakeRouter->route('GET', '/index', function () use ($testResource) {
+            return $testResource::collection(TestModel::all());
+        });
+
+        $this->get('/index')->assertJson([
+            'data' => [
+                0 => [
+                    'endpoints' => [
+                        'endpoint' => [
+                            'method' => 'GET',
+                            'action' => action([TestControllerWithSpecifiedEndpoints::class, 'endpoint'], $this->testModel),
+                        ],
+                    ],
+                ],
+            ],
+            'meta' => [
+                'endpoints' => [
+                    'globalEndpoint' => [
+                        'method' => 'GET',
+                        'action' => action([TestControllerWithSpecifiedEndpoints::class, 'globalEndpoint']),
+                    ],
+                ],
+            ],
+        ]);
+    }
+
+    /** @test */
+    public function it_can_merge_global_endpoints_with_local_endpoints()
+    {
+        $testResource = new class(null) extends JsonResource
+        {
+            use HasEndpoints;
+
+            public function __construct($resource)
+            {
+                parent::__construct($resource);
+            }
+
+            public function toArray($request)
+            {
+                return [
+                    'endpoints' => $this->endpoints(TestControllerWithSpecifiedEndpoints::class)->mergeGlobalEndpoints(),
+                ];
+            }
+        };
+
+        $this->fakeRouter->route('GET', '/index', function () use ($testResource) {
+            return $testResource::make(TestModel::first());
+        });
+
+        $this->get('/index')->assertJson([
+            'data' => [
+                'endpoints' => [
+                    'endpoint' => [
+                        'method' => 'GET',
+                        'action' => action([TestControllerWithSpecifiedEndpoints::class, 'endpoint'], $this->testModel),
+                    ],
+                    'globalEndpoint' => [
+                        'method' => 'GET',
+                        'action' => action([TestControllerWithSpecifiedEndpoints::class, 'globalEndpoint']),
+                    ],
+                ],
+            ],
+        ]);
     }
 }

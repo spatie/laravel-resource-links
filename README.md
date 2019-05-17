@@ -5,11 +5,11 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/spatie/laravel-endpoint-resources.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/laravel-endpoint-resources)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-endpoint-resources.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-endpoint-resources)
 
-Add endpoints to your Laravel Api Resources without a hassle!
+Add endpoints to your Laravel API Resources without a hassle!
 
-Let's say you have a UsersController with `index`, `show`, `create`, `edit`, `store`, `update` and `delete` methods and an UserResource. Wouldn't it be nice if you had the url's to these methods immediatly in your UserResource without having to construct them from scratch?
+Let's say you have a UsersController with `index`, `show`, `create`, `edit`, `store`, `update` and `delete` methods and an UserResource. Wouldn't it be nice if you had the URL's to these methods immediately in your UserResource without having to construct them from scratch?
 
-Laravel endpoint resources will add these endpoints to your resource based upon an controller or actions you define. Let's look at an example of a resource.
+Laravel endpoint resources will add these endpoints to your resource based upon a controller or actions you define. Let's look at an example of a resource.
 
 ## Example
 
@@ -40,7 +40,7 @@ class UserResource extends JsonResource
 }
 ```
 
-Now when creating an UserResource collection you will have all the endpoints from the UserController available:
+Now when creating an UserResource collection, you will have all the endpoints from the UserController available:
 
 ```json
 {  
@@ -98,7 +98,7 @@ composer require spatie/laravel-endpoint-resources
 
 ## Usage
 
-In your resources, add the `HasEndpoints` trait and a new attribute where the endpoints will be stored
+In your resources, add the `HasEndpoints` trait and a new attribute where the endpoints will be stored.
 
 ``` php
 class UserResource extends JsonResource
@@ -140,7 +140,7 @@ Now every UserResource has an additional EndpointResource which in responses wil
     }
 ```
 
-By default we'll only construct endpoints from the `show`, `edit`, `update` and `delete` methods of your controller.  This can be easily changed by adding the `$endpointMethods` property on your controller:
+By default, we'll only construct endpoints from the `show`, `edit`, `update` and `delete` methods of your controller.  This can be easily changed by adding the `$endpointMethods` property on your controller:
 
 ``` php
 class UsersController
@@ -152,7 +152,7 @@ class UsersController
 ```
 
 ### Global Endpoints
-What about endpoints like `index`, `create` and `store`? We could include these endpoints by setting the `$endPointMethods` property on the controller. But then every item in an resource collection would always have three identical endpoints. A more efficient solution is to store the endpoints on an higher level, so we don't generate these endpoints for every item in the resource collection. 
+What about endpoints like `index`, `create` and `store`? We could include these endpoints by setting the `$endPointMethods` property on the controller. But then every item in a resource collection would always have three identical endpoints. A more efficient solution is to store the endpoints on a higher level, so we don't generate these endpoints for every item in the resource collection. 
 
 Since resource collections not only can have a data section but also a meta section. It is wisely to put endpoints like `index`, `create` and `store` which don't depend on the model here. 
 
@@ -202,7 +202,7 @@ Now when we create an UserResource collection, the meta section will look like t
 ```
 
 
-By default the global endpoints will only be constructed from the `index`, `create`  and `store` methods in your controller. This behaviour can be changed by setting `$globalEndpointMethods` property on your controller:
+By default, the global endpoints will only be constructed from the `index`, `create`  and `store` methods in your controller. This behavior can be changed by setting `$globalEndpointMethods` property on your controller:
 
 ``` php
 class UsersController
@@ -215,12 +215,12 @@ class UsersController
 
 #### A small helper
 
-If you don't want to overwrite the `collection` function every time you want to add an global endpoint to a resource collection, then you're in luck. We've added a little helper which puts endpoints immediatly in the meta section of a resource collection:
+If you don't want to overwrite the `collection` function every time you want to add a global endpoint to a resource collection, then you're in luck. We've added a little helper which puts endpoints immediately in the meta section of a resource collection:
 
 ``` php
 class UserResource extends JsonResource
 {
-	...
+    ...
     
     public static function meta()
     {
@@ -233,12 +233,78 @@ class UserResource extends JsonResource
 
 This meta function will always be added when you use the `HasEndpoints` trait.
 
+#### Global endpoints and a single resource
+
+When creating a single resource `UserResource::make($user)` you sometimes only want to have an object with a data section and without a meta section. So you can, for example, convert the resource to an array.
+
+In this case, global endpoints will not be included, but only the endpoints specific to the resource. You can merge global endpoints with the other endpoints like so:
+
+``` php
+class UserResource extends JsonResource
+{
+    use HasEndpoints;
+
+    public function toArray($request)
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'endpoints' => $this->endpoints(UsersController::class)->mergeGlobalEndpoints(),
+        ];
+    }
+}
+
+```
+
+The UserResource in a response will now look like this:
+
+```json
+{  
+   "data":[  
+      {  
+         "id":1,
+         "name":"Ruben Van Assche",
+         "endpoints":{  
+            "show":{  
+               "method":"GET",
+               "action":"https://app.laravel/users/1"
+            },
+            "edit":{  
+               "method":"GET",
+               "action":"https://app.laravel/users/1/edit"
+            },
+            "update":{  
+               "method":"PUT",
+               "action":"https://app.laravel/users/1"
+            },
+            "delete":{  
+               "method":"DELETE",
+               "action":"https://app.laravel/users/1"
+            },
+            "index":{  
+                "method":"GET",
+                "action":"https://app.laravel/users"
+             },
+             "create":{  
+                "method":"GET",
+                "action":"https://app.laravel/users/create"
+             },
+             "store":{  
+                "method":"POST",
+                "action":"https://app.laravel/users"
+             }
+         }
+      }  
+   ],
+}
+```
+
 
 ### Route parameters
 
-An endpoint resource will try to deduce the parameters for an route as best as possible when generating the endpoint to that route. The first thing we do is looking at the model given to your resource and we try to create the endpoints from that.
+An endpoint resource will try to deduce the parameters for a route as best as possible when generating the endpoint to that route. The first thing we do is looking at the model given to your resource, and we try to create the endpoints from that.
 
-If no model is given or more parameters are required then we'll start searching the parameters of the current route for parameters that can be used to construct the endpoint.
+If no model is given or more parameters are required, then we'll start searching the parameters of the current route for parameters that can be used to construct the endpoint.
 
 It is not always possible to automatically deduce all the parameters for a route, that's why it is possible to specify the parameters for an endpoint.
 
@@ -261,14 +327,14 @@ class UserResource extends JsonResource
 An endpoint will not be added when a route cannot be constructed because not all parameters are present.
 
 
-You can also set the parameters for a global endpoints
+You can also set the parameters for a global endpoints.
    
 ``` php
 class UserResource extends JsonResource
 {
-	use HasEndpoints;
+    use HasEndpoints;
 
-	...
+    ...
     
     public static function collection($resource)
     {
@@ -287,7 +353,7 @@ Endpoint resources will stop automatically deducing parameters when you manually
 
 ### Action endpoints
 
-Sometimes you want to add endpoints not belonging to a specific controller, then it is possible to add an action as an endpoint. This looks just like an common Laravel action:
+Sometimes you want to add endpoints not belonging to a specific controller. Then it is possible to add an action as an endpoint. This looks just like a standard Laravel action:
 
 ``` php
 class OtherResource extends JsonResource
@@ -323,7 +389,7 @@ class OtherResource extends JsonResource
 }
 ```
  
-The HTTP verb for the action will be deduced from the route in Laravel. Should you have an action with two verbs then you can always specify the verb for a particular action
+The HTTP verb for the action will be deduced from the route in Laravel. Should you have an action with two verbs, then you can always specify the verb for a particular action
 
 ``` php
 class OtherResource extends JsonResource
@@ -342,14 +408,14 @@ class OtherResource extends JsonResource
 }
 ```
 
-Of course it is also possible to use this with global endpoints:
+Of course, it is also possible to use this with global endpoints:
 
 ``` php
 class UserResource extends JsonResource
 {
     use HasEndpoints;
 
-	...
+    ...
     
     public static function collection($resource)
     {
