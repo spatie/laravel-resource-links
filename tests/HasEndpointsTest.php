@@ -22,7 +22,7 @@ class HasEndpointsTest extends TestCase
         ]);
 
         $this->fakeRouter->route('GET', '/local/{id}', [TestControllerWithSpecifiedEndpoints::class, 'endpoint']);
-        $this->fakeRouter->route('GET', '/global', [TestControllerWithSpecifiedEndpoints::class, 'globalEndpoint']);
+        $this->fakeRouter->route('GET', '/global', [TestControllerWithSpecifiedEndpoints::class, 'collectionEndpoint']);
     }
 
     /** @test */
@@ -46,7 +46,7 @@ class HasEndpointsTest extends TestCase
             public static function meta()
             {
                 return [
-                    'endpoints' => self::globalEndpoints(TestControllerWithSpecifiedEndpoints::class),
+                    'endpoints' => self::collectionEndpoints(TestControllerWithSpecifiedEndpoints::class),
                 ];
             }
         };
@@ -66,9 +66,9 @@ class HasEndpointsTest extends TestCase
             ],
             'meta' => [
                 'endpoints' => [
-                    'globalEndpoint' => [
+                    'collectionEndpoint' => [
                         'method' => 'GET',
-                        'action' => action([TestControllerWithSpecifiedEndpoints::class, 'globalEndpoint']),
+                        'action' => action([TestControllerWithSpecifiedEndpoints::class, 'collectionEndpoint']),
                     ],
                 ],
             ],
@@ -96,7 +96,7 @@ class HasEndpointsTest extends TestCase
             public static function meta()
             {
                 return [
-                    'endpoints' => self::globalEndpoints(TestControllerWithSpecifiedEndpoints::class),
+                    'endpoints' => self::collectionEndpoints(TestControllerWithSpecifiedEndpoints::class),
                 ];
             }
         };
@@ -118,9 +118,9 @@ class HasEndpointsTest extends TestCase
             ],
             'meta' => [
                 'endpoints' => [
-                    'globalEndpoint' => [
+                    'collectionEndpoint' => [
                         'method' => 'GET',
-                        'action' => action([TestControllerWithSpecifiedEndpoints::class, 'globalEndpoint']),
+                        'action' => action([TestControllerWithSpecifiedEndpoints::class, 'collectionEndpoint']),
                     ],
                 ],
             ],
@@ -141,7 +141,7 @@ class HasEndpointsTest extends TestCase
             public function toArray($request)
             {
                 return [
-                    'endpoints' => $this->endpoints(TestControllerWithSpecifiedEndpoints::class)->mergeGlobalEndpoints(),
+                    'endpoints' => $this->endpoints(TestControllerWithSpecifiedEndpoints::class)->mergeCollectionEndpoints(),
                 ];
             }
         };
@@ -157,9 +157,9 @@ class HasEndpointsTest extends TestCase
                         'method' => 'GET',
                         'action' => action([TestControllerWithSpecifiedEndpoints::class, 'endpoint'], $this->testModel),
                     ],
-                    'globalEndpoint' => [
+                    'collectionEndpoint' => [
                         'method' => 'GET',
-                        'action' => action([TestControllerWithSpecifiedEndpoints::class, 'globalEndpoint']),
+                        'action' => action([TestControllerWithSpecifiedEndpoints::class, 'collectionEndpoint']),
                     ],
                 ],
             ],

@@ -8,7 +8,7 @@ use Spatie\LaravelEndpointResources\Tests\Fakes\TestModel;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
 use Spatie\LaravelEndpointResources\Tests\TestCase;
 
-final class ControllerEndpointTypeTest extends TestCase
+class ControllerEndpointTypeTest extends TestCase
 {
     /** @var \Spatie\LaravelEndpointResources\Tests\Fakes\TestModel */
     private $testModel;
@@ -55,7 +55,7 @@ final class ControllerEndpointTypeTest extends TestCase
 
         $endpointType = new ControllerEndpointType(TestController::class);
 
-        $endpoints = $endpointType->getGlobalEndpoints();
+        $endpoints = $endpointType->getCollectionEndpoints();
 
         $this->assertEquals([
             'index' => [
@@ -136,20 +136,20 @@ final class ControllerEndpointTypeTest extends TestCase
     /** @test */
     public function it_will_only_create_routes_based_upon_the_global_end_point_methods_property()
     {
-        $globalEndpoint = [TestControllerWithSpecifiedEndpoints::class, 'globalEndpoint'];
-        $nonGlobalEndpoint = [TestControllerWithSpecifiedEndpoints::class, 'nonGlobalEndpoint'];
+        $collectionEndpoint = [TestControllerWithSpecifiedEndpoints::class, 'collectionEndpoint'];
+        $nonCollectionEndpoint = [TestControllerWithSpecifiedEndpoints::class, 'nonCollectionEndpoint'];
 
-        $this->fakeRouter->route('GET', '/a/', $globalEndpoint);
-        $this->fakeRouter->route('GET', '/b/', $nonGlobalEndpoint);
+        $this->fakeRouter->route('GET', '/a/', $collectionEndpoint);
+        $this->fakeRouter->route('GET', '/b/', $nonCollectionEndpoint);
 
         $endpointType = new ControllerEndpointType(TestControllerWithSpecifiedEndpoints::class);
 
-        $endpoints = $endpointType->getGlobalEndpoints();
+        $endpoints = $endpointType->getCollectionEndpoints();
 
         $this->assertEquals([
-            'globalEndpoint' => [
+            'collectionEndpoint' => [
                 'method' => 'GET',
-                'action' => action($globalEndpoint),
+                'action' => action($collectionEndpoint),
             ],
         ], $endpoints);
     }

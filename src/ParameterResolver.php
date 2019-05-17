@@ -7,13 +7,13 @@ use Illuminate\Routing\Exceptions\UrlGenerationException;
 use Illuminate\Routing\Route;
 use ReflectionParameter;
 
-final class ParameterResolver
+class ParameterResolver
 {
     /** @var \Illuminate\Database\Eloquent\Model|null */
-    private $model;
+    protected $model;
 
     /** @var array */
-    private $defaultParameters;
+    protected $defaultParameters;
 
     public function __construct(?Model $model, array $defaultParameters = [])
     {
@@ -39,14 +39,14 @@ final class ParameterResolver
             })->all();
     }
 
-    private function getProvidedParameters(): array
+    protected function getProvidedParameters(): array
     {
         return optional($this->model)->exists
             ? array_merge($this->defaultParameters, [$this->model])
             : $this->defaultParameters;
     }
 
-    private function resolveParameter(
+    protected function resolveParameter(
         ReflectionParameter $signatureParameter,
         array $providedParameters
     ) {

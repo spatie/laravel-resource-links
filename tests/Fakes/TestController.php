@@ -4,7 +4,7 @@ namespace Spatie\LaravelEndpointResources\Tests\Fakes;
 
 use Illuminate\Http\Request;
 
-final class TestController
+class TestController
 {
     public function index()
     {

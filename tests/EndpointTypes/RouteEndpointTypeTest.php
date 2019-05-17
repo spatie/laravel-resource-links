@@ -10,7 +10,7 @@ use Spatie\LaravelEndpointResources\Tests\Fakes\TestModel;
 use Spatie\LaravelEndpointResources\Tests\Fakes\SecondTestModel;
 use Spatie\LaravelEndpointResources\Tests\TestCase;
 
-final class RouteEndpointTypeTest extends TestCase
+class RouteEndpointTypeTest extends TestCase
 {
     /** @var \Spatie\LaravelEndpointResources\Tests\Fakes\TestModel */
     private $testModel;

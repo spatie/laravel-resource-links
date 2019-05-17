@@ -6,7 +6,7 @@ use Illuminate\Routing\Route;
 use Illuminate\Routing\RouteCollection;
 use Illuminate\Routing\Router;
 
-final class FakeRouter
+class FakeRouter
 {
     /** @var \Illuminate\Routing\Router */
     private $router;

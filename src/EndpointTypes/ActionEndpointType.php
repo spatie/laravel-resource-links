@@ -7,16 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
 
-final class ActionEndpointType extends EndpointType
+class ActionEndpointType extends EndpointType
 {
     /** @var array */
-    private $action;
+    protected $action;
 
     /** @var array */
-    private $parameters;
+    protected $parameters;
 
     /** @var string|null */
-    private $httpVerb;
+    protected $httpVerb;
 
     public function __construct(array $action, array $parameters = null, string $httpVerb = null)
     {
@@ -44,12 +44,12 @@ final class ActionEndpointType extends EndpointType
         return $endpointType->getEndpoints($model);
     }
 
-    private function formatAction(): string
+    protected function formatAction(): string
     {
         return trim('\\' . implode('@', $this->action), '\\');
     }
 
-    private function getParameters(?Model $model)
+    protected function getParameters(?Model $model)
     {
         if (! optional($model)->exists) {
             return $this->parameters;

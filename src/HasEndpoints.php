@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Spatie\LaravelEndpointResources;
 
 use Illuminate\Support\Arr;
@@ -18,7 +17,7 @@ trait HasEndpoints
         return $endPointResource;
     }
 
-    public static function globalEndpoints(string $controller = null, $parameters = null): EndpointResource
+    public static function collectionEndpoints(string $controller = null, $parameters = null): EndpointResource
     {
         $endPointResource = new EndpointResource(null, EndpointResourceType::GLOBAL);
 

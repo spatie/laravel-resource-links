@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Exceptions\UrlGenerationException;
 use Illuminate\Routing\Route;
 
-final class RouteEndpointType extends EndpointType
+class RouteEndpointType extends EndpointType
 {
     /** @var \Illuminate\Routing\Route */
-    private $route;
+    protected $route;
 
     /** @var array */
-    private $defaultParameters;
+    protected $defaultParameters;
 
     /** @var string|null */
     protected $httpVerb;
@@ -48,7 +48,7 @@ final class RouteEndpointType extends EndpointType
         ];
     }
 
-    private function getHttpVerbForRoute(Route $route): string
+    protected function getHttpVerbForRoute(Route $route): string
     {
         $httpVerbs = $route->methods;
 

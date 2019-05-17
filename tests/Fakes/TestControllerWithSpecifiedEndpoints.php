@@ -2,10 +2,10 @@
 
 namespace Spatie\LaravelEndpointResources\Tests\Fakes;
 
-final class TestControllerWithSpecifiedEndpoints
+class TestControllerWithSpecifiedEndpoints
 {
     public $endPointMethods = ['endpoint'];
-    public $globalEndPointMethods = ['globalEndpoint'];
+    public $globalEndPointMethods = ['collectionEndpoint'];
 
     public function endpoint(TestModel $testModel)
     {
@@ -15,11 +15,11 @@ final class TestControllerWithSpecifiedEndpoints
     {
     }
 
-    public function globalEndpoint()
+    public function collectionEndpoint()
     {
     }
 
-    public function nonGlobalEndpoint()
+    public function nonCollectionEndpoint()
     {
     }
 

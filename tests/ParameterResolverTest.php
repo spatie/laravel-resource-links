@@ -8,7 +8,7 @@ use Spatie\LaravelEndpointResources\Tests\Fakes\TestControllerWithSpecifiedEndpo
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestModel;
 use Spatie\LaravelEndpointResources\Tests\Fakes\SecondTestModel;
 
-final class ParameterResolverTest extends TestCase
+class ParameterResolverTest extends TestCase
 {
     /** @test */
     public function it_will_resolve_required_parameters_for_a_route()

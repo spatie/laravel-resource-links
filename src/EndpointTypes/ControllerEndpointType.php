@@ -9,16 +9,16 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use ReflectionClass;
 
-final class ControllerEndpointType extends EndpointType
+class ControllerEndpointType extends EndpointType
 {
     /** @var string */
-    private $controller;
+    protected $controller;
 
     /** @var array */
-    private $defaultParameters;
+    protected $defaultParameters;
 
     /** @var array */
-    private static $cachedRoutes = [];
+    protected static $cachedRoutes = [];
 
     public function __construct(string $controller, array $defaultParameters = null)
     {
@@ -40,7 +40,7 @@ final class ControllerEndpointType extends EndpointType
         );
     }
 
-    public function getGlobalEndpoints(): array
+    public function getCollectionEndpoints(): array
     {
         $controller = new $this->controller();
 
@@ -51,7 +51,7 @@ final class ControllerEndpointType extends EndpointType
         return $this->resolveEndpoints($endpoints);
     }
 
-    private function resolveEndpoints(array $methodsToInclude, Model $model = null) : array
+    protected function resolveEndpoints(array $methodsToInclude, Model $model = null) : array
     {
         return self::getRoutesForController($this->controller)
             ->filter(function (Route $route) use ($methodsToInclude) {
@@ -63,7 +63,7 @@ final class ControllerEndpointType extends EndpointType
             })->toArray();
     }
 
-    private static function getRoutesForController(string $controller): Collection
+    protected static function getRoutesForController(string $controller): Collection
     {
         if (in_array($controller, self::$cachedRoutes)) {
             return self::$cachedRoutes[$controller];

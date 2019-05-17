@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Schema;
 
-final class SecondTestModel extends Model
+class SecondTestModel extends Model
 {
     public $timestamps = false;
 }

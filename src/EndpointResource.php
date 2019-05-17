@@ -10,16 +10,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
 
-final class EndpointResource extends JsonResource
+class EndpointResource extends JsonResource
 {
     /** @var string */
     protected $endpointResourceType;
 
     /** @var \Illuminate\Support\Collection */
-    private $endPointTypes;
+    protected $endPointTypes;
 
     /** @var \Illuminate\Database\Eloquent\Model */
-    private $model;
+    protected $model;
 
     public function __construct(Model $model = null, string $endpointResourceType = null)
     {
@@ -51,7 +51,7 @@ final class EndpointResource extends JsonResource
         return $this;
     }
 
-    public function mergeGlobalEndpoints() : JsonResource
+    public function mergeCollectionEndpoints() : JsonResource
     {
         $this->endpointResourceType = EndpointResourceType::MULTI;
 
@@ -69,7 +69,7 @@ final class EndpointResource extends JsonResource
         });
     }
 
-    private function resolveProvidedParameters($parameters = null)
+    protected function resolveProvidedParameters($parameters = null)
     {
         $parameters = Arr::wrap($parameters);
 
@@ -78,20 +78,20 @@ final class EndpointResource extends JsonResource
             : $parameters;
     }
 
-    private function resolveControllerEndpoints(ControllerEndpointType $endpointType): array
+    protected function resolveControllerEndpoints(ControllerEndpointType $endpointType): array
     {
         if ($this->endpointResourceType === EndpointResourceType::LOCAL) {
             return $endpointType->getEndpoints($this->model);
         }
 
         if ($this->endpointResourceType === EndpointResourceType::GLOBAL) {
-            return $endpointType->getGlobalEndpoints();
+            return $endpointType->getCollectionEndpoints();
         }
 
         if ($this->endpointResourceType === EndpointResourceType::MULTI) {
             return array_merge(
                 $endpointType->getEndpoints($this->model),
-                $endpointType->getGlobalEndpoints()
+                $endpointType->getCollectionEndpoints()
             );
         }
 
