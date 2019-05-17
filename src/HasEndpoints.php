@@ -4,16 +4,19 @@
 namespace Spatie\LaravelEndpointResources;
 
 use Illuminate\Support\Arr;
-use Spatie\LaravelEndpointResources\EndpointTypes\ControllerEndpointType;
 
 trait HasEndpoints
 {
     /** @var bool */
-    protected $includeGlobalEndpoints = false;
+    protected $mergeGlobalEndpoints = false;
 
     public function endpoints(string $controller = null, $parameters = null): EndpointResource
     {
-        $endPointResource = new EndpointResource($this->resource, $this->includeGlobalEndpoints);
+        $endPointResourceType = $this->mergeGlobalEndpoints
+            ? EndpointResourceType::MULTI
+            : EndpointResourceType::LOCAL;
+
+        $endPointResource = new EndpointResource($this->resource, $endPointResourceType);
 
         if ($controller !== null) {
             $endPointResource->addController($controller, Arr::wrap($parameters));
@@ -22,15 +25,15 @@ trait HasEndpoints
         return $endPointResource;
     }
 
-    public static function globalEndpoints(string $controller = null, $parameters = null): GlobalEndpointResource
+    public static function globalEndpoints(string $controller = null, $parameters = null): EndpointResource
     {
-        $globalEndpointResource = new GlobalEndpointResource();
+        $endPointResource = new EndpointResource(null, EndpointResourceType::GLOBAL);
 
         if ($controller !== null) {
-            $globalEndpointResource->addController($controller, Arr::wrap($parameters));
+            $endPointResource->addController($controller, Arr::wrap($parameters));
         }
 
-        return $globalEndpointResource;
+        return $endPointResource;
     }
 
     public static function meta()
@@ -38,9 +41,9 @@ trait HasEndpoints
         return [];
     }
 
-    public function includeGlobalEndpoints()
+    public function mergeGlobalEndpoints()
     {
-        $this->includeGlobalEndpoints = true;
+        $this->mergeGlobalEndpoints = true;
 
         return $this;
     }
@@ -54,6 +57,6 @@ trait HasEndpoints
 
     public static function make(...$parameters)
     {
-        return parent::make(...$parameters)->includeGlobalEndpoints();
+        return parent::make(...$parameters)->mergeGlobalEndpoints();
     }
 }
