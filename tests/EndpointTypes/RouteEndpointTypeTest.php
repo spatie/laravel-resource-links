@@ -5,6 +5,7 @@ namespace Spatie\LaravelEndpointResources\Tests\EndpointTypes;
 use Illuminate\Support\Arr;
 use Spatie\LaravelEndpointResources\EndpointTypes\RouteEndpointType;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestController;
+use Spatie\LaravelEndpointResources\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestModel;
 use Spatie\LaravelEndpointResources\Tests\Fakes\SecondTestModel;
 use Spatie\LaravelEndpointResources\Tests\TestCase;
@@ -20,14 +21,16 @@ final class RouteEndpointTypeTest extends TestCase
 
         $this->testModel = TestModel::create([
             'id' => 1,
-            'name' => 'Dumbo',
+            'name' => 'TestModel',
         ]);
     }
     
     /** @test */
     public function it_can_create_an_route_endpoint_type()
     {
-        $route = $this->fakeRouter->route('GET', '', [TestController::class, 'index']);
+        $action = [TestController::class, 'index'];
+
+        $route = $this->fakeRouter->route('GET', '', $action);
 
         $endpointType = new RouteEndpointType($route);
 
@@ -36,7 +39,7 @@ final class RouteEndpointTypeTest extends TestCase
         $this->assertEquals([
             'index' => [
                 'method' => 'GET',
-                'action' => action([TestController::class, 'index'])
+                'action' => action($action)
             ]
         ], $endpoints);
     }
@@ -44,7 +47,9 @@ final class RouteEndpointTypeTest extends TestCase
     /** @test */
     public function it_can_create_an_route_endpoint_type_with_parameters()
     {
-        $route = $this->fakeRouter->route('GET', '{testModel}', [TestController::class, 'show']);
+        $action = [TestController::class, 'show'];
+
+        $route = $this->fakeRouter->route('GET', '{testModel}', $action);
 
         $endpointType = new RouteEndpointType($route);
 
@@ -53,7 +58,7 @@ final class RouteEndpointTypeTest extends TestCase
         $this->assertEquals([
             'show' => [
                 'method' => 'GET',
-                'action' => action([TestController::class, 'show'], $this->testModel)
+                'action' => action($action, $this->testModel)
             ]
         ], $endpoints);
     }
@@ -61,7 +66,9 @@ final class RouteEndpointTypeTest extends TestCase
     /** @test */
     public function it_will_try_to_resolve_parameters_for_the_model()
     {
-        $route = $this->fakeRouter->route('GET', '{testModel}', [TestController::class, 'show']);
+        $action = [TestController::class, 'show'];
+
+        $route = $this->fakeRouter->route('GET', '{testModel}', $action);
 
         $endpointType = new RouteEndpointType($route, [$this->testModel]);
 
@@ -70,7 +77,7 @@ final class RouteEndpointTypeTest extends TestCase
         $this->assertEquals([
             'show' => [
                 'method' => 'GET',
-                'action' => action([TestController::class, 'show'], $this->testModel)
+                'action' => action($action, $this->testModel)
             ]
         ], $endpoints);
     }
@@ -78,7 +85,9 @@ final class RouteEndpointTypeTest extends TestCase
     /** @test */
     public function it_will_choose_the_correct_method_for_routing()
     {
-        $route = $this->fakeRouter->route(['GET', 'HEAD'], '', [TestController::class, 'index']);
+        $action = [TestController::class, 'index'];
+
+        $route = $this->fakeRouter->route(['GET', 'HEAD'], '', $action);
 
         $endpointType = new RouteEndpointType($route);
 
@@ -87,7 +96,7 @@ final class RouteEndpointTypeTest extends TestCase
         $this->assertEquals([
             'index' => [
                 'method' => 'GET',
-                'action' => action([TestController::class, 'index'])
+                'action' => action($action)
             ]
         ], $endpoints);
     }
@@ -95,11 +104,13 @@ final class RouteEndpointTypeTest extends TestCase
     /** @test */
     public function it_can_combine_the_resource_model_and_parameters_for_binding_to_routes()
     {
-        $route = $this->fakeRouter->route('GET', '{testModel}/{secondTestModel}', [TestController::class, 'attach']);
+        $action = [TestControllerWithSpecifiedEndpoints::class, 'endpointWithTwoParameters'];
+
+        $route = $this->fakeRouter->route('GET', '{testModel}/{secondTestModel}', $action);
 
         $secondTestModel = SecondTestModel::create([
             'id' => 2,
-            'name' => 'Phono'
+            'name' => 'secondTestModel'
         ]);
 
         $endpointType = new RouteEndpointType($route, [$secondTestModel]);
@@ -107,10 +118,10 @@ final class RouteEndpointTypeTest extends TestCase
         $endpoints = $endpointType->getEndpoints($this->testModel);
 
         $this->assertEquals([
-            'attach' => [
+            'endpointWithTwoParameters' => [
                 'method' => 'GET',
                 'action' => action(
-                    [TestController::class, 'attach'],
+                    $action,
                     [$this->testModel, $secondTestModel]
                 ),
             ],
@@ -120,11 +131,13 @@ final class RouteEndpointTypeTest extends TestCase
     /** @test */
     public function it_works_nicely_with_route_defaults()
     {
-        $route = $this->fakeRouter->route('GET', '{testModel}/{secondTestModel}', [TestController::class, 'attach']);
+        $action = [TestControllerWithSpecifiedEndpoints::class, 'endpointWithTwoParameters'];
+
+        $route = $this->fakeRouter->route('GET', '{testModel}/{secondTestModel}', $action);
 
         $secondTestModel = SecondTestModel::create([
             'id' => 2,
-            'name' => 'Phono'
+            'name' => 'secondTestModel'
         ]);
 
         app('url')->defaults(['secondTestModel' => $secondTestModel->id]);
@@ -134,10 +147,10 @@ final class RouteEndpointTypeTest extends TestCase
         $endpoints = $endpointType->getEndpoints($this->testModel);
 
         $this->assertEquals([
-            'attach' => [
+            'endpointWithTwoParameters' => [
                 'method' => 'GET',
                 'action' => action(
-                    [TestController::class, 'attach'],
+                    $action,
                     [$this->testModel]
                 ),
             ],

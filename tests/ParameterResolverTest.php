@@ -4,6 +4,7 @@ namespace Spatie\LaravelEndpointResources\Tests;
 
 use Spatie\LaravelEndpointResources\ParameterResolver;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestController;
+use Spatie\LaravelEndpointResources\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestModel;
 use Spatie\LaravelEndpointResources\Tests\Fakes\SecondTestModel;
 
@@ -13,14 +14,14 @@ final class ParameterResolverTest extends TestCase
     public function it_will_resolve_required_parameters_for_a_route()
     {
         $testModel = TestModel::create([
-            'name' => 'dumbo',
+            'name' => 'TestModel',
         ]);
 
         $secondTestModel = SecondTestModel::create([
-            'name' => 'phono',
+            'name' => 'secondTestModel',
         ]);
 
-        $route = $this->fakeRouter->route('GET', '{secondTestModel}/{testModel}', [TestController::class, 'attach']);
+        $route = $this->fakeRouter->route('GET', '{secondTestModel}/{testModel}', [TestControllerWithSpecifiedEndpoints::class, 'endpointWithTwoParameters']);
 
         $parameterResolver = new ParameterResolver($testModel, [$secondTestModel]);
 
@@ -34,11 +35,11 @@ final class ParameterResolverTest extends TestCase
     public function it_will_insert_the_correct_model()
     {
         $testModel = TestModel::create([
-            'name' => 'dumbo',
+            'name' => 'TestModel',
         ]);
 
         $otherTestModel = TestModel::create([
-            'name' => 'dumbo',
+            'name' => 'otherTestModel',
         ]);
 
         $route = $this->fakeRouter->route('GET', '{testModel}', [TestController::class, 'show']);
@@ -54,7 +55,7 @@ final class ParameterResolverTest extends TestCase
     public function it_can_deduce_the_correct_model_if_none_is_given()
     {
         $testModel = TestModel::create([
-            'name' => 'dumbo',
+            'name' => 'TestModel',
         ]);
 
         $route = $this->fakeRouter->route('GET', '{testModel}', [TestController::class, 'show']);
@@ -70,10 +71,10 @@ final class ParameterResolverTest extends TestCase
     public function it_plays_nice_with_other_parameters_than_models()
     {
         $testModel = TestModel::create([
-            'name' => 'dumbo',
+            'name' => 'TestModel',
         ]);
 
-        $route = $this->fakeRouter->route('GET', '{testModel}/{action}', [TestController::class, 'execute']);
+        $route = $this->fakeRouter->route('GET', '{testModel}/{action}', [TestController::class, 'edit']);
 
         $parameterResolver = new ParameterResolver($testModel, ['action' => 'doSomething']);
 
@@ -87,7 +88,7 @@ final class ParameterResolverTest extends TestCase
     public function it_also_plays_nice_with_parameters_needed_from_the_container()
     {
         $testModel = TestModel::create([
-            'name' => 'dumbo',
+            'name' => 'TestModel',
         ]);
 
         $route = $this->fakeRouter->route('GET', '{testModel}/{action}', [TestController::class, 'update']);
@@ -103,14 +104,14 @@ final class ParameterResolverTest extends TestCase
     public function it_can_have_multiple_parameters_of_the_same_type()
     {
         $testModel = TestModel::create([
-            'name' => 'dumbo',
+            'name' => 'TestModel',
         ]);
 
         $otherTestModel = TestModel::create([
-            'name' => 'otherDumbo',
+            'name' => 'otherTestModel',
         ]);
 
-        $route = $this->fakeRouter->route('GET', '{testModel}/{otherTestModel}', [TestController::class, 'switch']);
+        $route = $this->fakeRouter->route('GET', '{testModel}/{otherTestModel}', [TestControllerWithSpecifiedEndpoints::class, 'endpointWithTwoIdenticalParameters']);
 
         $parameterResolver = new ParameterResolver(null, ['testModel' => $testModel, 'otherTestModel' => $otherTestModel]);
 
@@ -124,14 +125,14 @@ final class ParameterResolverTest extends TestCase
     public function when_the_parameter_name_is_not_specified_the_resource_will_be_taken()
     {
         $testModel = TestModel::create([
-            'name' => 'dumbo',
+            'name' => 'TestModel',
         ]);
 
         $otherTestModel = TestModel::create([
-            'name' => 'otherDumbo',
+            'name' => 'otherTestModel',
         ]);
 
-        $route = $this->fakeRouter->route('GET', '{testModel}/{otherTestModel}', [TestController::class, 'switch']);
+        $route = $this->fakeRouter->route('GET', '{testModel}/{otherTestModel}', [TestControllerWithSpecifiedEndpoints::class, 'endpointWithTwoIdenticalParameters']);
 
         $parameterResolver = new ParameterResolver($otherTestModel, ['testModel' => $testModel]);
 
@@ -144,7 +145,7 @@ final class ParameterResolverTest extends TestCase
     /** @test */
     public function it_cannot_deduce_parameters_without_type_and_name()
     {
-        $route = $this->fakeRouter->route('GET', '{withoutType}', [TestController::class, 'clean']);
+        $route = $this->fakeRouter->route('GET', '{withoutType}', [TestControllerWithSpecifiedEndpoints::class, 'endpointWithoutTypes']);
 
         $parameterResolver = new ParameterResolver(null);
 
@@ -154,7 +155,7 @@ final class ParameterResolverTest extends TestCase
     /** @test */
     public function it_can_deduce_parameters_with_type_and_name()
     {
-        $route = $this->fakeRouter->route('GET', '{withoutType}', [TestController::class, 'clean']);
+        $route = $this->fakeRouter->route('GET', '{withoutType}', [TestControllerWithSpecifiedEndpoints::class, 'endpointWithoutTypes']);
 
         $parameterResolver = new ParameterResolver(null, [
             'withoutType' => 42

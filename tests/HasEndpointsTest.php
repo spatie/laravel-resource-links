@@ -18,7 +18,7 @@ class HasEndpointsTest extends TestCase
 
         $this->testModel = TestModel::create([
             'id' => 1,
-            'name' => 'Dumbi',
+            'name' => 'testModel',
         ]);
 
         $this->fakeRouter->route('GET', '/local/{id}', [TestControllerWithSpecifiedEndpoints::class, 'endpoint']);

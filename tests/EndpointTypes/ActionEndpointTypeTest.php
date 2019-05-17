@@ -4,6 +4,7 @@ namespace Spatie\LaravelEndpointResources\Tests\EndpointTypes;
 
 use Spatie\LaravelEndpointResources\EndpointTypes\ActionEndpointType;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestController;
+use Spatie\LaravelEndpointResources\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestModel;
 use Spatie\LaravelEndpointResources\Tests\Fakes\SecondTestModel;
 use Spatie\LaravelEndpointResources\Tests\TestCase;
@@ -19,23 +20,25 @@ final class ActionEndpointTypeTest extends TestCase
 
         $this->testModel = TestModel::create([
             'id' => 1,
-            'name' => 'Dumbo',
+            'name' => 'TestModel',
         ]);
     }
 
     /** @test */
     public function it_will_deduce_the_route_http_verb()
     {
-        $this->fakeRouter->route('GET', '', [TestController::class, 'index']);
+        $action = [TestController::class, 'index'];
 
-        $endpointType = new ActionEndpointType([TestController::class, 'index']);
+        $this->fakeRouter->route('GET', '', $action);
+
+        $endpointType = new ActionEndpointType($action);
 
         $endpoints = $endpointType->getEndpoints();
 
         $this->assertEquals([
             'index' => [
                 'method' => 'GET',
-                'action' => action([TestController::class, 'index']),
+                'action' => action($action),
             ],
         ], $endpoints);
     }
@@ -43,16 +46,18 @@ final class ActionEndpointTypeTest extends TestCase
     /** @test */
     public function it_can_create_an_action_endpoint_type()
     {
-        $this->fakeRouter->route('GET', '', [TestController::class, 'index']);
+        $action = [TestController::class, 'index'];
 
-        $endpointType = new ActionEndpointType([TestController::class, 'index']);
+        $this->fakeRouter->route('GET', '', $action);
+
+        $endpointType = new ActionEndpointType($action);
 
         $endpoints = $endpointType->getEndpoints();
 
         $this->assertEquals([
             'index' => [
                 'method' => 'GET',
-                'action' => action([TestController::class, 'index']),
+                'action' => action($action),
             ],
         ], $endpoints);
     }
@@ -60,16 +65,18 @@ final class ActionEndpointTypeTest extends TestCase
     /** @test */
     public function it_can_create_an_action_endpoint_type_with_parameters()
     {
-        $this->fakeRouter->route('GET', '{testModel}', [TestController::class, 'show']);
+        $action = [TestController::class, 'show'];
 
-        $endpointType = new ActionEndpointType([TestController::class, 'show']);
+        $this->fakeRouter->route('GET', '{testModel}', $action);
+
+        $endpointType = new ActionEndpointType($action);
 
         $endpoints = $endpointType->getEndpoints($this->testModel);
 
         $this->assertEquals([
             'show' => [
                 'method' => 'GET',
-                'action' => action([TestController::class, 'show'], $this->testModel),
+                'action' => action($action, $this->testModel),
             ],
         ], $endpoints);
     }
@@ -77,21 +84,23 @@ final class ActionEndpointTypeTest extends TestCase
     /** @test */
     public function it_will_overwrite_a_model_given_as_resource()
     {
-        $this->fakeRouter->route('GET', '{testModel}', [TestController::class, 'show']);
+        $action = [TestController::class, 'show'];
+
+        $this->fakeRouter->route('GET', '{testModel}', $action);
 
         $otherTestModel = TestModel::create([
             'id' => 2,
-            'name' => 'Dumbi',
+            'name' => 'OtherTestModel',
         ]);
 
-        $endpointType = new ActionEndpointType([TestController::class, 'show'], [$otherTestModel]);
+        $endpointType = new ActionEndpointType($action, [$otherTestModel]);
 
         $endpoints = $endpointType->getEndpoints($this->testModel);
 
         $this->assertEquals([
             'show' => [
                 'method' => 'GET',
-                'action' => action([TestController::class, 'show'], $otherTestModel),
+                'action' => action($action, $otherTestModel),
             ],
         ], $endpoints);
     }
@@ -99,22 +108,24 @@ final class ActionEndpointTypeTest extends TestCase
     /** @test */
     public function it_can_combine_model_and_parameters_for_binding_to_routes()
     {
-        $this->fakeRouter->route('GET', '{testModel}/{secondTestModel}', [TestController::class, 'attach']);
+        $action = [TestControllerWithSpecifiedEndpoints::class, 'endpointWithTwoParameters'];
+
+        $this->fakeRouter->route('GET', '{testModel}/{secondTestModel}', $action);
 
         $secondTestModel = SecondTestModel::create([
             'id' => 2,
-            'name' => 'Phono',
+            'name' => 'secondTestModel',
         ]);
 
-        $endpointType = new ActionEndpointType([TestController::class, 'attach'], [$secondTestModel], 'GET');
+        $endpointType = new ActionEndpointType($action, [$secondTestModel], 'GET');
 
         $endpoints = $endpointType->getEndpoints($this->testModel);
 
         $this->assertEquals([
-            'attach' => [
+            'endpointWithTwoParameters' => [
                 'method' => 'GET',
                 'action' => action(
-                    [TestController::class, 'attach'],
+                    $action,
                     [$this->testModel, $secondTestModel]
                 ),
             ],

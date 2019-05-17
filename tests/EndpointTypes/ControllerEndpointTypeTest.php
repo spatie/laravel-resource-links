@@ -11,44 +11,85 @@ use Spatie\LaravelEndpointResources\Tests\TestCase;
 final class ControllerEndpointTypeTest extends TestCase
 {
     /** @var \Spatie\LaravelEndpointResources\Tests\Fakes\TestModel */
-    private $dummy;
+    private $testModel;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->dummy = TestModel::create([
+        $this->testModel = TestModel::create([
             'id' => 1,
-            'name' => 'Dumbo',
+            'name' => 'TestModel',
         ]);
     }
 
     /** @test */
-    public function it_will_only_give_endpoints_which_can_be_constructed()
+    public function it_will_only_give_local_endpoints()
     {
-        $this->fakeRouter->route('GET', '', [TestController::class, 'index']);
-        $this->fakeRouter->route('GET', '{testModel}', [TestController::class, 'show']);
+        $indexAction = [TestController::class, 'index'];
+        $showAction = [TestController::class, 'show'];
+
+        $this->fakeRouter->route('GET', '', $indexAction);
+        $this->fakeRouter->route('GET', '{testModel}', $showAction);
 
         $endpointType = new ControllerEndpointType(TestController::class);
 
-        $endpoints = $endpointType->getEndpoints();
+        $endpoints = $endpointType->getEndpoints($this->testModel);
 
         $this->assertEquals([
-            'index' => [
+            'show' => [
                 'method' => 'GET',
-                'action' => action([TestController::class, 'index']),
+                'action' => action($showAction, $this->testModel),
             ],
         ], $endpoints);
     }
 
     /** @test */
+    public function it_will_only_give_global_endpoints()
+    {
+        $indexAction = [TestController::class, 'index'];
+        $showAction = [TestController::class, 'show'];
+
+        $this->fakeRouter->route('GET', '', $indexAction);
+        $this->fakeRouter->route('GET', '{testModel}', $showAction);
+
+        $endpointType = new ControllerEndpointType(TestController::class);
+
+        $endpoints = $endpointType->getGlobalEndpoints();
+
+        $this->assertEquals([
+            'index' => [
+                'method' => 'GET',
+                'action' => action($indexAction),
+            ],
+        ], $endpoints);
+    }
+
+    /** @test */
+    public function it_will_only_create_endpoints_that_can_be_constructed()
+    {
+        $action = [TestController::class, 'show'];
+
+        $this->fakeRouter->route('GET', '{testModel}', $action);
+
+        $endpointType = new ControllerEndpointType(TestController::class);
+
+        $endpoints = $endpointType->getEndpoints();
+
+        $this->assertEquals([], $endpoints);
+    }
+
+    /** @test */
     public function it_will_create_all_possible_routes_when_a_model_is_available()
     {
-        $this->fakeRouter->route('GET', '', [TestController::class, 'index']);
-        $this->fakeRouter->route('GET', '{testModel}', [TestController::class, 'show']);
+        $showAction = [TestController::class, 'show'];
+        $updateAction = [TestController::class, 'update'];
+
+        $this->fakeRouter->route('GET', '{testModel}', $showAction);
+        $this->fakeRouter->route('PATCH', '{testModel}', $updateAction);
 
         $testModel = TestModel::create([
-            'name' => 'Dumbo',
+            'name' => 'TestModel',
         ]);
 
         $endpointType = new ControllerEndpointType(TestController::class);
@@ -56,13 +97,13 @@ final class ControllerEndpointTypeTest extends TestCase
         $endpoints = $endpointType->getEndpoints($testModel);
 
         $this->assertEquals([
-            'index' => [
-                'method' => 'GET',
-                'action' => action([TestController::class, 'index']),
-            ],
             'show' => [
                 'method' => 'GET',
-                'action' => action([TestController::class, 'show'], $testModel),
+                'action' => action($showAction, $testModel),
+            ],
+            'update' => [
+                'method' => 'PATCH',
+                'action' => action($updateAction, $testModel),
             ],
         ], $endpoints);
     }
@@ -70,11 +111,14 @@ final class ControllerEndpointTypeTest extends TestCase
     /** @test */
     public function it_will_only_create_routes_based_upon_the_end_point_methods_property()
     {
-        $this->fakeRouter->route('GET', '/a/{testModel}', [TestControllerWithSpecifiedEndpoints::class, 'endpoint']);
-        $this->fakeRouter->route('GET', '/b/{testModel}', [TestControllerWithSpecifiedEndpoints::class, 'nonEndpoint']);
+        $endPointAction = [TestControllerWithSpecifiedEndpoints::class, 'endpoint'];
+        $nonEndpointAction = [TestControllerWithSpecifiedEndpoints::class, 'nonEndpoint'];
+
+        $this->fakeRouter->route('GET', '/a/{testModel}', $endPointAction);
+        $this->fakeRouter->route('GET', '/b/{testModel}', $nonEndpointAction);
 
         $testModel = TestModel::create([
-            'name' => 'Dumbo',
+            'name' => 'TestModel',
         ]);
 
         $endpointType = new ControllerEndpointType(TestControllerWithSpecifiedEndpoints::class);
@@ -84,7 +128,7 @@ final class ControllerEndpointTypeTest extends TestCase
         $this->assertEquals([
             'endpoint' => [
                 'method' => 'GET',
-                'action' => action([TestControllerWithSpecifiedEndpoints::class, 'endpoint'], $testModel),
+                'action' => action($endPointAction, $testModel),
             ],
         ], $endpoints);
     }
@@ -92,8 +136,11 @@ final class ControllerEndpointTypeTest extends TestCase
     /** @test */
     public function it_will_only_create_routes_based_upon_the_global_end_point_methods_property()
     {
-        $this->fakeRouter->route('GET', '/a/', [TestControllerWithSpecifiedEndpoints::class, 'globalEndpoint']);
-        $this->fakeRouter->route('GET', '/b/', [TestControllerWithSpecifiedEndpoints::class, 'nonGlobalEndpoint']);
+        $globalEndpoint = [TestControllerWithSpecifiedEndpoints::class, 'globalEndpoint'];
+        $nonGlobalEndpoint = [TestControllerWithSpecifiedEndpoints::class, 'nonGlobalEndpoint'];
+
+        $this->fakeRouter->route('GET', '/a/', $globalEndpoint);
+        $this->fakeRouter->route('GET', '/b/', $nonGlobalEndpoint);
 
         $endpointType = new ControllerEndpointType(TestControllerWithSpecifiedEndpoints::class);
 
@@ -102,7 +149,7 @@ final class ControllerEndpointTypeTest extends TestCase
         $this->assertEquals([
             'globalEndpoint' => [
                 'method' => 'GET',
-                'action' => action([TestControllerWithSpecifiedEndpoints::class, 'globalEndpoint']),
+                'action' => action($globalEndpoint),
             ],
         ], $endpoints);
     }
