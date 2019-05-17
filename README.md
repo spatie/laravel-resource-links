@@ -5,7 +5,7 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/spatie/laravel-endpoint-resources.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/laravel-endpoint-resources)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-endpoint-resources.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-endpoint-resources)
 
-Let's say you have a UsersController with `index`, `show`, `create`, `edit`, `store`, `update` and `delete` methods and an `UserResource`. Wouldn't it be nice if you had the URL's to these methods immediately in your `UserResource` without having to construct them from scratch?
+Let's say you have a `UsersController` with `index`, `show`, `create`, `edit`, `store`, `update` and `delete` methods and an `UserResource`. Wouldn't it be nice if you had the URL's to these methods immediately in your `UserResource` without having to construct them from scratch?
 
 Laravel endpoint resources will add these endpoints to your resource based upon a controller or actions you define. Let's look at an example of a resource.
 
@@ -149,9 +149,7 @@ class UsersController
 
 ### collection endpoints
 
-What about endpoints like `index`, `create` and `store`? These endpoints are not generally not tied to a single item, so it's not a good idea to store them at that level. Instead it's better to put the links to those collection endpoints on the collection level and not on the item level. We
-
-Since resource collections not only can have a data section but also a meta section. It is wise to put endpoints like `index`, `create` and `store` which don't depend on the model here. 
+What about endpoints like `index`, `create` and `store`? These endpoints are not generally not tied to a single item, so it's not a good idea to store them at that level. Instead it's better to put the links to those collection endpoints on the collection level of a resource.
 
 You can put the collection endpoints in the meta section of a resource collection like so:
 
@@ -180,8 +178,7 @@ class UserResource extends JsonResource
 }
 ```
 
-Now when we create an UserResource collection, the meta section will look like this:
-
+Now when we create an `UserResource` collection, the meta section will look like this:
 
 ``` json
    "meta":{  
@@ -216,7 +213,7 @@ class UsersController
 
 #### A small helper
 
-If you don't want to overwrite the `collection` function every time you want to add a global endpoint to a resource collection, then you're in luck. We've added a little helper which puts endpoints immediately in the meta section of a resource collection:
+We've added a little helper which puts endpoints immediately in the meta section of a resource collection:
 
 ``` php
 class UserResource extends JsonResource
@@ -234,7 +231,7 @@ class UserResource extends JsonResource
 
 This meta function will always be added when you use the `HasEndpoints` trait.
 
-#### collection endpoints and a single resource
+#### Collection endpoints and a single resource
 
 When creating a single resource `UserResource::make($user)` you sometimes only want to have an object with a data section and without a meta section. So you can, for example, convert the resource to an array.
 
@@ -257,7 +254,7 @@ class UserResource extends JsonResource
 
 ```
 
-The UserResource in a response will now look like this:
+The `UserResource` in a response will now look like this:
 
 ```json
 {  
@@ -303,11 +300,11 @@ The UserResource in a response will now look like this:
 
 ### Route parameters
 
-An endpoint resource will try to deduce the parameters for a route as best as possible when generating the endpoint to that route. The first thing we do is looking at the model given to your resource, and we try to create the endpoints from that.
+An endpoint resource will try to deduce the parameters for a route as best as possible when generating the endpoint to that route. The first thing we do is looking at the model given to your resource, and the packages tries to create the endpoints from that.
 
-If no model is given or more parameters are required, then we'll start searching the parameters of the current route for parameters that can be used to construct the endpoint.
+If no model is given or more parameters are required, then the package will start searching the parameters of the current route for parameters that can be used to construct the endpoint.
 
-It is not always possible to automatically deduce all the parameters for a route, that's why it is possible to specify the parameters for an endpoint:
+You can also manually specify the route parameters.
 
 ```php
 class UserResource extends JsonResource
