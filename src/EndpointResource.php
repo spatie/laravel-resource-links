@@ -45,7 +45,7 @@ class EndpointResource extends JsonResource
         $this->endPointTypes->push(new ActionEndpointType(
             $action,
             $this->resolveProvidedParameters($parameters),
-            $httpVerb
+            $httpVerb,
         ));
 
         return $this;
