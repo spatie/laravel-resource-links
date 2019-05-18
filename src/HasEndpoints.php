@@ -8,7 +8,7 @@ trait HasEndpoints
 {
     public function endpoints(string $controller = null, $parameters = null): EndpointResource
     {
-        $endPointResource = new EndpointResource($this->resource, EndpointResourceType::LOCAL);
+        $endPointResource = new EndpointResource($this->resource, EndpointResourceType::ITEM);
 
         if ($controller !== null) {
             $endPointResource->addController($controller, Arr::wrap($parameters));

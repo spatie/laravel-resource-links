@@ -26,7 +26,7 @@ class EndpointResource extends JsonResource
         parent::__construct($model);
 
         $this->model = $model;
-        $this->endpointResourceType = $endpointResourceType ?? EndpointResourceType::LOCAL;
+        $this->endpointResourceType = $endpointResourceType ?? EndpointResourceType::ITEM;
         $this->endPointTypes = new Collection();
     }
 
@@ -80,7 +80,7 @@ class EndpointResource extends JsonResource
 
     protected function resolveControllerEndpoints(ControllerEndpointType $endpointType): array
     {
-        if ($this->endpointResourceType === EndpointResourceType::LOCAL) {
+        if ($this->endpointResourceType === EndpointResourceType::ITEM) {
             return $endpointType->getEndpoints($this->model);
         }
 

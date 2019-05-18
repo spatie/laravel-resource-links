@@ -5,6 +5,6 @@ namespace Spatie\LaravelEndpointResources;
 class EndpointResourceType
 {
     public const COLLECTION = 'collection';
-    public const LOCAL = 'local';
+    public const ITEM = 'item';
     public const MULTI = 'multi';
 }
