@@ -45,7 +45,7 @@ class ControllerEndpointTypeTest extends TestCase
     }
 
     /** @test */
-    public function it_will_only_give_collection_endpoints()
+    public function it_will_only_give_global_endpoints()
     {
         $indexAction = [TestController::class, 'index'];
         $showAction = [TestController::class, 'show'];
@@ -134,7 +134,7 @@ class ControllerEndpointTypeTest extends TestCase
     }
 
     /** @test */
-    public function it_will_only_create_routes_based_upon_the_collection_end_point_methods_property()
+    public function it_will_only_create_routes_based_upon_the_global_end_point_methods_property()
     {
         $collectionEndpoint = [TestControllerWithSpecifiedEndpoints::class, 'collectionEndpoint'];
         $nonCollectionEndpoint = [TestControllerWithSpecifiedEndpoints::class, 'nonCollectionEndpoint'];
