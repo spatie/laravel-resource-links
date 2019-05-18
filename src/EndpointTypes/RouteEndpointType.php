@@ -18,10 +18,10 @@ class RouteEndpointType extends EndpointType
     /** @var string|null */
     protected $httpVerb;
 
-    public function __construct(Route $route, array $defaultParameters = null, string $httpVerb = null)
+    public function __construct(Route $route, array $defaultParameters = [], string $httpVerb = null)
     {
         $this->route = $route;
-        $this->defaultParameters = $defaultParameters ?? [];
+        $this->defaultParameters = $defaultParameters;
         $this->httpVerb = $httpVerb;
     }
 
