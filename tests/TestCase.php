@@ -42,14 +42,14 @@ abstract class TestCase extends BaseTestCase
 
     private function setUpEnvironment(): void
     {
-        $this->app['config']->set('database.default', 'sqlite');
-        $this->app['config']->set('database.connections.sqlite', [
+        config()->set('database.default', 'sqlite');
+        config()->set('database.connections.sqlite', [
             'driver' => 'sqlite',
             'database' => ':memory:',
             'prefix' => '',
         ]);
 
-        $this->app['config']->set('app.key', 'kuFyUdCwrgWJjLWURIbkemJlFLGatcmo');
+        config()->set('app.key', 'kuFyUdCwrgWJjLWURIbkemJlFLGatcmo');
 
         Model::unguard();
     }
