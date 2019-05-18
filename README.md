@@ -190,7 +190,7 @@ Now when we create an `UserResource` collection, the meta section will look like
           "create":{  
             "method":"POST",
             "action":"https://app.laravel/admin/users/create"
-         }
+         },
          "store":{  
             "method":"POST",
             "action":"https://app.laravel/admin/users"
