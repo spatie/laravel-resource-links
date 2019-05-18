@@ -31,11 +31,6 @@ class HasEndpointsTest extends TestCase
         $testResource = new class(null) extends JsonResource {
             use HasEndpoints;
 
-            public function __construct($resource)
-            {
-                parent::__construct($resource);
-            }
-
             public function toArray($request)
             {
                 return [

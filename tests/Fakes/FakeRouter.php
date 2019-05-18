@@ -17,12 +17,13 @@ class FakeRouter
     public function __construct(Router $router)
     {
         $this->router = $router;
+
         $this->routeCollection = new RouteCollection();
     }
 
     public static function setup()
     {
-        return new self(resolve(Router::class));
+        return new self(app(Router::class));
     }
 
     public function route($methods, $uri, $action): Route

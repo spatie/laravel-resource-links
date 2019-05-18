@@ -29,13 +29,11 @@ abstract class TestCase extends BaseTestCase
     {
         Schema::create('test_models', function (Blueprint $table) {
             $table->bigIncrements('id');
-
             $table->string('name');
         });
 
         Schema::create('second_test_models', function (Blueprint $table) {
             $table->bigIncrements('id');
-
             $table->string('name');
         });
     }
