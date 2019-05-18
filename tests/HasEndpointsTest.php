@@ -123,7 +123,7 @@ class HasEndpointsTest extends TestCase
     }
 
     /** @test */
-    public function it_can_merge_collection_endpoints_with_local_endpoints()
+    public function it_can_merge_collection_endpoints_with_item_endpoints()
     {
         $testResource = new class(null) extends JsonResource {
             use HasEndpoints;
