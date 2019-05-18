@@ -36,7 +36,7 @@ class RouteEndpointType extends EndpointType
                 $this->route->getActionName(),
                 $parameterResolver->forRoute($this->route)
             );
-        } catch (UrlGenerationException $e) {
+        } catch (UrlGenerationException $exception) {
             return [];
         }
 
