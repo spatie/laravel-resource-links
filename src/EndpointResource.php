@@ -69,7 +69,7 @@ class EndpointResource extends JsonResource
         });
     }
 
-    protected function resolveProvidedParameters($parameters = null)
+    protected function resolveProvidedParameters($parameters = null): array
     {
         $parameters = Arr::wrap($parameters);
 
