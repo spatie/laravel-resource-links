@@ -35,6 +35,11 @@ class FakeRouter
         return $route;
     }
 
+    public function get($uri, $action): Route
+    {
+        return $this->route('GET', $uri, $action);
+    }
+
     private function addRoute(Route $route)
     {
         $this->routeCollection->add($route);

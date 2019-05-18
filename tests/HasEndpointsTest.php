@@ -21,8 +21,8 @@ class HasEndpointsTest extends TestCase
             'name' => 'testModel',
         ]);
 
-        $this->fakeRouter->route('GET', '/local/{id}', [TestControllerWithSpecifiedEndpoints::class, 'endpoint']);
-        $this->fakeRouter->route('GET', '/global', [TestControllerWithSpecifiedEndpoints::class, 'collectionEndpoint']);
+        $this->fakeRouter->get('/local/{id}', [TestControllerWithSpecifiedEndpoints::class, 'endpoint']);
+        $this->fakeRouter->get('/global', [TestControllerWithSpecifiedEndpoints::class, 'collectionEndpoint']);
     }
 
     /** @test */
@@ -46,7 +46,7 @@ class HasEndpointsTest extends TestCase
             }
         };
 
-        $this->fakeRouter->route('GET', '/index', function () use ($testResource) {
+        $this->fakeRouter->get('/index', function () use ($testResource) {
             return $testResource::make(TestModel::first());
         });
 
@@ -96,7 +96,7 @@ class HasEndpointsTest extends TestCase
             }
         };
 
-        $this->fakeRouter->route('GET', '/index', function () use ($testResource) {
+        $this->fakeRouter->get('/index', function () use ($testResource) {
             return $testResource::collection(TestModel::all());
         });
 
@@ -141,7 +141,7 @@ class HasEndpointsTest extends TestCase
             }
         };
 
-        $this->fakeRouter->route('GET', '/index', function () use ($testResource) {
+        $this->fakeRouter->get('/index', function () use ($testResource) {
             return $testResource::make(TestModel::first());
         });
 

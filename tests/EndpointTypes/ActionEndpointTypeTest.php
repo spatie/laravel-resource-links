@@ -29,7 +29,7 @@ class ActionEndpointTypeTest extends TestCase
     {
         $action = [TestController::class, 'index'];
 
-        $this->fakeRouter->route('GET', '', $action);
+        $this->fakeRouter->get('', $action);
 
         $endpointType = new ActionEndpointType($action);
 
@@ -48,7 +48,7 @@ class ActionEndpointTypeTest extends TestCase
     {
         $action = [TestController::class, 'index'];
 
-        $this->fakeRouter->route('GET', '', $action);
+        $this->fakeRouter->get('', $action);
 
         $endpointType = new ActionEndpointType($action);
 
@@ -67,7 +67,7 @@ class ActionEndpointTypeTest extends TestCase
     {
         $action = [TestController::class, 'show'];
 
-        $this->fakeRouter->route('GET', '{testModel}', $action);
+        $this->fakeRouter->get('{testModel}', $action);
 
         $endpointType = new ActionEndpointType($action);
 
@@ -86,7 +86,7 @@ class ActionEndpointTypeTest extends TestCase
     {
         $action = [TestController::class, 'show'];
 
-        $this->fakeRouter->route('GET', '{testModel}', $action);
+        $this->fakeRouter->get('{testModel}', $action);
 
         $otherTestModel = TestModel::create([
             'id' => 2,
@@ -110,7 +110,7 @@ class ActionEndpointTypeTest extends TestCase
     {
         $action = [TestControllerWithSpecifiedEndpoints::class, 'endpointWithTwoParameters'];
 
-        $this->fakeRouter->route('GET', '{testModel}/{secondTestModel}', $action);
+        $this->fakeRouter->get('{testModel}/{secondTestModel}', $action);
 
         $secondTestModel = SecondTestModel::create([
             'id' => 2,

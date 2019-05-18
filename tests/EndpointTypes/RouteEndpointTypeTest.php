@@ -30,7 +30,7 @@ class RouteEndpointTypeTest extends TestCase
     {
         $action = [TestController::class, 'index'];
 
-        $route = $this->fakeRouter->route('GET', '', $action);
+        $route = $this->fakeRouter->get('', $action);
 
         $endpointType = new RouteEndpointType($route);
 
@@ -49,7 +49,7 @@ class RouteEndpointTypeTest extends TestCase
     {
         $action = [TestController::class, 'show'];
 
-        $route = $this->fakeRouter->route('GET', '{testModel}', $action);
+        $route = $this->fakeRouter->get('{testModel}', $action);
 
         $endpointType = new RouteEndpointType($route);
 
@@ -68,7 +68,7 @@ class RouteEndpointTypeTest extends TestCase
     {
         $action = [TestController::class, 'show'];
 
-        $route = $this->fakeRouter->route('GET', '{testModel}', $action);
+        $route = $this->fakeRouter->get('{testModel}', $action);
 
         $endpointType = new RouteEndpointType($route, [$this->testModel]);
 
@@ -106,7 +106,7 @@ class RouteEndpointTypeTest extends TestCase
     {
         $action = [TestControllerWithSpecifiedEndpoints::class, 'endpointWithTwoParameters'];
 
-        $route = $this->fakeRouter->route('GET', '{testModel}/{secondTestModel}', $action);
+        $route = $this->fakeRouter->get('{testModel}/{secondTestModel}', $action);
 
         $secondTestModel = SecondTestModel::create([
             'id' => 2,
@@ -133,7 +133,7 @@ class RouteEndpointTypeTest extends TestCase
     {
         $action = [TestControllerWithSpecifiedEndpoints::class, 'endpointWithTwoParameters'];
 
-        $route = $this->fakeRouter->route('GET', '{testModel}/{secondTestModel}', $action);
+        $route = $this->fakeRouter->get('{testModel}/{secondTestModel}', $action);
 
         $secondTestModel = SecondTestModel::create([
             'id' => 2,

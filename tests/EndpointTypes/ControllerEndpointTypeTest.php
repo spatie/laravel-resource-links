@@ -29,8 +29,8 @@ class ControllerEndpointTypeTest extends TestCase
         $indexAction = [TestController::class, 'index'];
         $showAction = [TestController::class, 'show'];
 
-        $this->fakeRouter->route('GET', '', $indexAction);
-        $this->fakeRouter->route('GET', '{testModel}', $showAction);
+        $this->fakeRouter->get('', $indexAction);
+        $this->fakeRouter->get('{testModel}', $showAction);
 
         $endpointType = new ControllerEndpointType(TestController::class);
 
@@ -50,8 +50,8 @@ class ControllerEndpointTypeTest extends TestCase
         $indexAction = [TestController::class, 'index'];
         $showAction = [TestController::class, 'show'];
 
-        $this->fakeRouter->route('GET', '', $indexAction);
-        $this->fakeRouter->route('GET', '{testModel}', $showAction);
+        $this->fakeRouter->get('', $indexAction);
+        $this->fakeRouter->get('{testModel}', $showAction);
 
         $endpointType = new ControllerEndpointType(TestController::class);
 
@@ -70,7 +70,7 @@ class ControllerEndpointTypeTest extends TestCase
     {
         $action = [TestController::class, 'show'];
 
-        $this->fakeRouter->route('GET', '{testModel}', $action);
+        $this->fakeRouter->get('{testModel}', $action);
 
         $endpointType = new ControllerEndpointType(TestController::class);
 
@@ -85,7 +85,7 @@ class ControllerEndpointTypeTest extends TestCase
         $showAction = [TestController::class, 'show'];
         $updateAction = [TestController::class, 'update'];
 
-        $this->fakeRouter->route('GET', '{testModel}', $showAction);
+        $this->fakeRouter->get('{testModel}', $showAction);
         $this->fakeRouter->route('PATCH', '{testModel}', $updateAction);
 
         $testModel = TestModel::create([
@@ -114,8 +114,8 @@ class ControllerEndpointTypeTest extends TestCase
         $endPointAction = [TestControllerWithSpecifiedEndpoints::class, 'endpoint'];
         $nonEndpointAction = [TestControllerWithSpecifiedEndpoints::class, 'nonEndpoint'];
 
-        $this->fakeRouter->route('GET', '/a/{testModel}', $endPointAction);
-        $this->fakeRouter->route('GET', '/b/{testModel}', $nonEndpointAction);
+        $this->fakeRouter->get('/a/{testModel}', $endPointAction);
+        $this->fakeRouter->get('/b/{testModel}', $nonEndpointAction);
 
         $testModel = TestModel::create([
             'name' => 'TestModel',
@@ -139,8 +139,8 @@ class ControllerEndpointTypeTest extends TestCase
         $collectionEndpoint = [TestControllerWithSpecifiedEndpoints::class, 'collectionEndpoint'];
         $nonCollectionEndpoint = [TestControllerWithSpecifiedEndpoints::class, 'nonCollectionEndpoint'];
 
-        $this->fakeRouter->route('GET', '/a/', $collectionEndpoint);
-        $this->fakeRouter->route('GET', '/b/', $nonCollectionEndpoint);
+        $this->fakeRouter->get('/a/', $collectionEndpoint);
+        $this->fakeRouter->get('/b/', $nonCollectionEndpoint);
 
         $endpointType = new ControllerEndpointType(TestControllerWithSpecifiedEndpoints::class);
 
