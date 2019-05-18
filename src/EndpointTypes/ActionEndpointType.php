@@ -18,10 +18,10 @@ class ActionEndpointType extends EndpointType
     /** @var string|null */
     protected $httpVerb;
 
-    public function __construct(array $action, array $parameters = null, string $httpVerb = null)
+    public function __construct(array $action, array $parameters = [], string $httpVerb = null)
     {
         $this->action = $action;
-        $this->parameters = $parameters ?? [];
+        $this->parameters = $parameters;
         $this->httpVerb = $httpVerb;
     }
 
