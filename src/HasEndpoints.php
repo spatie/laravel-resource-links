@@ -28,30 +28,35 @@ trait HasEndpoints
         return $endPointResource;
     }
 
-    public static function meta()
-    {
-        return [];
-    }
 
     public static function collection($resource)
     {
-        if ($meta = self::meta()) {
-            return parent::collection($resource)->additional([
-                'meta' => $meta,
-            ]);
+        $meta = self::meta();
+
+        if (!count($meta)) {
+            parent::collection($resource);
         }
 
-        return parent::collection($resource);
+        return parent::collection($resource)->additional([
+            'meta' => $meta,
+        ]);
     }
 
     public static function make(...$parameters)
     {
-        if ($meta = self::meta()) {
-            return parent::make(...$parameters)->additional([
-                'meta' => $meta,
-            ]);
+        $meta = self::meta();
+
+        if (!count($meta)) {
+            parent::make(...$parameters);
         }
 
-        return parent::make(...$parameters);
+        return parent::make(...$parameters)->additional([
+            'meta' => $meta,
+        ]);
+    }
+
+    public static function meta()
+    {
+        return [];
     }
 }
