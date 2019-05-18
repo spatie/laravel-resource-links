@@ -34,7 +34,7 @@ class ActionEndpointType extends EndpointType
             ->getByAction($formattedAction);
 
         if ($route === null) {
-            throw new Exception("Route {$formattedAction} does not exists!");
+            throw new Exception("Route `{$formattedAction}` does not exist!");
         }
 
         $parameters = $this->getParameters($model);
