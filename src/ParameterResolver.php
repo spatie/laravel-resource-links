@@ -18,6 +18,7 @@ class ParameterResolver
     public function __construct(?Model $model, array $defaultParameters = [])
     {
         $this->model = $model;
+
         $this->defaultParameters = $defaultParameters;
     }
 
@@ -46,15 +47,13 @@ class ParameterResolver
             : $this->defaultParameters;
     }
 
-    protected function resolveParameter(
-        ReflectionParameter $signatureParameter,
-        array $providedParameters
-    ) {
+    protected function resolveParameter(ReflectionParameter $signatureParameter, array $providedParameters)
+    {
         if (array_key_exists($signatureParameter->getName(), $providedParameters)) {
             return $providedParameters[$signatureParameter->getName()];
         }
 
-        foreach ($providedParameters as $providedParameterName => $providedParameter) {
+        foreach ($providedParameters as $providedParameter) {
             if (! is_object($providedParameter) || $signatureParameter->getType() === null) {
                 continue;
             }
