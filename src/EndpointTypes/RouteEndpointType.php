@@ -42,7 +42,7 @@ class RouteEndpointType extends EndpointType
 
         return [
             $this->route->getActionMethod() => [
-                'method' => $this->httpVerb ??$this->getHttpVerbForRoute($this->route),
+                'method' => $this->httpVerb ?? $this->getHttpVerbForRoute($this->route),
                 'action' => $action,
             ],
         ];

@@ -12,22 +12,22 @@ use Illuminate\Support\Collection;
 
 class EndpointResource extends JsonResource
 {
+    /** @var \Illuminate\Database\Eloquent\Model */
+    protected $model;
+
     /** @var string */
     protected $endpointResourceType;
 
     /** @var \Illuminate\Support\Collection */
     protected $endPointTypes;
 
-    /** @var \Illuminate\Database\Eloquent\Model */
-    protected $model;
-
     public function __construct(Model $model = null, string $endpointResourceType = null)
     {
         parent::__construct($model);
 
-        $this->endPointTypes = new Collection();
         $this->model = $model;
         $this->endpointResourceType = $endpointResourceType ?? EndpointResourceType::LOCAL;
+        $this->endPointTypes = new Collection();
     }
 
     public function addController(string $controller, $parameters = null): JsonResource
