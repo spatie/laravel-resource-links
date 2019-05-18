@@ -29,7 +29,7 @@ class ActionEndpointType extends EndpointType
     {
         $formattedAction = $this->formatAction();
 
-        $route = resolve(Router::class)
+        $route = app(Router::class)
             ->getRoutes()
             ->getByAction($formattedAction);
 
