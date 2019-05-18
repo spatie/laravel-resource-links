@@ -19,7 +19,7 @@ trait HasEndpoints
 
     public static function collectionEndpoints(string $controller = null, $parameters = null): EndpointResource
     {
-        $endPointResource = new EndpointResource(null, EndpointResourceType::GLOBAL);
+        $endPointResource = new EndpointResource(null, EndpointResourceType::COLLECTION);
 
         if ($controller !== null) {
             $endPointResource->addController($controller, Arr::wrap($parameters));

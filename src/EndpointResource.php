@@ -84,7 +84,7 @@ class EndpointResource extends JsonResource
             return $endpointType->getEndpoints($this->model);
         }
 
-        if ($this->endpointResourceType === EndpointResourceType::GLOBAL) {
+        if ($this->endpointResourceType === EndpointResourceType::COLLECTION) {
             return $endpointType->getCollectionEndpoints();
         }
 
