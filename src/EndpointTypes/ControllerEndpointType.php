@@ -20,10 +20,10 @@ class ControllerEndpointType extends EndpointType
     /** @var array */
     protected static $cachedRoutes = [];
 
-    public function __construct(string $controller, array $defaultParameters = null)
+    public function __construct(string $controller, array $defaultParameters = [])
     {
         $this->controller = $controller;
-        $this->defaultParameters = $defaultParameters ?? [];
+        $this->defaultParameters = $defaultParameters;
     }
 
     public function getEndpoints(Model $model = null): array
