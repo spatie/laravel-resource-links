@@ -22,7 +22,7 @@ class HasEndpointsTest extends TestCase
         ]);
 
         $this->fakeRouter->get('/local/{id}', [TestControllerWithSpecifiedEndpoints::class, 'endpoint']);
-        $this->fakeRouter->get('/global', [TestControllerWithSpecifiedEndpoints::class, 'collectionEndpoint']);
+        $this->fakeRouter->get('/collection', [TestControllerWithSpecifiedEndpoints::class, 'collectionEndpoint']);
     }
 
     /** @test */
@@ -123,7 +123,7 @@ class HasEndpointsTest extends TestCase
     }
 
     /** @test */
-    public function it_can_merge_global_endpoints_with_local_endpoints()
+    public function it_can_merge_collection_endpoints_with_local_endpoints()
     {
         $testResource = new class(null) extends JsonResource {
             use HasEndpoints;

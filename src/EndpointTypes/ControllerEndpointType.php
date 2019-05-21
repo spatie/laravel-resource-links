@@ -44,8 +44,8 @@ class ControllerEndpointType extends EndpointType implements MultiEndpointType
     {
         $controller = new $this->controller();
 
-        $endpoints = property_exists($controller, 'globalEndPointMethods')
-            ? $controller->globalEndPointMethods
+        $endpoints = property_exists($controller, 'collectionEndPointMethods')
+            ? $controller->collectionEndPointMethods
             : ['index', 'store', 'create'];
 
         return $this->resolveEndpoints($endpoints);

@@ -5,7 +5,7 @@ namespace Spatie\LaravelEndpointResources\Tests\Fakes;
 class TestControllerWithSpecifiedEndpoints
 {
     public $endPointMethods = ['endpoint'];
-    public $globalEndPointMethods = ['collectionEndpoint'];
+    public $collectionEndPointMethods = ['collectionEndpoint'];
 
     public function endpoint(TestModel $testModel)
     {
