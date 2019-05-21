@@ -18,6 +18,9 @@ class RouteEndpointType extends EndpointType
     /** @var string|null */
     protected $httpVerb;
 
+    /** @var string|null */
+    protected $name;
+
     public function __construct(Route $route, array $defaultParameters = [], string $httpVerb = null)
     {
         $this->route = $route;
@@ -41,11 +44,18 @@ class RouteEndpointType extends EndpointType
         }
 
         return [
-            $this->route->getActionMethod() => [
+            $this->name ?? $this->route->getActionMethod() => [
                 'method' => $this->httpVerb ?? $this->getHttpVerbForRoute($this->route),
                 'action' => $action,
             ],
         ];
+    }
+
+    public function setName(?string $name) : RouteEndpointType
+    {
+        $this->name = $name;
+
+        return $this;
     }
 
     protected function getHttpVerbForRoute(Route $route): string

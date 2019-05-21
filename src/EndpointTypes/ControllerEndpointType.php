@@ -7,9 +7,9 @@ use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use ReflectionClass;
+use Spatie\LaravelEndpointResources\MultiEndpointType;
 
-class ControllerEndpointType extends EndpointType
+class ControllerEndpointType extends EndpointType implements MultiEndpointType
 {
     /** @var string */
     protected $controller;
@@ -51,7 +51,7 @@ class ControllerEndpointType extends EndpointType
         return $this->resolveEndpoints($endpoints);
     }
 
-    protected function resolveEndpoints(array $methodsToInclude, Model $model = null) : array
+    protected function resolveEndpoints(array $methodsToInclude, Model $model = null): array
     {
         return self::getRoutesForController($this->controller)
             ->filter(function (Route $route) use ($methodsToInclude) {

@@ -9,6 +9,7 @@ use Spatie\LaravelEndpointResources\EndpointTypes\EndpointType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
+use Spatie\LaravelEndpointResources\EndpointTypes\InvokableControllerEndpointType;
 
 class EndpointResource extends JsonResource
 {
@@ -32,6 +33,10 @@ class EndpointResource extends JsonResource
 
     public function addController(string $controller, $parameters = null): JsonResource
     {
+        if (method_exists($controller, '__invoke')) {
+            return $this->addInvokableController($controller, $parameters);
+        }
+
         $this->endPointTypes->push(new ControllerEndpointType(
             $controller,
             $this->resolveProvidedParameters($parameters)
@@ -51,7 +56,17 @@ class EndpointResource extends JsonResource
         return $this;
     }
 
-    public function mergeCollectionEndpoints() : JsonResource
+    public function addInvokableController(string $controller, $parameters = null) : JsonResource
+    {
+        $this->endPointTypes->push(new InvokableControllerEndpointType(
+            $controller,
+            $this->resolveProvidedParameters($parameters)
+        ));
+
+        return $this;
+    }
+
+    public function mergeCollectionEndpoints(): JsonResource
     {
         $this->endpointResourceType = EndpointResourceType::MULTI;
 
@@ -61,8 +76,8 @@ class EndpointResource extends JsonResource
     public function toArray($request)
     {
         return $this->endPointTypes->mapWithKeys(function (EndPointType $endpointType) {
-            if ($endpointType instanceof ControllerEndpointType) {
-                return $this->resolveControllerEndpoints($endpointType);
+            if ($endpointType instanceof MultiEndpointType) {
+                return $this->resolveEndpointsFromMultiEndpointType($endpointType);
             }
 
             return $endpointType->getEndpoints($this->model);
@@ -78,20 +93,20 @@ class EndpointResource extends JsonResource
             : $parameters;
     }
 
-    protected function resolveControllerEndpoints(ControllerEndpointType $endpointType): array
+    protected function resolveEndpointsFromMultiEndpointType(MultiEndpointType $multiEndpointType): array
     {
         if ($this->endpointResourceType === EndpointResourceType::ITEM) {
-            return $endpointType->getEndpoints($this->model);
+            return $multiEndpointType->getEndpoints($this->model);
         }
 
         if ($this->endpointResourceType === EndpointResourceType::COLLECTION) {
-            return $endpointType->getCollectionEndpoints();
+            return $multiEndpointType->getCollectionEndpoints();
         }
 
         if ($this->endpointResourceType === EndpointResourceType::MULTI) {
             return array_merge(
-                $endpointType->getEndpoints($this->model),
-                $endpointType->getCollectionEndpoints()
+                $multiEndpointType->getEndpoints($this->model),
+                $multiEndpointType->getCollectionEndpoints()
             );
         }
 

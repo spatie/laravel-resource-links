@@ -18,6 +18,9 @@ class ActionEndpointType extends EndpointType
     /** @var string|null */
     protected $httpVerb;
 
+    /** @var string|null */
+    protected $name;
+
     public function __construct(array $action, array $parameters = [], string $httpVerb = null)
     {
         $this->action = $action;
@@ -41,7 +44,16 @@ class ActionEndpointType extends EndpointType
 
         $endpointType = new RouteEndpointType($route, $parameters, $this->httpVerb);
 
+        $endpointType->setName($this->name);
+
         return $endpointType->getEndpoints($model);
+    }
+
+    public function setName(?string $name) : ActionEndpointType
+    {
+        $this->name = $name;
+
+        return $this;
     }
 
     protected function formatAction(): string
