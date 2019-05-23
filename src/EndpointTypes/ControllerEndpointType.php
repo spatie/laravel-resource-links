@@ -32,7 +32,7 @@ class ControllerEndpointType extends EndpointType implements MultiEndpointType
 
         $endpoints = property_exists($controller, 'endPointMethods')
             ? $controller->endPointMethods
-            : ['show', 'edit', 'update', 'delete'];
+            : ['show', 'edit', 'update', 'destroy'];
 
         return $this->resolveEndpoints(
             $endpoints,
