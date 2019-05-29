@@ -32,16 +32,7 @@ class RouteEndpointType extends EndpointType
     {
         $parameterResolver = new ParameterResolver($model, $this->defaultParameters);
 
-        $action = null;
-
-        try {
-            $action = action(
-                "\\{$this->route->getActionName()}",
-                $parameterResolver->forRoute($this->route)
-            );
-        } catch (UrlGenerationException $exception) {
-            return [];
-        }
+        $action = action("\\{$this->route->getActionName()}", $parameterResolver->forRoute($this->route));
 
         return [
             $this->name ?? $this->route->getActionMethod() => [

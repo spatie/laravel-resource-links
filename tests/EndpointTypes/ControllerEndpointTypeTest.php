@@ -65,19 +65,19 @@ class ControllerEndpointTypeTest extends TestCase
         ], $endpoints);
     }
 
-    /** @test */
-    public function it_will_only_create_endpoints_that_can_be_constructed()
-    {
-        $action = [TestController::class, 'show'];
-
-        $this->fakeRouter->get('{testModel}', $action);
-
-        $endpointType = new ControllerEndpointType(TestController::class);
-
-        $endpoints = $endpointType->getEndpoints();
-
-        $this->assertEquals([], $endpoints);
-    }
+//    /** @test */
+//    public function it_will_only_create_endpoints_that_can_be_constructed()
+//    {
+//        $action = [TestController::class, 'show'];
+//
+//        $this->fakeRouter->get('{testModel}', $action);
+//
+//        $endpointType = new ControllerEndpointType(TestController::class);
+//
+//        $endpoints = $endpointType->getEndpoints();
+//
+//        $this->assertEquals([], $endpoints);
+//    }
 
     /** @test */
     public function it_will_create_all_possible_routes_when_a_model_is_available()

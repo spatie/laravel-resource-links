@@ -56,7 +56,7 @@ class EndpointResource extends JsonResource
         return $this;
     }
 
-    public function addInvokableController(string $controller, $parameters = null) : JsonResource
+    public function addInvokableController(string $controller, $parameters = null): JsonResource
     {
         $this->endPointTypes->push(new InvokableControllerEndpointType(
             $controller,
@@ -117,6 +117,10 @@ class EndpointResource extends JsonResource
 
     private function ensureCollectionEndpointsAreAutomaticallyMerged()
     {
+        if ($this->endpointResourceType !== EndpointResourceType::ITEM) {
+            return;
+        }
+
         if (is_null($this->resource) || $this->resource->exists === false) {
             $this->mergeCollectionEndpoints();
         }
