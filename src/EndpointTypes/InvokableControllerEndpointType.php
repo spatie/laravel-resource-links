@@ -50,13 +50,13 @@ class InvokableControllerEndpointType extends EndpointType implements MultiEndpo
 
     private function resolveEndpointName() : string
     {
-        if($this->name){
+        if ($this->name) {
             return $this->name;
         }
 
         $controller = new $this->controller;
 
-        if(property_exists($controller, 'endpointName')){
+        if (property_exists($controller, 'endpointName')) {
             return $controller->endpointName;
         }
 

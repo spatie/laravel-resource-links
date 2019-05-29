@@ -2,6 +2,7 @@
 
 namespace Spatie\LaravelEndpointResources\Tests\EndpointTypes;
 
+use Exception;
 use Spatie\LaravelEndpointResources\EndpointTypes\ActionEndpointType;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestController;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
@@ -31,9 +32,7 @@ class ActionEndpointTypeTest extends TestCase
 
         $this->fakeRouter->get('', $action);
 
-        $endpointType = ActionEndpointType::make($action);
-
-        $endpoints = $endpointType->getEndpoints();
+        $endpoints = ActionEndpointType::make($action)->getEndpoints();
 
         $this->assertEquals([
             'index' => [
@@ -50,9 +49,7 @@ class ActionEndpointTypeTest extends TestCase
 
         $this->fakeRouter->get('', $action);
 
-        $endpointType = ActionEndpointType::make($action);
-
-        $endpoints = $endpointType->getEndpoints();
+        $endpoints = ActionEndpointType::make($action)->getEndpoints();
 
         $this->assertEquals([
             'index' => [
@@ -69,9 +66,7 @@ class ActionEndpointTypeTest extends TestCase
 
         $this->fakeRouter->get('{testModel}', $action);
 
-        $endpointType = ActionEndpointType::make($action);
-
-        $endpoints = $endpointType->getEndpoints($this->testModel);
+        $endpoints = ActionEndpointType::make($action)->getEndpoints($this->testModel);
 
         $this->assertEquals([
             'show' => [
@@ -93,9 +88,9 @@ class ActionEndpointTypeTest extends TestCase
             'name' => 'OtherTestModel',
         ]);
 
-        $endpointType = ActionEndpointType::make($action)->parameters([$otherTestModel]);
-
-        $endpoints = $endpointType->getEndpoints($this->testModel);
+        $endpoints = ActionEndpointType::make($action)
+            ->parameters([$otherTestModel])
+            ->getEndpoints($this->testModel);
 
         $this->assertEquals([
             'show' => [
@@ -117,11 +112,10 @@ class ActionEndpointTypeTest extends TestCase
             'name' => 'secondTestModel',
         ]);
 
-        $endpointType = ActionEndpointType::make($action)
+        $endpoints = ActionEndpointType::make($action)
             ->httpVerb('GET')
-            ->parameters([$secondTestModel]);
-
-        $endpoints = $endpointType->getEndpoints($this->testModel);
+            ->parameters([$secondTestModel])
+            ->getEndpoints($this->testModel);
 
         $this->assertEquals([
             'endpointWithTwoParameters' => [
@@ -130,6 +124,35 @@ class ActionEndpointTypeTest extends TestCase
                     $action,
                     [$this->testModel, $secondTestModel]
                 ),
+            ],
+        ], $endpoints);
+    }
+
+    /** @test */
+    public function it_will_throw_an_exception_when_a_route_was_not_found()
+    {
+        $this->expectException(Exception::class);
+
+        $action = [TestController::class, 'index'];
+
+        ActionEndpointType::make($action)->getEndpoints();
+    }
+
+    /** @test */
+    public function it_can_prefix_an_action_endpoint()
+    {
+        $action = [TestController::class, 'index'];
+
+        $this->fakeRouter->get('', $action);
+
+        $endpoints = ActionEndpointType::make($action)
+            ->prefix('this-')
+            ->getEndpoints();
+
+        $this->assertEquals([
+            'this-index' => [
+                'method' => 'GET',
+                'action' => action($action),
             ],
         ], $endpoints);
     }

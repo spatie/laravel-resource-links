@@ -5,6 +5,8 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/spatie/laravel-endpoint-resources.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/laravel-endpoint-resources)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-endpoint-resources.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-endpoint-resources)
 
+**This package is under heavy development, things will change and documentation may not be up to date!**
+
 Let's say you have a `UsersController` with `index`, `show`, `create`, `edit`, `store`, `update` and `delete` methods and an `UserResource`. Wouldn't it be nice if you had the URL's to these methods immediately in your `UserResource` without having to construct them from scratch?
 
 Laravel endpoint resources will add these endpoints to your resource based upon a controller or actions you define. Let's look at an example of a resource.

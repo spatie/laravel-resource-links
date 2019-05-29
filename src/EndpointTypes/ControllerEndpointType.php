@@ -22,7 +22,7 @@ class ControllerEndpointType extends EndpointType implements MultiEndpointType
     private static $cachedRoutes = [];
 
     /** @var array */
-    private $aliases;
+    private $aliases = [];
 
     public static function make(string $controller): ControllerEndpointType
     {
@@ -91,6 +91,7 @@ class ControllerEndpointType extends EndpointType implements MultiEndpointType
             })->mapWithKeys(function (Route $route) use ($model) {
                 return RouteEndpointType::make($route)
                     ->parameters($this->parameters)
+                    ->name($this->resolveNameForRoute($route))
                     ->prefix($this->prefix)
                     ->getEndpoints($model);
             })->toArray();
@@ -110,5 +111,16 @@ class ControllerEndpointType extends EndpointType implements MultiEndpointType
             });
 
         return self::$cachedRoutes[$controller];
+    }
+
+    private function resolveNameForRoute(Route $route) : string
+    {
+        $method = $route->getActionMethod();
+
+        if (array_key_exists($method, $this->aliases)) {
+            return $this->aliases[$method];
+        }
+
+        return $method;
     }
 }

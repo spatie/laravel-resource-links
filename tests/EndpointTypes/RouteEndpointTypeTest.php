@@ -148,4 +148,23 @@ class RouteEndpointTypeTest extends TestCase
             ],
         ], $endpoints);
     }
+
+    /** @test */
+    public function it_can_prefix_endpoints()
+    {
+        $action = [TestController::class, 'index'];
+
+        $route = $this->fakeRouter->get('', $action);
+
+        $endpoints =  RouteEndpointType::make($route)
+            ->prefix('this-')
+            ->getEndpoints();
+
+        $this->assertEquals([
+            'this-index' => [
+                'method' => 'GET',
+                'action' => action($action)
+            ]
+        ], $endpoints);
+    }
 }

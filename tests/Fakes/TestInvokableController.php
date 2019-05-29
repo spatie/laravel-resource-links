@@ -6,5 +6,7 @@ class TestInvokableController
 {
     public $endpointName = 'sync';
 
-    public function __invoke(TestModel $testModel){}
+    public function __invoke(TestModel $testModel)
+    {
+    }
 }

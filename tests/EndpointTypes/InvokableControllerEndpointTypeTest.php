@@ -5,6 +5,7 @@ namespace Spatie\LaravelEndpointResources\Tests\EndpointTypes;
 use Spatie\LaravelEndpointResources\EndpointTypes\ControllerEndpointType;
 use Spatie\LaravelEndpointResources\EndpointTypes\InvokableControllerEndpointType;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestController;
+use Spatie\LaravelEndpointResources\Tests\Fakes\TestInvokableCollectionController;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestInvokableController;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestModel;
 use Spatie\LaravelEndpointResources\Tests\TestCase;
@@ -39,6 +40,44 @@ class InvokableControllerEndpointTypeTest extends TestCase
             'sync' => [
                 'method' => 'GET',
                 'action' => action($action, $this->testModel),
+            ],
+        ], $endpoints);
+    }
+    
+    /** @test */
+    public function it_can_name_an_endpoint()
+    {
+        $action = TestInvokableCollectionController::class;
+
+        $this->fakeRouter->invokableGet('/invoke', $action);
+
+        $endpoints = InvokableControllerEndpointType::make($action)
+            ->name('purge')
+            ->getEndpoints($this->testModel);
+
+        $this->assertEquals([
+            'purge' => [
+                'method' => 'GET',
+                'action' => action($action),
+            ],
+        ], $endpoints);
+    }
+
+    /** @test */
+    public function it_can_prefix_endpoints()
+    {
+        $action = TestInvokableCollectionController::class;
+
+        $this->fakeRouter->invokableGet('/invoke', $action);
+
+        $endpoints = InvokableControllerEndpointType::make($action)
+            ->prefix('this-')
+            ->getEndpoints($this->testModel);
+
+        $this->assertEquals([
+            'this-invoke' => [
+                'method' => 'GET',
+                'action' => action($action),
             ],
         ], $endpoints);
     }

@@ -65,20 +65,6 @@ class ControllerEndpointTypeTest extends TestCase
         ], $endpoints);
     }
 
-//    /** @test */
-//    public function it_will_only_create_endpoints_that_can_be_constructed()
-//    {
-//        $action = [TestController::class, 'show'];
-//
-//        $this->fakeRouter->get('{testModel}', $action);
-//
-//        $endpointType = ControllerEndpointType::make(TestController::class);
-//
-//        $endpoints = $endpointType->getEndpoints();
-//
-//        $this->assertEquals([], $endpoints);
-//    }
-
     /** @test */
     public function it_will_create_all_possible_routes_when_a_model_is_available()
     {
@@ -150,6 +136,73 @@ class ControllerEndpointTypeTest extends TestCase
             'collectionEndpoint' => [
                 'method' => 'GET',
                 'action' => action($collectionEndpoint),
+            ],
+        ], $endpoints);
+    }
+
+    /** @test */
+    public function it_can_specify_which_methods_to_use()
+    {
+        $indexAction = [TestController::class, 'index'];
+        $showAction = [TestController::class, 'show'];
+
+        $this->fakeRouter->get('', $indexAction);
+        $this->fakeRouter->get('{testModel}', $showAction);
+
+        $endpoints = ControllerEndpointType::make(TestController::class)
+            ->methods(['index', 'show'])
+            ->getEndpoints($this->testModel);
+
+        $this->assertEquals([
+            'show' => [
+                'method' => 'GET',
+                'action' => action($showAction, $this->testModel),
+            ],
+            'index' => [
+                'method' => 'GET',
+                'action' => action($indexAction),
+            ],
+        ], $endpoints);
+    }
+
+    /** @test */
+    public function it_can_alias_endpoints()
+    {
+        $indexAction = [TestController::class, 'index'];
+
+        $this->fakeRouter->get('', $indexAction);
+
+        $endpoints = ControllerEndpointType::make(TestController::class)
+            ->methods(['index'])
+            ->aliases([
+                'index' => 'home',
+            ])
+            ->getEndpoints($this->testModel);
+
+        $this->assertEquals([
+            'home' => [
+                'method' => 'GET',
+                'action' => action($indexAction),
+            ],
+        ], $endpoints);
+    }
+
+    /** @test */
+    public function it_can_prefix_endpoints()
+    {
+        $indexAction = [TestController::class, 'index'];
+
+        $this->fakeRouter->get('', $indexAction);
+
+        $endpoints = ControllerEndpointType::make(TestController::class)
+            ->methods(['index'])
+            ->prefix('this-')
+            ->getEndpoints($this->testModel);
+
+        $this->assertEquals([
+            'this-index' => [
+                'method' => 'GET',
+                'action' => action($indexAction),
             ],
         ], $endpoints);
     }

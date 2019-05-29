@@ -221,7 +221,7 @@ class HasEndpointsTest extends TestCase
             public function toArray($request)
             {
                 return [
-                    'endpoints' => $this->endpoints(function(EndpointsCollection $endpointsCollection){
+                    'endpoints' => $this->endpoints(function (EndpointsCollection $endpointsCollection) {
                         $endpointsCollection->controller(TestControllerWithSpecifiedEndpoints::class);
                     }),
                 ];
@@ -230,7 +230,7 @@ class HasEndpointsTest extends TestCase
             public static function meta()
             {
                 return [
-                    'endpoints' => self::collectionEndpoints(function(EndpointsCollection $endpointsCollection){
+                    'endpoints' => self::collectionEndpoints(function (EndpointsCollection $endpointsCollection) {
                         $endpointsCollection->controller(TestControllerWithSpecifiedEndpoints::class);
                     }),
                 ];
