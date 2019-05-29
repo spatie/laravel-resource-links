@@ -2,6 +2,10 @@
 
 namespace Spatie\LaravelEndpointResources\EndpointTypes;
 
+use Spatie\LaravelEndpointResources\Exceptions\EndpointGenerationException;
+use Spatie\LaravelEndpointResources\Formatters\DefaultFormatter;
+use Spatie\LaravelEndpointResources\Formatters\Endpoint;
+use Spatie\LaravelEndpointResources\Formatters\FlatFormatter;
 use Spatie\LaravelEndpointResources\ParameterResolver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Exceptions\UrlGenerationException;
@@ -46,21 +50,22 @@ class RouteEndpointType extends EndpointType
     {
         $parameterResolver = new ParameterResolver($model, $this->parameters);
 
-        $action = action("\\{$this->route->getActionName()}", $parameterResolver->forRoute($this->route));
+        try {
+            $action = action("\\{$this->route->getActionName()}", $parameterResolver->forRoute($this->route));
+        } catch (UrlGenerationException $exception) {
+            throw EndpointGenerationException::make($this->route, $model, $this->parameters);
+        }
 
-        return [
-            $this->resolveName() => [
-                'method' => $this->httpVerb ?? $this->getHttpVerbForRoute($this->route),
-                'action' => $action,
-            ],
-        ];
-    }
+        $endpoint = Endpoint::make(
+            $this->name ?? $this->route->getActionMethod(),
+            $this->httpVerb ?? $this->getHttpVerbForRoute($this->route),
+            $action,
+            $this->prefix
+        );
 
-    private function resolveName() : string
-    {
-        $name = $this->name ?? $this->route->getActionMethod();
+        $formatter = new DefaultFormatter();
 
-        return "{$this->prefix}$name";
+        return $formatter->format($endpoint);
     }
 
     private function getHttpVerbForRoute(Route $route): string

@@ -4,13 +4,21 @@ namespace Spatie\LaravelEndpointResources\Formatters;
 
 class DefaultFormatter implements Formatter
 {
-    public function format(string $name, string $method, string $action): array
+    public function format(Endpoint $endpoint): array
     {
-        return [
-            $name => [
-                'method' => $method,
-                'action' => $action,
+        $format = [
+            $endpoint->name => [
+                'method' => $endpoint->method,
+                'action' => $endpoint->action,
             ],
         ];
+
+        if($endpoint->prefix !== null){
+            return [
+                $endpoint->prefix => $format
+            ];
+        }
+
+        return $format;
     }
 }
