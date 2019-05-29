@@ -17,7 +17,7 @@ trait HasEndpoints
     public function endpoints($controller = null, $parameters = null): EndpointResource
     {
         return self::initializeEndpointResource(
-            $endPointResource = new EndpointResource($this->resource, EndpointResourceType::ITEM),
+            new EndpointResource($this->resource, EndpointResourceType::ITEM),
             $controller,
             $parameters
         );
@@ -32,7 +32,7 @@ trait HasEndpoints
     public static function collectionEndpoints($controller = null, $parameters = null): EndpointResource
     {
         return self::initializeEndpointResource(
-            $endPointResource = new EndpointResource(null, EndpointResourceType::COLLECTION),
+            new EndpointResource(null, EndpointResourceType::COLLECTION),
             $controller,
             $parameters
         );
@@ -77,7 +77,7 @@ trait HasEndpoints
      * @return \Spatie\LaravelEndpointResources\EndpointResource
      */
     private static function initializeEndpointResource(
-        ?EndpointResource $endpointResource,
+        EndpointResource $endpointResource,
         $controller = null,
         $parameters = null
     ): EndpointResource {

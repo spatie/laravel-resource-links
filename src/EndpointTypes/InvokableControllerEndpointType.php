@@ -50,7 +50,7 @@ class InvokableControllerEndpointType extends EndpointType implements MultiEndpo
 
     private function resolveEndpointName() : string
     {
-        if ($this->name) {
+        if ($this->name !== null) {
             return $this->name;
         }
 
