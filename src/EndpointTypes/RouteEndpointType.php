@@ -12,44 +12,58 @@ class RouteEndpointType extends EndpointType
     /** @var \Illuminate\Routing\Route */
     protected $route;
 
-    /** @var array */
-    protected $defaultParameters;
-
     /** @var string|null */
     protected $httpVerb;
 
     /** @var string|null */
     protected $name;
 
-    public function __construct(Route $route, array $defaultParameters = [], string $httpVerb = null)
+    public static function make(Route $route): RouteEndpointType
+    {
+        return new self($route);
+    }
+
+    public function __construct(Route $route)
     {
         $this->route = $route;
-        $this->defaultParameters = $defaultParameters;
-        $this->httpVerb = $httpVerb;
     }
 
-    public function getEndpoints(Model $model = null): array
+    public function httpVerb(?string $httpVerb): RouteEndpointType
     {
-        $parameterResolver = new ParameterResolver($model, $this->defaultParameters);
+        $this->httpVerb = $httpVerb;
 
-        $action = action("\\{$this->route->getActionName()}", $parameterResolver->forRoute($this->route));
-
-        return [
-            $this->name ?? $this->route->getActionMethod() => [
-                'method' => $this->httpVerb ?? $this->getHttpVerbForRoute($this->route),
-                'action' => $action,
-            ],
-        ];
+        return $this;
     }
 
-    public function setName(?string $name) : RouteEndpointType
+    public function name(?string $name): RouteEndpointType
     {
         $this->name = $name;
 
         return $this;
     }
 
-    protected function getHttpVerbForRoute(Route $route): string
+    public function getEndpoints(Model $model = null): array
+    {
+        $parameterResolver = new ParameterResolver($model, $this->parameters);
+
+        $action = action("\\{$this->route->getActionName()}", $parameterResolver->forRoute($this->route));
+
+        return [
+            $this->resolveName() => [
+                'method' => $this->httpVerb ?? $this->getHttpVerbForRoute($this->route),
+                'action' => $action,
+            ],
+        ];
+    }
+
+    private function resolveName() : string
+    {
+        $name = $this->name ?? $this->route->getActionMethod();
+
+        return "{$this->prefix}$name";
+    }
+
+    private function getHttpVerbForRoute(Route $route): string
     {
         $httpVerbs = $route->methods;
 

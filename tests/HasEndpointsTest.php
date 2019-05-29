@@ -3,6 +3,7 @@
 namespace Spatie\LaravelEndpointResources\Tests;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Spatie\LaravelEndpointResources\EndpointsCollection;
 use Spatie\LaravelEndpointResources\HasEndpoints;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestInvokableCollectionController;
@@ -205,6 +206,55 @@ class HasEndpointsTest extends TestCase
                     'invoke' => [
                         'method' => 'GET',
                         'action' => action(TestInvokableCollectionController::class),
+                    ],
+                ],
+            ],
+        ]);
+    }
+
+    /** @test */
+    public function it_will_generate_endpoints_when_making_a_resource_using_extended_syntax()
+    {
+        $testResource = new class(null) extends JsonResource {
+            use HasEndpoints;
+
+            public function toArray($request)
+            {
+                return [
+                    'endpoints' => $this->endpoints(function(EndpointsCollection $endpointsCollection){
+                        $endpointsCollection->controller(TestControllerWithSpecifiedEndpoints::class);
+                    }),
+                ];
+            }
+
+            public static function meta()
+            {
+                return [
+                    'endpoints' => self::collectionEndpoints(function(EndpointsCollection $endpointsCollection){
+                        $endpointsCollection->controller(TestControllerWithSpecifiedEndpoints::class);
+                    }),
+                ];
+            }
+        };
+
+        $this->fakeRouter->get('/index', function () use ($testResource) {
+            return $testResource::make(TestModel::first());
+        });
+
+        $this->get('/index')->assertJson([
+            'data' => [
+                'endpoints' => [
+                    'endpoint' => [
+                        'method' => 'GET',
+                        'action' => action([TestControllerWithSpecifiedEndpoints::class, 'endpoint'], $this->testModel),
+                    ],
+                ],
+            ],
+            'meta' => [
+                'endpoints' => [
+                    'collectionEndpoint' => [
+                        'method' => 'GET',
+                        'action' => action([TestControllerWithSpecifiedEndpoints::class, 'collectionEndpoint']),
                     ],
                 ],
             ],

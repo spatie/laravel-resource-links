@@ -10,22 +10,36 @@ use Illuminate\Routing\Router;
 class ActionEndpointType extends EndpointType
 {
     /** @var array */
-    protected $action;
-
-    /** @var array */
-    protected $parameters;
+    private $action;
 
     /** @var string|null */
-    protected $httpVerb;
+    private $httpVerb;
 
     /** @var string|null */
-    protected $name;
+    private $name;
 
-    public function __construct(array $action, array $parameters = [], string $httpVerb = null)
+    public static function make(array $action): ActionEndpointType
+    {
+        return new self($action);
+    }
+
+    public function __construct(array $action)
     {
         $this->action = $action;
-        $this->parameters = $parameters;
+    }
+
+    public function httpVerb(string $httpVerb): ActionEndpointType
+    {
         $this->httpVerb = $httpVerb;
+
+        return $this;
+    }
+
+    public function name(?string $name): ActionEndpointType
+    {
+        $this->name = $name;
+
+        return $this;
     }
 
     public function getEndpoints(Model $model = null): array
@@ -40,28 +54,20 @@ class ActionEndpointType extends EndpointType
             throw new Exception("Route `{$formattedAction}` does not exist!");
         }
 
-        $parameters = $this->getParameters($model);
-
-        $endpointType = new RouteEndpointType($route, $parameters, $this->httpVerb);
-
-        $endpointType->setName($this->name);
-
-        return $endpointType->getEndpoints($model);
+        return RouteEndpointType::make($route)
+            ->name($this->name)
+            ->httpVerb($this->httpVerb)
+            ->prefix($this->prefix)
+            ->parameters($this->getParameters($model))
+            ->getEndpoints($model);
     }
 
-    public function setName(?string $name) : ActionEndpointType
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    protected function formatAction(): string
+    private function formatAction(): string
     {
         return trim('\\' . implode('@', $this->action), '\\');
     }
 
-    protected function getParameters(?Model $model)
+    private function getParameters(?Model $model)
     {
         if (! optional($model)->exists) {
             return $this->parameters;

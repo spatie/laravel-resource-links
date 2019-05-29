@@ -8,26 +8,34 @@ use Illuminate\Support\Arr;
 /** @mixin \Illuminate\Http\Resources\Json\JsonResource */
 trait HasEndpoints
 {
-    public function endpoints(string $controller = null, $parameters = null): EndpointResource
+    /**
+     * @param string|Closure|null $controller
+     * @param null $parameters
+     *
+     * @return \Spatie\LaravelEndpointResources\EndpointResource
+     */
+    public function endpoints($controller = null, $parameters = null): EndpointResource
     {
-        $endPointResource = new EndpointResource($this->resource, EndpointResourceType::ITEM);
-
-        if ($controller !== null) {
-            $endPointResource->addController($controller, Arr::wrap($parameters));
-        }
-
-        return $endPointResource;
+        return self::initializeEndpointResource(
+            $endPointResource = new EndpointResource($this->resource, EndpointResourceType::ITEM),
+            $controller,
+            $parameters
+        );
     }
 
-    public static function collectionEndpoints(string $controller = null, $parameters = null): EndpointResource
+    /**
+     * @param string|Closure|null $controller
+     * @param null $parameters
+     *
+     * @return \Spatie\LaravelEndpointResources\EndpointResource
+     */
+    public static function collectionEndpoints($controller = null, $parameters = null): EndpointResource
     {
-        $endPointResource = new EndpointResource(null, EndpointResourceType::COLLECTION);
-
-        if ($controller !== null) {
-            $endPointResource->addController($controller, Arr::wrap($parameters));
-        }
-
-        return $endPointResource;
+        return self::initializeEndpointResource(
+            $endPointResource = new EndpointResource(null, EndpointResourceType::COLLECTION),
+            $controller,
+            $parameters
+        );
     }
 
     public static function collection($resource)
@@ -59,5 +67,32 @@ trait HasEndpoints
     public static function meta()
     {
         return [];
+    }
+
+    /**
+     * @param \Spatie\LaravelEndpointResources\EndpointResource|null $endpointResource
+     * @param string|Closure|null $controller
+     * @param null $parameters
+     *
+     * @return \Spatie\LaravelEndpointResources\EndpointResource
+     */
+    private static function initializeEndpointResource(
+        ?EndpointResource $endpointResource,
+        $controller = null,
+        $parameters = null
+    ): EndpointResource {
+        if ($controller instanceof Closure) {
+            $endpointsCollection = new EndpointsCollection();
+
+            $controller($endpointsCollection);
+
+            return $endpointResource->addEndpointsCollection($endpointsCollection);
+        }
+
+        if ($controller !== null) {
+            return $endpointResource->addController($controller, Arr::wrap($parameters));
+        }
+
+        return $endpointResource;
     }
 }

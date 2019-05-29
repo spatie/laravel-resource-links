@@ -32,7 +32,7 @@ class ControllerEndpointTypeTest extends TestCase
         $this->fakeRouter->get('', $indexAction);
         $this->fakeRouter->get('{testModel}', $showAction);
 
-        $endpointType = new ControllerEndpointType(TestController::class);
+        $endpointType = ControllerEndpointType::make(TestController::class);
 
         $endpoints = $endpointType->getEndpoints($this->testModel);
 
@@ -53,7 +53,7 @@ class ControllerEndpointTypeTest extends TestCase
         $this->fakeRouter->get('', $indexAction);
         $this->fakeRouter->get('{testModel}', $showAction);
 
-        $endpointType = new ControllerEndpointType(TestController::class);
+        $endpointType = ControllerEndpointType::make(TestController::class);
 
         $endpoints = $endpointType->getCollectionEndpoints();
 
@@ -72,7 +72,7 @@ class ControllerEndpointTypeTest extends TestCase
 //
 //        $this->fakeRouter->get('{testModel}', $action);
 //
-//        $endpointType = new ControllerEndpointType(TestController::class);
+//        $endpointType = ControllerEndpointType::make(TestController::class);
 //
 //        $endpoints = $endpointType->getEndpoints();
 //
@@ -92,7 +92,7 @@ class ControllerEndpointTypeTest extends TestCase
             'name' => 'TestModel',
         ]);
 
-        $endpointType = new ControllerEndpointType(TestController::class);
+        $endpointType = ControllerEndpointType::make(TestController::class);
 
         $endpoints = $endpointType->getEndpoints($testModel);
 
@@ -121,7 +121,7 @@ class ControllerEndpointTypeTest extends TestCase
             'name' => 'TestModel',
         ]);
 
-        $endpointType = new ControllerEndpointType(TestControllerWithSpecifiedEndpoints::class);
+        $endpointType = ControllerEndpointType::make(TestControllerWithSpecifiedEndpoints::class);
 
         $endpoints = $endpointType->getEndpoints($testModel);
 
@@ -142,7 +142,7 @@ class ControllerEndpointTypeTest extends TestCase
         $this->fakeRouter->get('/a/', $collectionEndpoint);
         $this->fakeRouter->get('/b/', $nonCollectionEndpoint);
 
-        $endpointType = new ControllerEndpointType(TestControllerWithSpecifiedEndpoints::class);
+        $endpointType = ControllerEndpointType::make(TestControllerWithSpecifiedEndpoints::class);
 
         $endpoints = $endpointType->getCollectionEndpoints();
 

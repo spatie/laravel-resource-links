@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\LaravelEndpointResources;
+namespace Spatie\LaravelEndpointResources\EndpointTypes;
 
 use Illuminate\Database\Eloquent\Model;
 

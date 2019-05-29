@@ -3,49 +3,63 @@
 namespace Spatie\LaravelEndpointResources\EndpointTypes;
 
 use Illuminate\Database\Eloquent\Model;
-use Spatie\LaravelEndpointResources\MultiEndpointType;
+use Spatie\LaravelEndpointResources\EndpointTypes\MultiEndpointType;
 
 class InvokableControllerEndpointType extends EndpointType implements MultiEndpointType
 {
     /** @var string */
-    protected $controller;
+    private $controller;
 
-    /** @var array */
-    protected $defaultParameters;
+    /** @var string|null */
+    private $name;
 
-    public function __construct(string $controller, array $defaultParameters = [])
+    public static function make(string $controller): InvokableControllerEndpointType
+    {
+        return new self($controller);
+    }
+
+    public function __construct(string $controller)
     {
         $this->controller = $controller;
-        $this->defaultParameters = $defaultParameters;
+    }
+
+    public function name(?string $name): InvokableControllerEndpointType
+    {
+        $this->name = $name;
+
+        return $this;
     }
 
     public function getEndpoints(Model $model = null): array
     {
-        $endpointType = new ActionEndpointType([$this->controller], $this->defaultParameters);
-
-        $controller = new $this->controller();
-
-        $endPointName =  property_exists($controller, 'endPointMethod')
-            ? $controller->endPointMethod
-            : 'invoke';
-
-        $endpointType->setName($endPointName);
-
-        return $endpointType->getEndpoints($model);
+        return $this->resolveEndpointType()->getEndpoints($model);
     }
 
     public function getCollectionEndpoints(): array
     {
-        $endpointType = new ActionEndpointType([$this->controller], $this->defaultParameters);
+        return $this->resolveEndpointType()->getEndpoints();
+    }
 
-        $controller = new $this->controller();
+    private function resolveEndpointType(): ActionEndpointType
+    {
+        return ActionEndpointType::make([$this->controller])
+            ->name($this->resolveEndpointName())
+            ->parameters($this->parameters)
+            ->prefix($this->prefix);
+    }
 
-        $endPointName =  property_exists($controller, 'collectionEndPointMethod')
-            ? $controller->collectionEndPointMethod
-            : 'invoke';
+    private function resolveEndpointName() : string
+    {
+        if($this->name){
+            return $this->name;
+        }
 
-        $endpointType->setName($endPointName);
+        $controller = new $this->controller;
 
-        return $endpointType->getEndpoints();
+        if(property_exists($controller, 'endpointName')){
+            return $controller->endpointName;
+        }
+
+        return 'invoke';
     }
 }

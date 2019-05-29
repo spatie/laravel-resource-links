@@ -32,9 +32,7 @@ class RouteEndpointTypeTest extends TestCase
 
         $route = $this->fakeRouter->get('', $action);
 
-        $endpointType = new RouteEndpointType($route);
-
-        $endpoints = $endpointType->getEndpoints();
+        $endpoints =  RouteEndpointType::make($route)->getEndpoints();
 
         $this->assertEquals([
             'index' => [
@@ -51,9 +49,7 @@ class RouteEndpointTypeTest extends TestCase
 
         $route = $this->fakeRouter->get('{testModel}', $action);
 
-        $endpointType = new RouteEndpointType($route);
-
-        $endpoints = $endpointType->getEndpoints($this->testModel);
+        $endpoints = RouteEndpointType::make($route)->getEndpoints($this->testModel);
 
         $this->assertEquals([
             'show' => [
@@ -70,9 +66,9 @@ class RouteEndpointTypeTest extends TestCase
 
         $route = $this->fakeRouter->get('{testModel}', $action);
 
-        $endpointType = new RouteEndpointType($route, [$this->testModel]);
-
-        $endpoints = $endpointType->getEndpoints();
+        $endpoints = RouteEndpointType::make($route)
+            ->parameters([$this->testModel])
+            ->getEndpoints();
 
         $this->assertEquals([
             'show' => [
@@ -89,9 +85,7 @@ class RouteEndpointTypeTest extends TestCase
 
         $route = $this->fakeRouter->route(['GET', 'HEAD'], '', $action);
 
-        $endpointType = new RouteEndpointType($route);
-
-        $endpoints = $endpointType->getEndpoints();
+        $endpoints = RouteEndpointType::make($route)->getEndpoints();
 
         $this->assertEquals([
             'index' => [
@@ -113,9 +107,9 @@ class RouteEndpointTypeTest extends TestCase
             'name' => 'secondTestModel'
         ]);
 
-        $endpointType = new RouteEndpointType($route, [$secondTestModel]);
-
-        $endpoints = $endpointType->getEndpoints($this->testModel);
+        $endpoints = RouteEndpointType::make($route)
+            ->parameters([$secondTestModel])
+            ->getEndpoints($this->testModel);
 
         $this->assertEquals([
             'endpointWithTwoParameters' => [
@@ -142,9 +136,7 @@ class RouteEndpointTypeTest extends TestCase
 
         app('url')->defaults(['secondTestModel' => $secondTestModel->id]);
 
-        $endpointType = new RouteEndpointType($route);
-
-        $endpoints = $endpointType->getEndpoints($this->testModel);
+        $endpoints = RouteEndpointType::make($route)->getEndpoints($this->testModel);
 
         $this->assertEquals([
             'endpointWithTwoParameters' => [

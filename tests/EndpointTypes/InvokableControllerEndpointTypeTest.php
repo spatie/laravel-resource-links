@@ -31,7 +31,7 @@ class InvokableControllerEndpointTypeTest extends TestCase
 
         $this->fakeRouter->invokableGet('{testModel}', $action);
 
-        $endpointType = new InvokableControllerEndpointType(TestInvokableController::class);
+        $endpointType = InvokableControllerEndpointType::make(TestInvokableController::class);
 
         $endpoints = $endpointType->getEndpoints($this->testModel);
 

@@ -10,10 +10,10 @@ use ReflectionParameter;
 class ParameterResolver
 {
     /** @var \Illuminate\Database\Eloquent\Model|null */
-    protected $model;
+    private $model;
 
     /** @var array */
-    protected $defaultParameters;
+    private $defaultParameters;
 
     public function __construct(?Model $model, array $defaultParameters = [])
     {
@@ -40,14 +40,14 @@ class ParameterResolver
             })->all();
     }
 
-    protected function getProvidedParameters(): array
+    private function getProvidedParameters(): array
     {
         return optional($this->model)->exists
             ? array_merge($this->defaultParameters, [$this->model])
             : $this->defaultParameters;
     }
 
-    protected function resolveParameter(ReflectionParameter $signatureParameter, array $providedParameters)
+    private function resolveParameter(ReflectionParameter $signatureParameter, array $providedParameters)
     {
         if (array_key_exists($signatureParameter->getName(), $providedParameters)) {
             return $providedParameters[$signatureParameter->getName()];

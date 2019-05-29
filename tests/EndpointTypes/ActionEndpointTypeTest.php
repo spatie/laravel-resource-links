@@ -31,7 +31,7 @@ class ActionEndpointTypeTest extends TestCase
 
         $this->fakeRouter->get('', $action);
 
-        $endpointType = new ActionEndpointType($action);
+        $endpointType = ActionEndpointType::make($action);
 
         $endpoints = $endpointType->getEndpoints();
 
@@ -50,7 +50,7 @@ class ActionEndpointTypeTest extends TestCase
 
         $this->fakeRouter->get('', $action);
 
-        $endpointType = new ActionEndpointType($action);
+        $endpointType = ActionEndpointType::make($action);
 
         $endpoints = $endpointType->getEndpoints();
 
@@ -69,7 +69,7 @@ class ActionEndpointTypeTest extends TestCase
 
         $this->fakeRouter->get('{testModel}', $action);
 
-        $endpointType = new ActionEndpointType($action);
+        $endpointType = ActionEndpointType::make($action);
 
         $endpoints = $endpointType->getEndpoints($this->testModel);
 
@@ -93,7 +93,7 @@ class ActionEndpointTypeTest extends TestCase
             'name' => 'OtherTestModel',
         ]);
 
-        $endpointType = new ActionEndpointType($action, [$otherTestModel]);
+        $endpointType = ActionEndpointType::make($action)->parameters([$otherTestModel]);
 
         $endpoints = $endpointType->getEndpoints($this->testModel);
 
@@ -117,7 +117,9 @@ class ActionEndpointTypeTest extends TestCase
             'name' => 'secondTestModel',
         ]);
 
-        $endpointType = new ActionEndpointType($action, [$secondTestModel], 'GET');
+        $endpointType = ActionEndpointType::make($action)
+            ->httpVerb('GET')
+            ->parameters([$secondTestModel]);
 
         $endpoints = $endpointType->getEndpoints($this->testModel);
 
