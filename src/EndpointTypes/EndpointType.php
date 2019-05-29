@@ -3,6 +3,7 @@
 namespace Spatie\LaravelEndpointResources\EndpointTypes;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 abstract class EndpointType
 {
@@ -14,9 +15,9 @@ abstract class EndpointType
 
     abstract public function getEndpoints(Model $model = null): array;
 
-    public function parameters(array $parameters)
+    public function parameters($parameters)
     {
-        $this->parameters = $parameters;
+        $this->parameters = Arr::wrap($parameters);
 
         return $this;
     }

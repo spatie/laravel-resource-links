@@ -28,7 +28,7 @@ class ActionEndpointType extends EndpointType
         $this->action = $action;
     }
 
-    public function httpVerb(string $httpVerb): ActionEndpointType
+    public function httpVerb(?string $httpVerb): ActionEndpointType
     {
         $this->httpVerb = $httpVerb;
 
