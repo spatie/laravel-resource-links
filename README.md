@@ -438,11 +438,11 @@ composer test
 
 ### Changelog
 
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+Please see [CHANGELOG](https://github.com/spatie/laravel-endpoint-resources/blob/master/CHANGELOG.md) for more information on what has changed recently.
 
 ## Contributing
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+Please see [CONTRIBUTING](https://github.com/spatie/laravel-endpoint-resources/blob/master/CONTRIBUTING.md) for details.
 
 ### Security
 
@@ -459,7 +459,7 @@ We publish all received postcards [on our company website](https://spatie.be/en/
 ## Credits
 
 - [Ruben Van Assche](https://github.com/rubenvanassche)
-- [All Contributors](../../contributors)
+- [All Contributors](https://github.com/spatie/laravel-endpoint-resources/contributors)
 
 ## Support us
 
@@ -470,4 +470,4 @@ All pledges will be dedicated to allocating workforce on maintenance and new awe
 
 ## License
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+The MIT License (MIT). Please see [License File](https://github.com/spatie/laravel-endpoint-resources/blob/master/LICENSE.md) for more information.
