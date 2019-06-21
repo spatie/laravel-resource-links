@@ -2,15 +2,19 @@
 
 namespace Spatie\LaravelEndpointResources\Formatters;
 
-class FlatFormatter implements Formatter
+class LayeredFormatter implements Formatter
 {
     public function format(Endpoint $endpoint): array
     {
-        return [
-            "{$endpoint->prefix}{$endpoint->name}" => [
+        $format = [
+            $endpoint->name => [
                 'method' => $endpoint->method,
                 'action' => $endpoint->action,
             ],
         ];
+
+        return is_null($endpoint->prefix)
+            ? $format
+            : [$endpoint->prefix => $format];
     }
 }

@@ -6,6 +6,8 @@ use Illuminate\Routing\Route;
 use Illuminate\Support\Arr;
 use Spatie\LaravelEndpointResources\EndpointTypes\RouteEndpointType;
 use Spatie\LaravelEndpointResources\Exceptions\EndpointGenerationException;
+use Spatie\LaravelEndpointResources\Formatters\LayeredFormatter;
+use Spatie\LaravelEndpointResources\Formatters\UrlFormatter;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestController;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestModel;
@@ -187,5 +189,35 @@ class RouteEndpointTypeTest extends TestCase
                 'action' => action($action)
             ]
         ], $endpoints);
+    }
+
+    /** @test */
+    public function it_can_change_the_formatter()
+    {
+        $action = [TestController::class, 'index'];
+
+        $route = $this->fakeRouter->get('', $action);
+
+        $endpoints =  RouteEndpointType::make($route)
+            ->formatter(UrlFormatter::class)
+            ->getEndpoints();
+
+        $this->assertEquals([
+            'index' => action($action)
+        ], $endpoints);
+    }
+
+    /** @test */
+    public function it_uses_the_global_formatter_when_no_formatter_was_explicitly_defined()
+    {
+        $action = [TestController::class, 'index'];
+
+        $route = $this->fakeRouter->get('', $action);
+
+        app(config()->set('laravel-endpoint-resources.formatter', UrlFormatter::class));
+
+        $endpoints =  RouteEndpointType::make($route)->getEndpoints();
+
+        $this->assertEquals(['index' => action($action)], $endpoints);
     }
 }

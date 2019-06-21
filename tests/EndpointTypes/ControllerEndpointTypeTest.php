@@ -174,7 +174,7 @@ class ControllerEndpointTypeTest extends TestCase
 
         $endpoints = ControllerEndpointType::make(TestController::class)
             ->methods(['index'])
-            ->aliases([
+            ->names([
                 'index' => 'home',
             ])
             ->getEndpoints($this->testModel);

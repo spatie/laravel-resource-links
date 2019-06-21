@@ -13,6 +13,9 @@ abstract class EndpointType
     /** @var string|null */
     protected $prefix;
 
+    /** @var string|null */
+    protected $formatter;
+
     abstract public function getEndpoints(Model $model = null): array;
 
     public function parameters($parameters)
@@ -29,7 +32,14 @@ abstract class EndpointType
         return $this;
     }
 
-    public function hasParameters() : bool
+    public function formatter(string $formatter)
+    {
+        $this->formatter = $formatter;
+
+        return $this;
+    }
+
+    public function hasParameters(): bool
     {
         return count($this->parameters) > 0;
     }

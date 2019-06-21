@@ -45,10 +45,11 @@ class InvokableControllerEndpointType extends EndpointType implements MultiEndpo
         return ActionEndpointType::make([$this->controller])
             ->name($this->resolveEndpointName())
             ->parameters($this->parameters)
-            ->prefix($this->prefix);
+            ->prefix($this->prefix)
+            ->formatter($this->formatter);
     }
 
-    private function resolveEndpointName() : string
+    private function resolveEndpointName(): string
     {
         if ($this->name !== null) {
             return $this->name;

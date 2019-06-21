@@ -152,7 +152,7 @@ class UsersController
 }
 ```
 
-### collection endpoints
+### Collection endpoints
 
 What about endpoints like `index`, `create` and `store`? These endpoints are not generally not tied to a single item, so it's not a good idea to store them at that level. Instead it's better to put the links to those collection endpoints on the collection level of a resource.
 
@@ -302,6 +302,10 @@ The `UserResource` in a response will now look like this:
 }
 ```
 
+#### Automatically merge collection endpoints
+
+Sometimes you yust want to automatically merge collection endpoints into a single endpoint resource when the model given to that resource does not exist or is null. Calling `->mergeCollectionEndpoints()` on every resource can be a bit tedious. So when setting `automatically-merge-endpoints` in `config\laravel-endpoint-resources.php` to true, each single endpoint resource will merge it's collection endpoints when a non-existing or null model is given to the resource.
+
 
 ### Route parameters
 
@@ -429,6 +433,165 @@ class UserResource extends JsonResource
     }
 }
 ```
+
+### Endpoint collections
+
+Sometimes a more fine grained control is needed to construct endpoints. Let's say you want to prefix a set of endpoints, change the name of an endpoint or just specify which endpoints to include. That's where endpoint collections come into place. A resource with controller endpoints and an action endpoint can now be constructed as such:
+
+``` php
+class UserResource extends JsonResource
+{
+    use HasEndpoints;
+
+    public function toArray($request)
+    {
+        return [
+            'endpoints' => $this->endpoints(function (EndpointsCollection $endpointsCollection) {
+                $endpointsCollection->controller(UsersController::class);
+                $endpointsCollection->action([UsersController::class, 'create']);
+            }),
+        ];
+    }
+}
+```
+
+You can now specify the parameters for the endpoints:
+
+```php
+$endpointsCollection
+	->controller(UsersController::class)
+	->parameters(User::first());
+```
+
+Or prefix all the endpoints of the controller:
+
+```php
+$endpointsCollection
+	->controller(UsersController::class)
+	->prefix('admin');
+```
+
+This will produce the following json:
+
+``` json
+"endpoints":{  
+    "admin.show":{  
+       "method":"GET",
+       "action":"https://app.laravel/admin/users/1"
+    },
+    "admin.edit":{  
+       "method":"GET",
+       "action":"https://app.laravel/admin/users/1/edit"
+    },
+    
+    ...
+}
+```
+
+You can also choose the methods of the controller to include as endpoints:
+
+```php
+$endpointsCollection
+	->controller(UsersController::class)
+	->methods(['create', 'index', 'show']);
+```
+
+Or even alias the name of methods:
+
+```php
+$endpointsCollection
+	->controller(UsersController::class)
+	->names(['index' => 'list']);
+```
+
+This will produce the following json:
+
+``` json
+"endpoints":{  
+    "list":{  
+       "method":"GET",
+       "action":"https://app.laravel/admin/users"
+    },
+    
+    ...
+}
+```
+
+When working with invokable controllers you can alias `__invoke`:
+
+```php
+$endpointsCollection
+	->controller(UsersController::class)
+	->name('publish');
+```
+
+Action endpoints can also be adjusted to their specific needs
+
+```php
+$endpointsCollection
+	->action([UsersController::class, 'create'])
+	->prefix('users')
+	->parameters(User::first())
+	->name('build')
+```
+
+It is even possible to change the http verb(POST, GET, ...)
+ 
+```php
+$endpointsCollection
+	->action([UsersController::class, 'create'])
+	->httpVerb('POST');
+```
+
+And off course it is possible to use endpoint collections with collection endpoints:
+
+``` php
+class UserResource extends JsonResource
+{
+    use HasEndpoints;
+
+    ...
+    
+    public static function collection($resource)
+    {
+        return parent::collection($resource)->additional([
+            'meta' => [
+                'endpoints' => self::collectionEndpoints(function (EndpointsCollection $endpointsCollection) {
+	                $endpointsCollection->controller(UsersController::class);
+	            })
+             ],
+         ]);
+    }
+}
+```
+
+### Formatters
+
+Want a different representation for endpoints? For example something like this:
+
+```json
+"endpoints":{  
+	"show":"https://app.laravel/users/1",
+	"edit":"https://app.laravel/users/1/edit",
+}
+```
+
+You can do this with formatters! You can create your own formatters by implementing the `Spatie\LaravelEndpointResources\Formatters\Formatter` interface.
+
+The package includes 3 formatters:
+
+- DefaultFormatter: the formatter from the examples above
+- LayeredFormatter: this formatter will put prefixed endpoints in their own prefixed array
+- UrlFormatter: a simple formatter which has an endpoint name as key and endpoint url as value
+
+You can set the formatter used in the `laravel-endpoint-resources.php` config file. Or if you are using endpoint collections it is possible to set an formatter specifically for each endpoint:
+
+```php
+$endpointsCollection
+	->controller(UsersController::class)
+	->formatter(Spatie\LaravelEndpointResources\Formatters\ UrlFormatter::class);
+``` 
+
 
 ### Testing
 

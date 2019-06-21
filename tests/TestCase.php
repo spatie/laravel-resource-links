@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as BaseTestCase;
+use Spatie\LaravelEndpointResources\EndpointResourcesServiceProvider;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestModel;
 use Spatie\LaravelEndpointResources\Tests\Fakes\FakeRouter;
 use Spatie\LaravelEndpointResources\Tests\Fakes\SecondTestModel;
@@ -23,6 +24,11 @@ abstract class TestCase extends BaseTestCase
         $this->setUpDatabase();
 
         $this->fakeRouter = FakeRouter::setup();
+    }
+
+    protected function getPackageProviders($app)
+    {
+        return [EndpointResourcesServiceProvider::class];
     }
 
     private function setUpDatabase()

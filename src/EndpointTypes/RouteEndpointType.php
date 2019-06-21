@@ -3,9 +3,10 @@
 namespace Spatie\LaravelEndpointResources\EndpointTypes;
 
 use Spatie\LaravelEndpointResources\Exceptions\EndpointGenerationException;
-use Spatie\LaravelEndpointResources\Formatters\DefaultFormatter;
+use Spatie\LaravelEndpointResources\Formatters\LayeredFormatter;
 use Spatie\LaravelEndpointResources\Formatters\Endpoint;
-use Spatie\LaravelEndpointResources\Formatters\FlatFormatter;
+use Spatie\LaravelEndpointResources\Formatters\DefaultFormatter;
+use Spatie\LaravelEndpointResources\Formatters\Formatter;
 use Spatie\LaravelEndpointResources\ParameterResolver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Exceptions\UrlGenerationException;
@@ -67,9 +68,7 @@ class RouteEndpointType extends EndpointType
             $this->prefix
         );
 
-        $formatter = new FlatFormatter();
-
-        return $formatter->format($endpoint);
+        return $this->resolveFormatter()->format($endpoint);
     }
 
     private function getHttpVerbForRoute(Route $route): string
@@ -85,5 +84,14 @@ class RouteEndpointType extends EndpointType
         }
 
         return $httpVerbs[0];
+    }
+
+    private function resolveFormatter(): Formatter
+    {
+        $formatter = is_null($this->formatter)
+            ? config('laravel-endpoint-resources.formatter')
+            : $this->formatter;
+
+        return new $formatter;
     }
 }

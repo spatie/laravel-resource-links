@@ -6,6 +6,7 @@ use Illuminate\Support\Collection;
 use Spatie\LaravelEndpointResources\EndpointTypes\ActionEndpointType;
 use Spatie\LaravelEndpointResources\EndpointTypes\ControllerEndpointType;
 use Spatie\LaravelEndpointResources\EndpointTypes\InvokableControllerEndpointType;
+use Spatie\LaravelEndpointResources\EndpointTypes\MultiEndpointType;
 
 class EndpointsCollection
 {
@@ -17,8 +18,12 @@ class EndpointsCollection
         $this->endpointTypes = new Collection();
     }
 
-    public function controller(string $controller): ControllerEndpointType
+    public function controller(string $controller): MultiEndpointType
     {
+        if (method_exists($controller, '__invoke')) {
+            return $this->invokableController($controller);
+        }
+
         $controllerEndpointType = ControllerEndpointType::make($controller);
 
         $this->endpointTypes[] = $controllerEndpointType;
@@ -26,7 +31,7 @@ class EndpointsCollection
         return $controllerEndpointType;
     }
 
-    public function invokableController(string $controller): InvokableControllerEndpointType
+    public function invokableController(string $controller): MultiEndpointType
     {
         $invokableControllerEndpointType = InvokableControllerEndpointType::make($controller);
 

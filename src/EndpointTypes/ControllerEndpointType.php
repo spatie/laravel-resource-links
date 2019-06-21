@@ -22,7 +22,7 @@ class ControllerEndpointType extends EndpointType implements MultiEndpointType
     private static $cachedRoutes = [];
 
     /** @var array */
-    private $aliases = [];
+    private $names = [];
 
     public static function make(string $controller): ControllerEndpointType
     {
@@ -41,9 +41,9 @@ class ControllerEndpointType extends EndpointType implements MultiEndpointType
         return $this;
     }
 
-    public function aliases(array $aliases): ControllerEndpointType
+    public function names(array $names): ControllerEndpointType
     {
-        $this->aliases = $aliases;
+        $this->names = $names;
 
         return $this;
     }
@@ -93,6 +93,7 @@ class ControllerEndpointType extends EndpointType implements MultiEndpointType
                     ->parameters($this->parameters)
                     ->name($this->resolveNameForRoute($route))
                     ->prefix($this->prefix)
+                    ->formatter($this->formatter)
                     ->getEndpoints($model);
             })->toArray();
     }
@@ -117,8 +118,8 @@ class ControllerEndpointType extends EndpointType implements MultiEndpointType
     {
         $method = $route->getActionMethod();
 
-        if (array_key_exists($method, $this->aliases)) {
-            return $this->aliases[$method];
+        if (array_key_exists($method, $this->names)) {
+            return $this->names[$method];
         }
 
         return $method;

@@ -59,6 +59,7 @@ class ActionEndpointType extends EndpointType
             ->httpVerb($this->httpVerb)
             ->prefix($this->prefix)
             ->parameters($this->getParameters($model))
+            ->formatter($this->formatter)
             ->getEndpoints($model);
     }
 
