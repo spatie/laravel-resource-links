@@ -2,7 +2,10 @@
 
 namespace Spatie\LaravelEndpointResources\Tests;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Spatie\LaravelEndpointResources\EndpointResource;
+use Spatie\LaravelEndpointResources\EndpointResourceType;
 use Spatie\LaravelEndpointResources\EndpointsCollection;
 use Spatie\LaravelEndpointResources\HasEndpoints;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
@@ -31,7 +34,8 @@ class HasEndpointsTest extends TestCase
     /** @test */
     public function it_will_generate_endpoints_when_making_a_resource()
     {
-        $testResource = new class(null) extends JsonResource {
+        $testResource = new class(null) extends JsonResource
+        {
             use HasEndpoints;
 
             public function toArray($request)
@@ -76,7 +80,8 @@ class HasEndpointsTest extends TestCase
     /** @test */
     public function it_will_generate_endpoints_when_collecting_a_resource()
     {
-        $testResource = new class(null) extends JsonResource {
+        $testResource = new class(null) extends JsonResource
+        {
             use HasEndpoints;
 
             public function __construct($resource)
@@ -128,7 +133,8 @@ class HasEndpointsTest extends TestCase
     /** @test */
     public function it_can_merge_collection_endpoints_with_local_endpoints()
     {
-        $testResource = new class(null) extends JsonResource {
+        $testResource = new class(null) extends JsonResource
+        {
             use HasEndpoints;
 
             public function __construct($resource)
@@ -170,7 +176,8 @@ class HasEndpointsTest extends TestCase
         $this->fakeRouter->invokableGet('/invoke/{testModel}', TestInvokableController::class);
         $this->fakeRouter->invokableGet('/invoke/collection', TestInvokableCollectionController::class);
 
-        $testResource = new class(null) extends JsonResource {
+        $testResource = new class(null) extends JsonResource
+        {
             use HasEndpoints;
 
             public function toArray($request)
@@ -215,7 +222,8 @@ class HasEndpointsTest extends TestCase
     /** @test */
     public function it_will_generate_endpoints_when_making_a_resource_using_extended_syntax()
     {
-        $testResource = new class(null) extends JsonResource {
+        $testResource = new class(null) extends JsonResource
+        {
             use HasEndpoints;
 
             public function toArray($request)

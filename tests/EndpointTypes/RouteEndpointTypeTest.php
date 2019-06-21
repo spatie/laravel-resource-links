@@ -2,8 +2,10 @@
 
 namespace Spatie\LaravelEndpointResources\Tests\EndpointTypes;
 
+use Illuminate\Routing\Route;
 use Illuminate\Support\Arr;
 use Spatie\LaravelEndpointResources\EndpointTypes\RouteEndpointType;
+use Spatie\LaravelEndpointResources\Exceptions\EndpointGenerationException;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestController;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestModel;
@@ -162,6 +164,25 @@ class RouteEndpointTypeTest extends TestCase
 
         $this->assertEquals([
             'this-index' => [
+                'method' => 'GET',
+                'action' => action($action)
+            ]
+        ], $endpoints);
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_an_endpoint_can_not_be_constructed()
+    {
+        $this->expectException(EndpointGenerationException::class);
+
+        $action = [TestController::class, 'show'];
+
+        $route = $this->fakeRouter->get('/{testModel}', $action);
+
+        $endpoints =  RouteEndpointType::make($route)->getEndpoints();
+
+        $this->assertEquals([
+            'index' => [
                 'method' => 'GET',
                 'action' => action($action)
             ]

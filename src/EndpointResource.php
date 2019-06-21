@@ -77,9 +77,9 @@ class EndpointResource extends JsonResource
 
         return $this->endpointsCollection
             ->getEndpointTypes()
-            ->map(function (EndpointType $endpointType) {
+            ->map(function (EndpointType $endpointType) use ($request) {
                 return $endpointType->hasParameters() === false
-                    ? $endpointType->parameters(request()->route()->parameters())
+                    ? $endpointType->parameters($request->route()->parameters())
                     : $endpointType;
             })
             ->mapWithKeys(function (EndPointType $endpointType) {

@@ -53,7 +53,11 @@ class RouteEndpointType extends EndpointType
         try {
             $action = action("\\{$this->route->getActionName()}", $parameterResolver->forRoute($this->route));
         } catch (UrlGenerationException $exception) {
-            return [];
+            throw EndpointGenerationException::make(
+                $this->route,
+                $model,
+                $this->parameters
+            );
         }
 
         $endpoint = Endpoint::make(
@@ -63,7 +67,7 @@ class RouteEndpointType extends EndpointType
             $this->prefix
         );
 
-        $formatter = new DefaultFormatter();
+        $formatter = new FlatFormatter();
 
         return $formatter->format($endpoint);
     }

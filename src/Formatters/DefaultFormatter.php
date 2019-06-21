@@ -13,12 +13,8 @@ class DefaultFormatter implements Formatter
             ],
         ];
 
-        if($endpoint->prefix !== null){
-            return [
-                $endpoint->prefix => $format
-            ];
-        }
-
-        return $format;
+        return is_null($endpoint->prefix)
+            ? $format
+            : [$endpoint->prefix => $format];
     }
 }

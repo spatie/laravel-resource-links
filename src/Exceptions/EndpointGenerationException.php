@@ -1,4 +1,5 @@
 <?php
+
 namespace Spatie\LaravelEndpointResources\Exceptions;
 
 use Exception;
@@ -12,14 +13,21 @@ class EndpointGenerationException extends Exception
         return new self($route, $model, $parameters);
     }
 
-    public function __construct(Route $route, Model $model, array $parameters)
+    public function __construct(Route $route, ?Model $model, array $parameters)
     {
-        $message = "Endpoint resource couldn't generate endpoint for ";
-        $message .= "Constructing route: {$route->uri()} ";
-        $message .= "For action: {$route->getActionName()} ";
+        $message = "Endpoint resource couldn't generate endpoint for \n";
+        $message .= "Constructing route: {$route->uri()} \n";
+        $message .= "For action: {$route->getActionName()} \n";
 
-        if($model){
-            $message .= "With model: {$model->getMorphClass()} with id: {$model->getKey()}";
+        if ($model) {
+            $message .= $model->exists
+                ? "With model: {$model->getMorphClass()} with id: {$model->getKey()} \n"
+                : "With non existing model of type: {$model->getMorphClass()} \n";
+        }
+
+        if (! empty($parameters)) {
+            $message .= "Following parameters were provided: ";
+            $message .= implode(', ', $parameters) . '\n';
         }
 
         parent::__construct($message);
