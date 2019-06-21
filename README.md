@@ -1,4 +1,7 @@
-# Laravel Endpoint Resources
+---
+title: Laravel Endpoint Resources
+slogan: Add endpoints to your Laravel api resources without a hassle
+---
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-endpoint-resources.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-endpoint-resources)
 [![Build Status](https://img.shields.io/travis/spatie/laravel-endpoint-resources/master.svg?style=flat-square)](https://travis-ci.org/spatie/laravel-endpoint-resources)
