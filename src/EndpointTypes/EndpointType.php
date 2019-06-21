@@ -32,7 +32,7 @@ abstract class EndpointType
         return $this;
     }
 
-    public function formatter(string $formatter)
+    public function formatter(?string $formatter)
     {
         $this->formatter = $formatter;
 
