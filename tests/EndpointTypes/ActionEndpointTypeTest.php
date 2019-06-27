@@ -4,6 +4,7 @@ namespace Spatie\LaravelEndpointResources\Tests\EndpointTypes;
 
 use Exception;
 use Spatie\LaravelEndpointResources\EndpointTypes\ActionEndpointType;
+use Spatie\LaravelEndpointResources\Formatters\LayeredFormatter;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestController;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestModel;
@@ -155,5 +156,38 @@ class ActionEndpointTypeTest extends TestCase
                 'action' => action($action),
             ],
         ], $endpoints);
+    }
+
+    /** @test */
+    public function it_can_change_the_formatter_to_layered()
+    {
+        $action = [TestController::class, 'index'];
+
+        $this->fakeRouter->get('', $action);
+
+        $endpoints = ActionEndpointType::make($action)
+            ->formatter(LayeredFormatter::class)
+            ->getEndpoints();
+
+        $layeredEndpoints = ActionEndpointType::make($action)
+            ->formatter(LayeredFormatter::class)
+            ->prefix('tests')
+            ->getEndpoints();
+
+        $this->assertEquals([
+            'index' => [
+                'method' => 'GET',
+                'action' => action($action),
+            ],
+        ], $endpoints);
+
+        $this->assertEquals([
+            'tests' => [
+                'index' => [
+                    'method' => 'GET',
+                    'action' => action($action),
+                ],
+            ],
+        ], $layeredEndpoints);
     }
 }

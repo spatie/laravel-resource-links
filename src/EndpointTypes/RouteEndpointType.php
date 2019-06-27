@@ -54,7 +54,7 @@ class RouteEndpointType extends EndpointType
         try {
             $action = action("\\{$this->route->getActionName()}", $parameterResolver->forRoute($this->route));
         } catch (UrlGenerationException $exception) {
-            return [];
+            throw EndpointGenerationException::make($this->route, $model, $this->parameters);
         }
 
         $endpoint = Endpoint::make(
@@ -70,10 +70,6 @@ class RouteEndpointType extends EndpointType
     private function getHttpVerbForRoute(Route $route): string
     {
         $httpVerbs = $route->methods;
-
-        if (count($httpVerbs) === 1) {
-            return $httpVerbs[0];
-        }
 
         if ($httpVerbs === ['GET', 'HEAD']) {
             return 'GET';

@@ -8,7 +8,7 @@ use Spatie\LaravelEndpointResources\EndpointTypes\ControllerEndpointType;
 use Spatie\LaravelEndpointResources\EndpointTypes\InvokableControllerEndpointType;
 use Spatie\LaravelEndpointResources\EndpointTypes\MultiEndpointType;
 
-class EndpointsCollection
+class EndpointsGroup
 {
     /** @var \Illuminate\Support\Collection */
     private $endpointTypes;
@@ -49,10 +49,10 @@ class EndpointsCollection
         return $actionEndpointType;
     }
 
-    public function endpointsCollection(EndpointsCollection $endpointsCollection)
+    public function endpointsGroup(EndpointsGroup $endpointsGroup)
     {
         $this->endpointTypes = $this->endpointTypes->merge(
-            $endpointsCollection->getEndpointTypes()
+            $endpointsGroup->getEndpointTypes()
         );
     }
 

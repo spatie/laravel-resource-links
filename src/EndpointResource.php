@@ -17,15 +17,15 @@ class EndpointResource extends JsonResource
     /** @var string */
     private $endpointResourceType;
 
-    /** @var \Spatie\LaravelEndpointResources\EndpointsCollection */
-    private $endpointsCollection;
+    /** @var \Spatie\LaravelEndpointResources\EndpointsGroup */
+    private $endpointsGroup;
 
     public function __construct(Model $model = null, string $endpointResourceType = null)
     {
         parent::__construct($model);
 
         $this->endpointResourceType = $endpointResourceType ?? EndpointResourceType::ITEM;
-        $this->endpointsCollection = new EndpointsCollection();
+        $this->endpointsGroup = new EndpointsGroup();
     }
 
     public function addController(string $controller, $parameters = null): EndpointResource
@@ -34,7 +34,7 @@ class EndpointResource extends JsonResource
             return $this->addInvokableController($controller, $parameters);
         }
 
-        $this->endpointsCollection->controller($controller)
+        $this->endpointsGroup->controller($controller)
             ->parameters(Arr::wrap($parameters));
 
         return $this;
@@ -42,7 +42,7 @@ class EndpointResource extends JsonResource
 
     public function addAction(array $action, $parameters = null, string $httpVerb = null): EndpointResource
     {
-        $this->endpointsCollection->action($action)
+        $this->endpointsGroup->action($action)
             ->httpVerb($httpVerb)
             ->parameters(Arr::wrap($parameters));
 
@@ -51,15 +51,15 @@ class EndpointResource extends JsonResource
 
     public function addInvokableController(string $controller, $parameters = null): EndpointResource
     {
-        $this->endpointsCollection->invokableController($controller)
+        $this->endpointsGroup->invokableController($controller)
             ->parameters(Arr::wrap($parameters));
 
         return $this;
     }
 
-    public function addEndpointsCollection(EndpointsCollection $endpointsRepository): EndpointResource
+    public function addEndpointsGroup(EndpointsGroup $endpointsGroup): EndpointResource
     {
-        $this->endpointsCollection->endpointsCollection($endpointsRepository);
+        $this->endpointsGroup->endpointsGroup($endpointsGroup);
 
         return $this;
     }
@@ -75,7 +75,7 @@ class EndpointResource extends JsonResource
     {
         $this->ensureCollectionEndpointsAreAutomaticallyMerged();
 
-        return $this->endpointsCollection
+        return $this->endpointsGroup
             ->getEndpointTypes()
             ->map(function (EndpointType $endpointType) use ($request) {
                 return $endpointType->hasParameters() === false
@@ -114,6 +114,10 @@ class EndpointResource extends JsonResource
     private function ensureCollectionEndpointsAreAutomaticallyMerged()
     {
         if ($this->endpointResourceType !== EndpointResourceType::ITEM) {
+            return;
+        }
+
+        if(config('laravel-endpoint-resources.automatically-merge-endpoints') === false){
             return;
         }
 

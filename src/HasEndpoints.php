@@ -82,11 +82,11 @@ trait HasEndpoints
         $parameters = null
     ): EndpointResource {
         if ($controller instanceof Closure) {
-            $endpointsCollection = new EndpointsCollection();
+            $endpointsGroup = new EndpointsGroup();
 
-            $controller($endpointsCollection);
+            $controller($endpointsGroup);
 
-            return $endpointResource->addEndpointsCollection($endpointsCollection);
+            return $endpointResource->addEndpointsGroup($endpointsGroup);
         }
 
         if ($controller !== null) {

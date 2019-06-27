@@ -434,9 +434,9 @@ class UserResource extends JsonResource
 }
 ```
 
-### Endpoint collections
+### Endpoint groups
 
-Sometimes a more fine grained control is needed to construct endpoints. Let's say you want to prefix a set of endpoints, change the name of an endpoint or just specify which endpoints to include. That's where endpoint collections come into place. A resource with controller endpoints and an action endpoint can now be constructed as such:
+Sometimes a more fine grained control is needed to construct endpoints. Let's say you want to prefix a set of endpoints, change the name of an endpoint or just specify which endpoints to include. That's where endpoint groups come into place. You can now create a resource witg controller endpoints and an action endpoint as such:
 
 ``` php
 class UserResource extends JsonResource
@@ -446,9 +446,9 @@ class UserResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'endpoints' => $this->endpoints(function (EndpointsCollection $endpointsCollection) {
-                $endpointsCollection->controller(UsersController::class);
-                $endpointsCollection->action([UsersController::class, 'create']);
+            'endpoints' => $this->endpoints(function (EndpointsGroup $endpoints) {
+                $endpoints->controller(UsersController::class);
+                $endpoints->action([UsersController::class, 'create']);
             }),
         ];
     }
@@ -458,7 +458,7 @@ class UserResource extends JsonResource
 You can now specify the parameters for the endpoints:
 
 ```php
-$endpointsCollection
+$endpoints
 	->controller(UsersController::class)
 	->parameters(User::first());
 ```
@@ -466,7 +466,7 @@ $endpointsCollection
 Or prefix all the endpoints of the controller:
 
 ```php
-$endpointsCollection
+$endpoints
 	->controller(UsersController::class)
 	->prefix('admin');
 ```
@@ -491,7 +491,7 @@ This will produce the following json:
 You can also choose the methods of the controller to include as endpoints:
 
 ```php
-$endpointsCollection
+$endpoints
 	->controller(UsersController::class)
 	->methods(['create', 'index', 'show']);
 ```
@@ -499,7 +499,7 @@ $endpointsCollection
 Or even alias the name of methods:
 
 ```php
-$endpointsCollection
+$endpoints
 	->controller(UsersController::class)
 	->names(['index' => 'list']);
 ```
@@ -520,7 +520,7 @@ This will produce the following json:
 When working with invokable controllers you can alias `__invoke`:
 
 ```php
-$endpointsCollection
+$endpoints
 	->controller(UsersController::class)
 	->name('publish');
 ```
@@ -528,7 +528,7 @@ $endpointsCollection
 Action endpoints can also be adjusted to their specific needs
 
 ```php
-$endpointsCollection
+$endpoints
 	->action([UsersController::class, 'create'])
 	->prefix('users')
 	->parameters(User::first())
@@ -538,12 +538,12 @@ $endpointsCollection
 It is even possible to change the http verb(POST, GET, ...)
  
 ```php
-$endpointsCollection
+$endpoints
 	->action([UsersController::class, 'create'])
 	->httpVerb('POST');
 ```
 
-And off course it is possible to use endpoint collections with collection endpoints:
+And off course it is possible to use endpoint groups with collection endpoints:
 
 ``` php
 class UserResource extends JsonResource
@@ -556,8 +556,8 @@ class UserResource extends JsonResource
     {
         return parent::collection($resource)->additional([
             'meta' => [
-                'endpoints' => self::collectionEndpoints(function (EndpointsCollection $endpointsCollection) {
-	                $endpointsCollection->controller(UsersController::class);
+                'endpoints' => self::collectionEndpoints(function (EndpointsGroup $endpoints) {
+	                $endpoints->controller(UsersController::class);
 	            })
              ],
          ]);
@@ -584,10 +584,10 @@ The package includes 3 formatters:
 - LayeredFormatter: this formatter will put prefixed endpoints in their own prefixed array
 - UrlFormatter: a simple formatter which has an endpoint name as key and endpoint url as value
 
-You can set the formatter used in the `laravel-endpoint-resources.php` config file. Or if you are using endpoint collections it is possible to set an formatter specifically for each endpoint:
+You can set the formatter used in the `laravel-endpoint-resources.php` config file. Or if you are using endpoint groups it is possible to set an formatter specifically for each endpoint:
 
 ```php
-$endpointsCollection
+$endpoints
 	->controller(UsersController::class)
 	->formatter(Spatie\LaravelEndpointResources\Formatters\ UrlFormatter::class);
 ``` 
