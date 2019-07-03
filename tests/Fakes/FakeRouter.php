@@ -40,6 +40,16 @@ class FakeRouter
         return $this->route('GET', $uri, $action);
     }
 
+    public function post($uri, $action): Route
+    {
+        return $this->route('POST', $uri, $action);
+    }
+
+    public function put($uri, $action): Route
+    {
+        return $this->route('PUT', $uri, $action);
+    }
+
     public function invokableGet($uri, $controller): Route
     {
         $route = $this->get($uri, [

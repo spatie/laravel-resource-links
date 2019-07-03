@@ -8,6 +8,7 @@ use Spatie\LaravelEndpointResources\EndpointResource;
 use Spatie\LaravelEndpointResources\EndpointResourceType;
 use Spatie\LaravelEndpointResources\EndpointsGroup;
 use Spatie\LaravelEndpointResources\HasEndpoints;
+use Spatie\LaravelEndpointResources\Tests\Fakes\TestController;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestInvokableCollectionController;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestInvokableController;
@@ -57,7 +58,7 @@ class HasEndpointsTest extends TestCase
             return $testResource::make(TestModel::first());
         });
 
-        $this->get('/index')->assertJson([
+        $this->get('/index')->assertExactJson([
             'data' => [
                 'endpoints' => [
                     'endpoint' => [
@@ -108,7 +109,7 @@ class HasEndpointsTest extends TestCase
             return $testResource::collection(TestModel::all());
         });
 
-        $this->get('/index')->assertJson([
+        $this->get('/index')->assertExactJson([
             'data' => [
                 0 => [
                     'endpoints' => [
@@ -154,7 +155,7 @@ class HasEndpointsTest extends TestCase
             return $testResource::make(TestModel::first());
         });
 
-        $this->get('/index')->assertJson([
+        $this->get('/index')->assertExactJson([
             'data' => [
                 'endpoints' => [
                     'endpoint' => [
@@ -167,6 +168,7 @@ class HasEndpointsTest extends TestCase
                     ],
                 ],
             ],
+            'meta' => []
         ]);
     }
 
@@ -199,7 +201,7 @@ class HasEndpointsTest extends TestCase
             return $testResource::make(TestModel::first());
         });
 
-        $this->get('/invoke')->assertJson([
+        $this->get('/invoke')->assertExactJson([
             'data' => [
                 'endpoints' => [
                     'sync' => [
@@ -222,6 +224,9 @@ class HasEndpointsTest extends TestCase
     /** @test */
     public function it_will_generate_endpoints_when_making_a_resource_using_endpoint_groups()
     {
+        $this->fakeRouter->invokableGet('/invoke/{testModel}', TestInvokableController::class);
+        $this->fakeRouter->invokableGet('/invoke', TestInvokableCollectionController::class);
+
         $testResource = new class(null) extends JsonResource
         {
             use HasEndpoints;
@@ -231,6 +236,7 @@ class HasEndpointsTest extends TestCase
                 return [
                     'endpoints' => $this->endpoints(function (EndpointsGroup $endpoints) {
                         $endpoints->controller(TestControllerWithSpecifiedEndpoints::class);
+                        $endpoints->action([TestInvokableController::class])->name('invoke');
                     }),
                 ];
             }
@@ -240,6 +246,7 @@ class HasEndpointsTest extends TestCase
                 return [
                     'endpoints' => self::collectionEndpoints(function (EndpointsGroup $endpoints) {
                         $endpoints->controller(TestControllerWithSpecifiedEndpoints::class);
+                        $endpoints->action([TestInvokableCollectionController::class])->name('invoke');
                     }),
                 ];
             }
@@ -249,12 +256,16 @@ class HasEndpointsTest extends TestCase
             return $testResource::make(TestModel::first());
         });
 
-        $this->get('/index')->assertJson([
+        $this->get('/index')->assertExactJson([
             'data' => [
                 'endpoints' => [
                     'endpoint' => [
                         'method' => 'GET',
                         'action' => action([TestControllerWithSpecifiedEndpoints::class, 'endpoint'], $this->testModel),
+                    ],
+                    'invoke' => [
+                        'method' => 'GET',
+                        'action' => action([TestInvokableController::class], $this->testModel),
                     ],
                 ],
             ],
@@ -264,8 +275,53 @@ class HasEndpointsTest extends TestCase
                         'method' => 'GET',
                         'action' => action([TestControllerWithSpecifiedEndpoints::class, 'collectionEndpoint']),
                     ],
+                    'invoke' => [
+                        'method' => 'GET',
+                        'action' => action([TestInvokableCollectionController::class]),
+                    ],
                 ],
             ],
+        ]);
+    }
+
+    /** @test */
+    public function it_can_use_different_http_verbs_with_the_same_uri()
+    {
+        $this->fakeRouter->get('/users/{testModel}', [TestController::class, 'show']);
+        $this->fakeRouter->put('/users/{testModel}', [TestController::class, 'update']);
+
+        $testResource = new class(null) extends JsonResource
+        {
+            use HasEndpoints;
+
+            public function toArray($request)
+            {
+                return [
+                    'endpoints' => $this->endpoints(function (EndpointsGroup $endpoints) {
+                        $endpoints->controller(TestController::class)->methods(['show', 'update']);
+                    }),
+                ];
+            }
+        };
+
+        $this->fakeRouter->get('/index', function () use ($testResource) {
+            return $testResource::make(TestModel::first());
+        });
+
+        $this->get('/index')->assertExactJson([
+            'data' => [
+                'endpoints' => [
+                    'show' => [
+                        'method' => 'GET',
+                        'action' => action([TestController::class, 'show'], $this->testModel),
+                    ],
+                    'update' => [
+                        'method' => 'PUT',
+                        'action' => action([TestController::class, 'update'], $this->testModel),
+                    ],
+                ],
+            ],
+            'meta' => [],
         ]);
     }
 }

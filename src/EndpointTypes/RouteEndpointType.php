@@ -54,7 +54,8 @@ class RouteEndpointType extends EndpointType
         try {
             $action = action("\\{$this->route->getActionName()}", $parameterResolver->forRoute($this->route));
         } catch (UrlGenerationException $exception) {
-            throw EndpointGenerationException::make($this->route, $model, $this->parameters);
+//            throw EndpointGenerationException::make($this->route, $model, $this->parameters);
+            return [];
         }
 
         $endpoint = Endpoint::make(
