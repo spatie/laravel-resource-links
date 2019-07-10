@@ -8,9 +8,8 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Spatie\LaravelEndpointResources\EndpointTypes\MultiEndpointType;
 
-class ControllerEndpointType extends EndpointType implements MultiEndpointType
+class ControllerEndpointType extends EndpointType
 {
     /** @var string */
     private $controller;

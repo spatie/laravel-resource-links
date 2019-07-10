@@ -3,9 +3,8 @@
 namespace Spatie\LaravelEndpointResources\EndpointTypes;
 
 use Illuminate\Database\Eloquent\Model;
-use Spatie\LaravelEndpointResources\EndpointTypes\MultiEndpointType;
 
-class InvokableControllerEndpointType extends EndpointType implements MultiEndpointType
+class InvokableControllerEndpointType extends ControllerEndpointType
 {
     /** @var string */
     private $controller;
@@ -13,13 +12,15 @@ class InvokableControllerEndpointType extends EndpointType implements MultiEndpo
     /** @var string|null */
     private $name;
 
-    public static function make(string $controller): InvokableControllerEndpointType
+    public static function make(string $controller): ControllerEndpointType
     {
-        return new self($controller);
+        return new InvokableControllerEndpointType($controller);
     }
 
     public function __construct(string $controller)
     {
+        parent::__construct($controller);
+
         $this->controller = $controller;
     }
 

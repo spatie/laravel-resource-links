@@ -3,14 +3,10 @@
 namespace Spatie\LaravelEndpointResources;
 
 use Illuminate\Support\Arr;
-use Spatie\LaravelEndpointResources\EndpointTypes\ActionEndpointType;
 use Spatie\LaravelEndpointResources\EndpointTypes\ControllerEndpointType;
 use Spatie\LaravelEndpointResources\EndpointTypes\EndpointType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Collection;
-use Spatie\LaravelEndpointResources\EndpointTypes\InvokableControllerEndpointType;
-use Spatie\LaravelEndpointResources\EndpointTypes\MultiEndpointType;
 
 class EndpointResource extends JsonResource
 {
@@ -83,28 +79,28 @@ class EndpointResource extends JsonResource
                     : $endpointType;
             })
             ->mapWithKeys(function (EndPointType $endpointType) {
-                if ($endpointType instanceof MultiEndpointType) {
-                    return $this->resolveEndpointsFromMultiEndpointType($endpointType);
+                if ($endpointType instanceof ControllerEndpointType) {
+                    return $this->resolveEndpointsFromControllerEndpointType($endpointType);
                 }
 
                 return $endpointType->getEndpoints($this->resource);
             });
     }
 
-    private function resolveEndpointsFromMultiEndpointType(MultiEndpointType $multiEndpointType): array
+    private function resolveEndpointsFromControllerEndpointType(ControllerEndpointType $endpointType): array
     {
         if ($this->endpointResourceType === EndpointResourceType::ITEM) {
-            return $multiEndpointType->getEndpoints($this->resource);
+            return $endpointType->getEndpoints($this->resource);
         }
 
         if ($this->endpointResourceType === EndpointResourceType::COLLECTION) {
-            return $multiEndpointType->getCollectionEndpoints();
+            return $endpointType->getCollectionEndpoints();
         }
 
         if ($this->endpointResourceType === EndpointResourceType::MULTI) {
             return array_merge(
-                $multiEndpointType->getEndpoints($this->resource),
-                $multiEndpointType->getCollectionEndpoints()
+                $endpointType->getEndpoints($this->resource),
+                $endpointType->getCollectionEndpoints()
             );
         }
 
