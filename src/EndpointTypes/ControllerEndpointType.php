@@ -85,17 +85,21 @@ class ControllerEndpointType extends EndpointType implements MultiEndpointType
 
     private function resolveEndpoints(array $methodsToInclude, Model $model = null): array
     {
-        return self::getRoutesForController($this->controller)
+        $endpoints =  self::getRoutesForController($this->controller)
             ->filter(function (Route $route) use ($methodsToInclude) {
                 return in_array($route->getActionMethod(), $methodsToInclude);
-            })->mapWithKeys(function (Route $route) use ($model) {
-                return RouteEndpointType::make($route)
+            })->map(function (Route $route) use ($model) {
+                $route = RouteEndpointType::make($route)
                     ->parameters($this->parameters)
                     ->name($this->resolveNameForRoute($route))
                     ->prefix($this->prefix)
                     ->formatter($this->formatter)
                     ->getEndpoints($model);
+
+                return $route;
             })->toArray();
+
+        return array_merge_recursive(...$endpoints);
     }
 
     private static function getRoutesForController(string $controller): Collection
@@ -114,7 +118,7 @@ class ControllerEndpointType extends EndpointType implements MultiEndpointType
         return self::$cachedRoutes[$controller];
     }
 
-    private function resolveNameForRoute(Route $route) : string
+    private function resolveNameForRoute(Route $route): string
     {
         $method = $route->getActionMethod();
 

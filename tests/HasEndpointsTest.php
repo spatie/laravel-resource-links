@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Spatie\LaravelEndpointResources\EndpointResource;
 use Spatie\LaravelEndpointResources\EndpointResourceType;
 use Spatie\LaravelEndpointResources\EndpointsGroup;
+use Spatie\LaravelEndpointResources\Formatters\LayeredFormatter;
 use Spatie\LaravelEndpointResources\HasEndpoints;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestController;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
@@ -168,7 +169,7 @@ class HasEndpointsTest extends TestCase
                     ],
                 ],
             ],
-            'meta' => []
+            'meta' => [],
         ]);
     }
 
@@ -281,47 +282,6 @@ class HasEndpointsTest extends TestCase
                     ],
                 ],
             ],
-        ]);
-    }
-
-    /** @test */
-    public function it_can_use_different_http_verbs_with_the_same_uri()
-    {
-        $this->fakeRouter->get('/users/{testModel}', [TestController::class, 'show']);
-        $this->fakeRouter->put('/users/{testModel}', [TestController::class, 'update']);
-
-        $testResource = new class(null) extends JsonResource
-        {
-            use HasEndpoints;
-
-            public function toArray($request)
-            {
-                return [
-                    'endpoints' => $this->endpoints(function (EndpointsGroup $endpoints) {
-                        $endpoints->controller(TestController::class)->methods(['show', 'update']);
-                    }),
-                ];
-            }
-        };
-
-        $this->fakeRouter->get('/index', function () use ($testResource) {
-            return $testResource::make(TestModel::first());
-        });
-
-        $this->get('/index')->assertExactJson([
-            'data' => [
-                'endpoints' => [
-                    'show' => [
-                        'method' => 'GET',
-                        'action' => action([TestController::class, 'show'], $this->testModel),
-                    ],
-                    'update' => [
-                        'method' => 'PUT',
-                        'action' => action([TestController::class, 'update'], $this->testModel),
-                    ],
-                ],
-            ],
-            'meta' => [],
         ]);
     }
 }

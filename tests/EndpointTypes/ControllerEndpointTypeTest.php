@@ -3,6 +3,7 @@
 namespace Spatie\LaravelEndpointResources\Tests\EndpointTypes;
 
 use Spatie\LaravelEndpointResources\EndpointTypes\ControllerEndpointType;
+use Spatie\LaravelEndpointResources\Formatters\LayeredFormatter;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestController;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestModel;
 use Spatie\LaravelEndpointResources\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
@@ -204,6 +205,32 @@ class ControllerEndpointTypeTest extends TestCase
                 'method' => 'GET',
                 'action' => action($indexAction),
             ],
+        ], $endpoints);
+    }
+    
+    /** @test */
+    public function it_will_merge_layered_formatted_endpoints()
+    {
+        $this->fakeRouter->get('/users/{testModel}', [TestController::class, 'show']);
+        $this->fakeRouter->put('/users/{testModel}', [TestController::class, 'update']);
+
+        $endpoints = ControllerEndpointType::make(TestController::class)
+            ->methods(['show', 'update'])
+            ->prefix('filter')
+            ->formatter(LayeredFormatter::class)
+            ->getEndpoints($this->testModel);
+
+        $this->assertEquals([
+            'filter' => [
+                'show' => [
+                    'method' => 'GET',
+                    'action' => action([TestController::class, 'show'], $this->testModel),
+                ],
+                'update' => [
+                    'method' => 'PUT',
+                    'action' => action([TestController::class, 'update'], $this->testModel),
+                ],
+            ]
         ], $endpoints);
     }
 }
