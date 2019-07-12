@@ -9,33 +9,25 @@ use Illuminate\Support\Arr;
 trait HasEndpoints
 {
     /**
-     * @param string|Closure|null $controller
+     * @param string|Closure|null|array $controller
      * @param null $parameters
      *
      * @return \Spatie\LaravelEndpointResources\EndpointResource
      */
     public function endpoints($controller = null, $parameters = null): EndpointResource
     {
-        return self::initializeEndpointResource(
-            new EndpointResource($this->resource, EndpointResourceType::ITEM),
-            $controller,
-            $parameters
-        );
+        return EndpointResource::initialize($this->resource, EndpointResourceType::ITEM)->endpoint($controller, $parameters);
     }
 
     /**
-     * @param string|Closure|null $controller
+     * @param string|Closure|null|array $controller
      * @param null $parameters
      *
      * @return \Spatie\LaravelEndpointResources\EndpointResource
      */
     public static function collectionEndpoints($controller = null, $parameters = null): EndpointResource
     {
-        return self::initializeEndpointResource(
-            new EndpointResource(null, EndpointResourceType::COLLECTION),
-            $controller,
-            $parameters
-        );
+        return EndpointResource::initialize(null, EndpointResourceType::COLLECTION)->endpoint($controller, $parameters);
     }
 
     public static function collection($resource)
@@ -67,32 +59,5 @@ trait HasEndpoints
     public static function meta()
     {
         return [];
-    }
-
-    /**
-     * @param \Spatie\LaravelEndpointResources\EndpointResource|null $endpointResource
-     * @param string|Closure|null $controller
-     * @param null $parameters
-     *
-     * @return \Spatie\LaravelEndpointResources\EndpointResource
-     */
-    private static function initializeEndpointResource(
-        EndpointResource $endpointResource,
-        $controller = null,
-        $parameters = null
-    ): EndpointResource {
-        if ($controller instanceof Closure) {
-            $endpointsGroup = new EndpointsGroup();
-
-            $controller($endpointsGroup);
-
-            return $endpointResource->addEndpointsGroup($endpointsGroup);
-        }
-
-        if ($controller !== null) {
-            return $endpointResource->addController($controller, Arr::wrap($parameters));
-        }
-
-        return $endpointResource;
     }
 }

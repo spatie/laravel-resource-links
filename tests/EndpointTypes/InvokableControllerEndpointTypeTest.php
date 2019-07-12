@@ -37,7 +37,7 @@ class InvokableControllerEndpointTypeTest extends TestCase
         $endpoints = $endpointType->getEndpoints($this->testModel);
 
         $this->assertEquals([
-            'sync' => [
+            'invoke' => [
                 'method' => 'GET',
                 'action' => action($action, $this->testModel),
             ],
@@ -47,9 +47,9 @@ class InvokableControllerEndpointTypeTest extends TestCase
     /** @test */
     public function it_can_name_an_endpoint()
     {
-        $action = TestInvokableCollectionController::class;
+        $action = TestInvokableController::class;
 
-        $this->fakeRouter->invokableGet('/invoke', $action);
+        $this->fakeRouter->invokableGet('{testModel}', $action);
 
         $endpoints = InvokableControllerEndpointType::make($action)
             ->name('purge')
@@ -58,7 +58,7 @@ class InvokableControllerEndpointTypeTest extends TestCase
         $this->assertEquals([
             'purge' => [
                 'method' => 'GET',
-                'action' => action($action),
+                'action' => action(TestInvokableController::class, $this->testModel),
             ],
         ], $endpoints);
     }
@@ -66,9 +66,9 @@ class InvokableControllerEndpointTypeTest extends TestCase
     /** @test */
     public function it_can_prefix_endpoints()
     {
-        $action = TestInvokableCollectionController::class;
+        $action = TestInvokableController::class;
 
-        $this->fakeRouter->invokableGet('/invoke', $action);
+        $this->fakeRouter->invokableGet('{testModel}', $action);
 
         $endpoints = InvokableControllerEndpointType::make($action)
             ->prefix('this-')
@@ -77,7 +77,7 @@ class InvokableControllerEndpointTypeTest extends TestCase
         $this->assertEquals([
             'this-invoke' => [
                 'method' => 'GET',
-                'action' => action($action),
+                'action' => action($action, $this->testModel),
             ],
         ], $endpoints);
     }

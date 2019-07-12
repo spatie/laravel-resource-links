@@ -96,52 +96,6 @@ class ControllerEndpointTypeTest extends TestCase
     }
 
     /** @test */
-    public function it_will_only_create_routes_based_upon_the_end_point_methods_property()
-    {
-        $endPointAction = [TestControllerWithSpecifiedEndpoints::class, 'endpoint'];
-        $nonEndpointAction = [TestControllerWithSpecifiedEndpoints::class, 'nonEndpoint'];
-
-        $this->fakeRouter->get('/a/{testModel}', $endPointAction);
-        $this->fakeRouter->get('/b/{testModel}', $nonEndpointAction);
-
-        $testModel = TestModel::create([
-            'name' => 'TestModel',
-        ]);
-
-        $endpointType = ControllerEndpointType::make(TestControllerWithSpecifiedEndpoints::class);
-
-        $endpoints = $endpointType->getEndpoints($testModel);
-
-        $this->assertEquals([
-            'endpoint' => [
-                'method' => 'GET',
-                'action' => action($endPointAction, $testModel),
-            ],
-        ], $endpoints);
-    }
-
-    /** @test */
-    public function it_will_only_create_routes_based_upon_the_collection_end_point_methods_property()
-    {
-        $collectionEndpoint = [TestControllerWithSpecifiedEndpoints::class, 'collectionEndpoint'];
-        $nonCollectionEndpoint = [TestControllerWithSpecifiedEndpoints::class, 'nonCollectionEndpoint'];
-
-        $this->fakeRouter->get('/a/', $collectionEndpoint);
-        $this->fakeRouter->get('/b/', $nonCollectionEndpoint);
-
-        $endpointType = ControllerEndpointType::make(TestControllerWithSpecifiedEndpoints::class);
-
-        $endpoints = $endpointType->getCollectionEndpoints();
-
-        $this->assertEquals([
-            'collectionEndpoint' => [
-                'method' => 'GET',
-                'action' => action($collectionEndpoint),
-            ],
-        ], $endpoints);
-    }
-
-    /** @test */
     public function it_can_specify_which_methods_to_use()
     {
         $indexAction = [TestController::class, 'index'];
@@ -232,5 +186,14 @@ class ControllerEndpointTypeTest extends TestCase
                 ],
             ]
         ], $endpoints);
+    }
+    
+    /** @test */
+    public function a_controller_endpoint_type_can_have_no_endpoints()
+    {
+        $endpoints = ControllerEndpointType::make(TestController::class)
+            ->getEndpoints($this->testModel);
+
+        $this->assertEquals([], $endpoints);
     }
 }

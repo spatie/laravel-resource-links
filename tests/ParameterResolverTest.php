@@ -21,7 +21,7 @@ class ParameterResolverTest extends TestCase
             'name' => 'secondTestModel',
         ]);
 
-        $route = $this->fakeRouter->get('{secondTestModel}/{testModel}', [TestControllerWithSpecifiedEndpoints::class, 'endpointWithTwoParameters']);
+        $route = $this->fakeRouter->get('{secondTestModel}/{testModel}', [TestController::class, 'copy']);
 
         $parameterResolver = new ParameterResolver($testModel, [$secondTestModel]);
 
@@ -111,7 +111,7 @@ class ParameterResolverTest extends TestCase
             'name' => 'otherTestModel',
         ]);
 
-        $route = $this->fakeRouter->get('{testModel}/{otherTestModel}', [TestControllerWithSpecifiedEndpoints::class, 'endpointWithTwoIdenticalParameters']);
+        $route = $this->fakeRouter->get('{testModel}/{otherTestModel}', [TestController::class, 'sync']);
 
         $parameterResolver = new ParameterResolver(null, ['testModel' => $testModel, 'otherTestModel' => $otherTestModel]);
 
@@ -132,7 +132,7 @@ class ParameterResolverTest extends TestCase
             'name' => 'otherTestModel',
         ]);
 
-        $route = $this->fakeRouter->get('{testModel}/{otherTestModel}', [TestControllerWithSpecifiedEndpoints::class, 'endpointWithTwoIdenticalParameters']);
+        $route = $this->fakeRouter->get('{testModel}/{otherTestModel}', [TestController::class, 'sync']);
 
         $parameterResolver = new ParameterResolver($otherTestModel, ['testModel' => $testModel]);
 
@@ -145,7 +145,7 @@ class ParameterResolverTest extends TestCase
     /** @test */
     public function it_cannot_deduce_parameters_without_type_and_name()
     {
-        $route = $this->fakeRouter->get('{withoutType}', [TestControllerWithSpecifiedEndpoints::class, 'endpointWithoutTypes']);
+        $route = $this->fakeRouter->get('{withoutType}', [TestController::class, 'read']);
 
         $parameterResolver = new ParameterResolver(null);
 
@@ -155,7 +155,7 @@ class ParameterResolverTest extends TestCase
     /** @test */
     public function it_can_deduce_parameters_with_type_and_name()
     {
-        $route = $this->fakeRouter->get('{withoutType}', [TestControllerWithSpecifiedEndpoints::class, 'endpointWithoutTypes']);
+        $route = $this->fakeRouter->get('{withoutType}', [TestController::class, 'read']);
 
         $parameterResolver = new ParameterResolver(null, [
             'withoutType' => 42

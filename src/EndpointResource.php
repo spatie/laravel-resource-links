@@ -2,6 +2,7 @@
 
 namespace Spatie\LaravelEndpointResources;
 
+use Closure;
 use Illuminate\Support\Arr;
 use Spatie\LaravelEndpointResources\EndpointTypes\ControllerEndpointType;
 use Spatie\LaravelEndpointResources\EndpointTypes\EndpointType;
@@ -16,6 +17,11 @@ class EndpointResource extends JsonResource
     /** @var \Spatie\LaravelEndpointResources\EndpointsGroup */
     private $endpointsGroup;
 
+    public static function initialize(Model $model = null, string $endpointResourceType = null): EndpointResource
+    {
+        return new self($model, $endpointResourceType);
+    }
+
     public function __construct(Model $model = null, string $endpointResourceType = null)
     {
         parent::__construct($model);
@@ -24,38 +30,25 @@ class EndpointResource extends JsonResource
         $this->endpointsGroup = new EndpointsGroup();
     }
 
-    public function addController(string $controller, $parameters = null): EndpointResource
+    public function endpoint($controller, $parameters = null, $httpVerb = null): EndpointResource
     {
-        if (method_exists($controller, '__invoke')) {
-            return $this->addInvokableController($controller, $parameters);
+        if ($controller instanceof Closure) {
+            $endpointsGroup = new EndpointsGroup();
+
+            $controller($endpointsGroup);
+
+            return $this->addEndpointsGroup($endpointsGroup);
         }
 
-        $this->endpointsGroup->controller($controller)
-            ->parameters(Arr::wrap($parameters));
+        if (is_array($controller)) {
+            return $this->addAction($controller, Arr::wrap($parameters), $httpVerb);
+        }
 
-        return $this;
-    }
-
-    public function addAction(array $action, $parameters = null, string $httpVerb = null): EndpointResource
-    {
-        $this->endpointsGroup->action($action)
-            ->httpVerb($httpVerb)
-            ->parameters(Arr::wrap($parameters));
-
-        return $this;
-    }
-
-    public function addInvokableController(string $controller, $parameters = null): EndpointResource
-    {
-        $this->endpointsGroup->invokableController($controller)
-            ->parameters(Arr::wrap($parameters));
-
-        return $this;
-    }
-
-    public function addEndpointsGroup(EndpointsGroup $endpointsGroup): EndpointResource
-    {
-        $this->endpointsGroup->endpointsGroup($endpointsGroup);
+        if (is_string($controller)) {
+            return method_exists($controller, '__invoke')
+                ? $this->addInvokableController($controller, Arr::wrap($parameters))
+                : $this->addController($controller, Arr::wrap($parameters));
+        }
 
         return $this;
     }
@@ -87,6 +80,40 @@ class EndpointResource extends JsonResource
             });
     }
 
+
+    private function addController(string $controller, $parameters = null): EndpointResource
+    {
+        $this->endpointsGroup->controller($controller)
+            ->parameters(Arr::wrap($parameters));
+
+        return $this;
+    }
+
+    private function addAction(array $action, $parameters = null, string $httpVerb = null): EndpointResource
+    {
+        $this->endpointsGroup->action($action)
+            ->httpVerb($httpVerb)
+            ->parameters(Arr::wrap($parameters));
+
+        return $this;
+    }
+
+    private function addInvokableController(string $controller, $parameters = null): EndpointResource
+    {
+        $this->endpointsGroup->invokableController($controller)
+            ->parameters(Arr::wrap($parameters));
+
+        return $this;
+    }
+
+    private function addEndpointsGroup(EndpointsGroup $endpointsGroup): EndpointResource
+    {
+        $this->endpointsGroup->endpointsGroup($endpointsGroup);
+
+        return $this;
+    }
+
+
     private function resolveEndpointsFromControllerEndpointType(ControllerEndpointType $endpointType): array
     {
         if ($this->endpointResourceType === EndpointResourceType::ITEM) {
@@ -113,7 +140,7 @@ class EndpointResource extends JsonResource
             return;
         }
 
-        if(config('laravel-endpoint-resources.automatically-merge-endpoints') === false){
+        if (config('laravel-endpoint-resources.automatically-merge-endpoints') === false) {
             return;
         }
 

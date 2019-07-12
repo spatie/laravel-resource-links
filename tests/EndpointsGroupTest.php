@@ -71,7 +71,7 @@ class EndpointsGroupTest extends TestCase
         $endpointsGroup->controller(TestInvokableController::class);
 
         $secondEndpointsGroup = new EndpointsGroup();
-        $secondEndpointsGroup->controller(TestInvokableCollectionController::class);
+        $secondEndpointsGroup->action([TestController::class, 'index']);
 
         $endpointsGroup->endpointsGroup($secondEndpointsGroup);
 
@@ -81,7 +81,7 @@ class EndpointsGroupTest extends TestCase
         );
         $this->assertTrue(
             $endpointsGroup->getEndpointTypes()
-                ->contains(InvokableControllerEndpointType::make(TestInvokableCollectionController::class))
+                ->contains(ActionEndpointType::make([TestController::class, 'index']))
         );
     }
 }

@@ -49,42 +49,25 @@ class ControllerEndpointType extends EndpointType
 
     public function getEndpoints(Model $model = null): array
     {
-        $methodsToInclude = $this->resolveMethodsToInclude(
-            'endPointMethods',
-            ['show', 'edit', 'update', 'destroy']
-        );
+        $methodsToInclude = empty($this->methods)
+            ? ['show', 'edit', 'update', 'destroy']
+            : $this->methods;
 
         return $this->resolveEndpoints($methodsToInclude, $model);
     }
 
     public function getCollectionEndpoints(): array
     {
-        $methodsToInclude = $this->resolveMethodsToInclude(
-            'collectionEndPointMethods',
-            ['index', 'store', 'create']
-        );
+        $methodsToInclude = empty($this->methods)
+            ? ['index', 'store', 'create']
+            : $this->methods;
 
         return $this->resolveEndpoints($methodsToInclude);
     }
 
-    private function resolveMethodsToInclude(string $classProperty, array $fallBackMethods): array
-    {
-        if (! empty($this->methods)) {
-            return $this->methods;
-        }
-
-        $controller = new $this->controller();
-
-        if (property_exists($controller, $classProperty)) {
-            return $controller->$classProperty;
-        }
-
-        return $fallBackMethods;
-    }
-
     private function resolveEndpoints(array $methodsToInclude, Model $model = null): array
     {
-        $endpoints =  self::getRoutesForController($this->controller)
+        $endpoints = self::getRoutesForController($this->controller)
             ->filter(function (Route $route) use ($methodsToInclude) {
                 return in_array($route->getActionMethod(), $methodsToInclude);
             })->map(function (Route $route) use ($model) {
@@ -98,7 +81,9 @@ class ControllerEndpointType extends EndpointType
                 return $route;
             })->toArray();
 
-        return array_merge_recursive(...$endpoints);
+        return ! empty($endpoints)
+            ? array_merge_recursive(...$endpoints)
+            : [];
     }
 
     private static function getRoutesForController(string $controller): Collection

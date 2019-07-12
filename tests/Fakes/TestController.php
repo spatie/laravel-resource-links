@@ -21,4 +21,19 @@ class TestController
     public function update(Request $request, TestModel $testModel)
     {
     }
+
+    public function copy(SecondTestModel $secondTestModel, TestModel $testModel)
+    {
+
+    }
+
+    public function sync(TestModel $testModel, TestModel $otherTestModel)
+    {
+
+    }
+
+    public function read($withoutType)
+    {
+
+    }
 }

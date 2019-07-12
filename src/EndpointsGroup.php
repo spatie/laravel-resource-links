@@ -30,7 +30,7 @@ class EndpointsGroup
         return $controllerEndpointType;
     }
 
-    public function invokableController(string $controller): ControllerEndpointType
+    public function invokableController(string $controller): InvokableControllerEndpointType
     {
         $invokableControllerEndpointType = InvokableControllerEndpointType::make($controller);
 

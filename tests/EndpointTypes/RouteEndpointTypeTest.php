@@ -4,6 +4,7 @@ namespace Spatie\LaravelEndpointResources\Tests\EndpointTypes;
 
 use Illuminate\Routing\Route;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\URL;
 use Spatie\LaravelEndpointResources\EndpointTypes\RouteEndpointType;
 use Spatie\LaravelEndpointResources\Exceptions\EndpointGenerationException;
 use Spatie\LaravelEndpointResources\Formatters\LayeredFormatter;
@@ -30,7 +31,7 @@ class RouteEndpointTypeTest extends TestCase
     }
     
     /** @test */
-    public function it_can_create_an_route_endpoint_type()
+    public function it_can_create_a_route_endpoint_type()
     {
         $action = [TestController::class, 'index'];
 
@@ -102,7 +103,7 @@ class RouteEndpointTypeTest extends TestCase
     /** @test */
     public function it_can_combine_the_resource_model_and_parameters_for_binding_to_routes()
     {
-        $action = [TestControllerWithSpecifiedEndpoints::class, 'endpointWithTwoParameters'];
+        $action = [TestController::class, 'copy'];
 
         $route = $this->fakeRouter->get('{testModel}/{secondTestModel}', $action);
 
@@ -116,7 +117,7 @@ class RouteEndpointTypeTest extends TestCase
             ->getEndpoints($this->testModel);
 
         $this->assertEquals([
-            'endpointWithTwoParameters' => [
+            'copy' => [
                 'method' => 'GET',
                 'action' => action(
                     $action,
@@ -129,7 +130,7 @@ class RouteEndpointTypeTest extends TestCase
     /** @test */
     public function it_works_nicely_with_route_defaults()
     {
-        $action = [TestControllerWithSpecifiedEndpoints::class, 'endpointWithTwoParameters'];
+        $action = [TestController::class, 'copy'];
 
         $route = $this->fakeRouter->get('{testModel}/{secondTestModel}', $action);
 
@@ -143,7 +144,7 @@ class RouteEndpointTypeTest extends TestCase
         $endpoints = RouteEndpointType::make($route)->getEndpoints($this->testModel);
 
         $this->assertEquals([
-            'endpointWithTwoParameters' => [
+            'copy' => [
                 'method' => 'GET',
                 'action' => action(
                     $action,
@@ -166,25 +167,6 @@ class RouteEndpointTypeTest extends TestCase
 
         $this->assertEquals([
             'this-index' => [
-                'method' => 'GET',
-                'action' => action($action)
-            ]
-        ], $endpoints);
-    }
-
-    /** @test */
-    public function it_throws_an_exception_when_an_endpoint_can_not_be_constructed()
-    {
-        $this->expectException(EndpointGenerationException::class);
-
-        $action = [TestController::class, 'show'];
-
-        $route = $this->fakeRouter->get('/{testModel}', $action);
-
-        $endpoints =  RouteEndpointType::make($route)->getEndpoints();
-
-        $this->assertEquals([
-            'index' => [
                 'method' => 'GET',
                 'action' => action($action)
             ]
@@ -219,5 +201,29 @@ class RouteEndpointTypeTest extends TestCase
         $endpoints =  RouteEndpointType::make($route)->getEndpoints();
 
         $this->assertEquals(['index' => action($action)], $endpoints);
+    }
+
+    /** @test */
+    public function a_not_constructable_route_has_its_missing_parameters_in_brackets()
+    {
+        $action = [TestController::class, 'copy'];
+
+        $route = $this->fakeRouter->get('/{secondTestModel}/{testModel}', $action);
+
+        $secondTestModel = SecondTestModel::create([
+            'id' => 2,
+            'name' => 'secondTestModel'
+        ]);
+
+        $endpoints =  RouteEndpointType::make($route)
+//            ->parameters([$secondTestModel])
+            ->getEndpoints($this->testModel);
+
+        $this->assertEquals([
+            'copy' => [
+                'method' => 'GET',
+                'action' => ''
+            ]
+        ], $endpoints);
     }
 }

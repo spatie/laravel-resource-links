@@ -104,7 +104,7 @@ class ActionEndpointTypeTest extends TestCase
     /** @test */
     public function it_can_combine_model_and_parameters_for_binding_to_routes()
     {
-        $action = [TestControllerWithSpecifiedEndpoints::class, 'endpointWithTwoParameters'];
+        $action = [TestController::class, 'copy'];
 
         $this->fakeRouter->get('{testModel}/{secondTestModel}', $action);
 
@@ -119,7 +119,7 @@ class ActionEndpointTypeTest extends TestCase
             ->getEndpoints($this->testModel);
 
         $this->assertEquals([
-            'endpointWithTwoParameters' => [
+            'copy' => [
                 'method' => 'GET',
                 'action' => action(
                     $action,

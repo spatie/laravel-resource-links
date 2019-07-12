@@ -2,6 +2,7 @@
 
 namespace Spatie\LaravelEndpointResources\EndpointTypes;
 
+use Illuminate\Routing\RouteUrlGenerator;
 use Spatie\LaravelEndpointResources\Exceptions\EndpointGenerationException;
 use Spatie\LaravelEndpointResources\Formatters\LayeredFormatter;
 use Spatie\LaravelEndpointResources\Formatters\Endpoint;
@@ -11,6 +12,7 @@ use Spatie\LaravelEndpointResources\ParameterResolver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Exceptions\UrlGenerationException;
 use Illuminate\Routing\Route;
+use Spatie\LaravelEndpointResources\UrlResolver;
 
 class RouteEndpointType extends EndpointType
 {
@@ -51,17 +53,12 @@ class RouteEndpointType extends EndpointType
     {
         $parameterResolver = new ParameterResolver($model, $this->parameters);
 
-        try {
-            $action = action("\\{$this->route->getActionName()}", $parameterResolver->forRoute($this->route));
-        } catch (UrlGenerationException $exception) {
-//            throw EndpointGenerationException::make($this->route, $model, $this->parameters);
-            return [];
-        }
+        $urlResolver = new UrlResolver(app('url'));
 
         $endpoint = Endpoint::make(
             $this->name ?? $this->route->getActionMethod(),
             $this->httpVerb ?? $this->getHttpVerbForRoute($this->route),
-            $action,
+            $urlResolver->resolve($this->route,$parameterResolver->forRoute($this->route)),
             $this->prefix
         );
 

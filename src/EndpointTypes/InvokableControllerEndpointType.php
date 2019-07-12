@@ -44,24 +44,9 @@ class InvokableControllerEndpointType extends ControllerEndpointType
     private function resolveEndpointType(): ActionEndpointType
     {
         return ActionEndpointType::make([$this->controller])
-            ->name($this->resolveEndpointName())
+            ->name($this->name ?? 'invoke')
             ->parameters($this->parameters)
             ->prefix($this->prefix)
             ->formatter($this->formatter);
-    }
-
-    private function resolveEndpointName(): string
-    {
-        if ($this->name !== null) {
-            return $this->name;
-        }
-
-        $controller = new $this->controller;
-
-        if (property_exists($controller, 'endpointName')) {
-            return $controller->endpointName;
-        }
-
-        return 'invoke';
     }
 }
