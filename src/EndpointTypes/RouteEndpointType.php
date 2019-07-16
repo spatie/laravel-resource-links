@@ -79,7 +79,7 @@ class RouteEndpointType extends EndpointType
     private function resolveFormatter(): Formatter
     {
         $formatter = is_null($this->formatter)
-            ? config('laravel-endpoint-resources.formatter')
+            ? config('laravel-resource-endpoints.formatter')
             : $this->formatter;
 
         return new $formatter;

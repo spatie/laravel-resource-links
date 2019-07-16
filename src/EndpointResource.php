@@ -140,7 +140,7 @@ class EndpointResource extends JsonResource
             return;
         }
 
-        if (config('laravel-endpoint-resources.automatically-merge-endpoints') === false) {
+        if (config('laravel-resource-endpoints.automatically-merge-endpoints') === false) {
             return;
         }
 

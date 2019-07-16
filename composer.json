@@ -1,11 +1,11 @@
 {
-    "name" : "spatie/laravel-endpoint-resources",
+    "name" : "spatie/laravel-resource-endpoints",
     "description" : "Add endpoints to your Laravel Resources",
     "keywords" : [
         "spatie",
-        "laravel-endpoint-resources"
+        "laravel-resource-endpoints"
     ],
-    "homepage" : "https://github.com/spatie/laravel-endpoint-resources",
+    "homepage" : "https://github.com/spatie/laravel-resource-endpoints",
     "license" : "MIT",
     "authors" : [
         {
@@ -44,7 +44,7 @@
     "extra" : {
         "laravel" : {
             "providers" : [
-                "Spatie\\LaravelResourceEndpoints\\EndpointResourcesServiceProvider"
+                "Spatie\\LaravelResourceEndpoints\\ResourceEndpointsServiceProvider"
             ]
         }
     }

@@ -4,7 +4,7 @@ namespace Spatie\LaravelResourceEndpoints;
 
 use Illuminate\Support\ServiceProvider;
 
-class EndpointResourcesServiceProvider extends ServiceProvider
+class ResourceEndpointsServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -13,7 +13,7 @@ class EndpointResourcesServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/config.php' => config_path('laravel-endpoint-resources.php'),
+                __DIR__ . '/../config/config.php' => config_path('laravel-resource-endpoints.php'),
             ], 'config');
         }
     }
@@ -23,6 +23,6 @@ class EndpointResourcesServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'laravel-endpoint-resources');
+        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'laravel-resource-endpoints');
     }
 }

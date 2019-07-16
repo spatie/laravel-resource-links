@@ -196,7 +196,7 @@ class RouteEndpointTypeTest extends TestCase
 
         $route = $this->fakeRouter->get('', $action);
 
-        app(config()->set('laravel-endpoint-resources.formatter', UrlFormatter::class));
+        app(config()->set('laravel-resource-endpoints.formatter', UrlFormatter::class));
 
         $endpoints =  RouteEndpointType::make($route)->getEndpoints();
 

@@ -1,9 +1,9 @@
 # Laravel Resource Endpoints
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-endpoint-resources.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-endpoint-resources)
-[![Build Status](https://img.shields.io/travis/spatie/laravel-endpoint-resources/master.svg?style=flat-square)](https://travis-ci.org/spatie/laravel-endpoint-resources)
-[![Quality Score](https://img.shields.io/scrutinizer/g/spatie/laravel-endpoint-resources.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/laravel-endpoint-resources)
-[![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-endpoint-resources.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-endpoint-resources)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-resource-endpoints.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-resource-endpoints)
+[![Build Status](https://img.shields.io/travis/spatie/laravel-resource-endpoints/master.svg?style=flat-square)](https://travis-ci.org/spatie/laravel-resource-endpoints)
+[![Quality Score](https://img.shields.io/scrutinizer/g/spatie/laravel-resource-endpoints.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/laravel-resource-endpoints)
+[![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-resource-endpoints.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-resource-endpoints)
 
 **This package is under heavy development, things will change and documentation may not be up to date!**
 
@@ -90,7 +90,7 @@ Now when creating an `UserResource` collection, you will have all the endpoints 
 You can install the package via composer:
 
 ```bash
-composer require spatie/laravel-endpoint-resources
+composer require spatie/laravel-resource-endpoints
 ```
 
 ## Usage
@@ -301,7 +301,7 @@ The `UserResource` in a response will now look like this:
 
 #### Automatically merge collection endpoints
 
-Sometimes you yust want to automatically merge collection endpoints into a single endpoint resource when the model given to that resource does not exist or is null. Calling `->mergeCollectionEndpoints()` on every resource can be a bit tedious. So when setting `automatically-merge-endpoints` in `config\laravel-endpoint-resources.php` to true, each single endpoint resource will merge it's collection endpoints when a non-existing or null model is given to the resource.
+Sometimes you yust want to automatically merge collection endpoints into a single endpoint resource when the model given to that resource does not exist or is null. Calling `->mergeCollectionEndpoints()` on every resource can be a bit tedious. So when setting `automatically-merge-endpoints` in `config\laravel-resource-endpoints.php` to true, each single endpoint resource will merge it's collection endpoints when a non-existing or null model is given to the resource.
 
 
 ### Route parameters
@@ -581,7 +581,7 @@ The package includes 3 formatters:
 - LayeredFormatter: this formatter will put prefixed endpoints in their own prefixed array
 - UrlFormatter: a simple formatter which has an endpoint name as key and endpoint url as value
 
-You can set the formatter used in the `laravel-endpoint-resources.php` config file. Or if you are using endpoint groups it is possible to set an formatter specifically for each endpoint:
+You can set the formatter used in the `laravel-resource-endpoints.php` config file. Or if you are using endpoint groups it is possible to set an formatter specifically for each endpoint:
 
 ```php
 $endpoints
@@ -598,11 +598,11 @@ composer test
 
 ### Changelog
 
-Please see [CHANGELOG](https://github.com/spatie/laravel-endpoint-resources/blob/master/CHANGELOG.md) for more information on what has changed recently.
+Please see [CHANGELOG](https://github.com/spatie/laravel-resource-endpoints/blob/master/CHANGELOG.md) for more information on what has changed recently.
 
 ## Contributing
 
-Please see [CONTRIBUTING](https://github.com/spatie/laravel-endpoint-resources/blob/master/CONTRIBUTING.md) for details.
+Please see [CONTRIBUTING](https://github.com/spatie/laravel-resource-endpoints/blob/master/CONTRIBUTING.md) for details.
 
 ### Security
 
@@ -619,7 +619,7 @@ We publish all received postcards [on our company website](https://spatie.be/en/
 ## Credits
 
 - [Ruben Van Assche](https://github.com/rubenvanassche)
-- [All Contributors](https://github.com/spatie/laravel-endpoint-resources/contributors)
+- [All Contributors](https://github.com/spatie/laravel-resource-endpoints/contributors)
 
 ## Support us
 
@@ -630,4 +630,4 @@ All pledges will be dedicated to allocating workforce on maintenance and new awe
 
 ## License
 
-The MIT License (MIT). Please see [License File](https://github.com/spatie/laravel-endpoint-resources/blob/master/LICENSE.md) for more information.
+The MIT License (MIT). Please see [License File](https://github.com/spatie/laravel-resource-endpoints/blob/master/LICENSE.md) for more information.
