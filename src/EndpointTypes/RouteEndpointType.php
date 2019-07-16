@@ -1,18 +1,18 @@
 <?php
 
-namespace Spatie\LaravelEndpointResources\EndpointTypes;
+namespace Spatie\LaravelResourceEndpoints\EndpointTypes;
 
 use Illuminate\Routing\RouteUrlGenerator;
-use Spatie\LaravelEndpointResources\Exceptions\EndpointGenerationException;
-use Spatie\LaravelEndpointResources\Formatters\LayeredFormatter;
-use Spatie\LaravelEndpointResources\Formatters\Endpoint;
-use Spatie\LaravelEndpointResources\Formatters\DefaultFormatter;
-use Spatie\LaravelEndpointResources\Formatters\Formatter;
-use Spatie\LaravelEndpointResources\ParameterResolver;
+use Spatie\LaravelResourceEndpoints\Exceptions\EndpointGenerationException;
+use Spatie\LaravelResourceEndpoints\Formatters\LayeredFormatter;
+use Spatie\LaravelResourceEndpoints\Formatters\Endpoint;
+use Spatie\LaravelResourceEndpoints\Formatters\DefaultFormatter;
+use Spatie\LaravelResourceEndpoints\Formatters\Formatter;
+use Spatie\LaravelResourceEndpoints\ParameterResolver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Exceptions\UrlGenerationException;
 use Illuminate\Routing\Route;
-use Spatie\LaravelEndpointResources\UrlResolver;
+use Spatie\LaravelResourceEndpoints\UrlResolver;
 
 class RouteEndpointType extends EndpointType
 {

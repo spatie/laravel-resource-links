@@ -1,23 +1,23 @@
 <?php
 
-namespace Spatie\LaravelEndpointResources\Tests\EndpointTypes;
+namespace Spatie\LaravelResourceEndpoints\Tests\EndpointTypes;
 
 use Illuminate\Routing\Route;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\URL;
-use Spatie\LaravelEndpointResources\EndpointTypes\RouteEndpointType;
-use Spatie\LaravelEndpointResources\Exceptions\EndpointGenerationException;
-use Spatie\LaravelEndpointResources\Formatters\LayeredFormatter;
-use Spatie\LaravelEndpointResources\Formatters\UrlFormatter;
-use Spatie\LaravelEndpointResources\Tests\Fakes\TestController;
-use Spatie\LaravelEndpointResources\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
-use Spatie\LaravelEndpointResources\Tests\Fakes\TestModel;
-use Spatie\LaravelEndpointResources\Tests\Fakes\SecondTestModel;
-use Spatie\LaravelEndpointResources\Tests\TestCase;
+use Spatie\LaravelResourceEndpoints\EndpointTypes\RouteEndpointType;
+use Spatie\LaravelResourceEndpoints\Exceptions\EndpointGenerationException;
+use Spatie\LaravelResourceEndpoints\Formatters\LayeredFormatter;
+use Spatie\LaravelResourceEndpoints\Formatters\UrlFormatter;
+use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestController;
+use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
+use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestModel;
+use Spatie\LaravelResourceEndpoints\Tests\Fakes\SecondTestModel;
+use Spatie\LaravelResourceEndpoints\Tests\TestCase;
 
 class RouteEndpointTypeTest extends TestCase
 {
-    /** @var \Spatie\LaravelEndpointResources\Tests\Fakes\TestModel */
+    /** @var \Spatie\LaravelResourceEndpoints\Tests\Fakes\TestModel */
     private $testModel;
 
     protected function setUp(): void

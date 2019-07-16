@@ -1,12 +1,12 @@
 <?php
 
-namespace Spatie\LaravelEndpointResources\Tests;
+namespace Spatie\LaravelResourceEndpoints\Tests;
 
-use Spatie\LaravelEndpointResources\ParameterResolver;
-use Spatie\LaravelEndpointResources\Tests\Fakes\TestController;
-use Spatie\LaravelEndpointResources\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
-use Spatie\LaravelEndpointResources\Tests\Fakes\TestModel;
-use Spatie\LaravelEndpointResources\Tests\Fakes\SecondTestModel;
+use Spatie\LaravelResourceEndpoints\ParameterResolver;
+use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestController;
+use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
+use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestModel;
+use Spatie\LaravelResourceEndpoints\Tests\Fakes\SecondTestModel;
 
 class ParameterResolverTest extends TestCase
 {

@@ -1,19 +1,19 @@
 <?php
 
-namespace Spatie\LaravelEndpointResources\Tests;
+namespace Spatie\LaravelResourceEndpoints\Tests;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as BaseTestCase;
-use Spatie\LaravelEndpointResources\EndpointResourcesServiceProvider;
-use Spatie\LaravelEndpointResources\Tests\Fakes\TestModel;
-use Spatie\LaravelEndpointResources\Tests\Fakes\FakeRouter;
-use Spatie\LaravelEndpointResources\Tests\Fakes\SecondTestModel;
+use Spatie\LaravelResourceEndpoints\EndpointResourcesServiceProvider;
+use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestModel;
+use Spatie\LaravelResourceEndpoints\Tests\Fakes\FakeRouter;
+use Spatie\LaravelResourceEndpoints\Tests\Fakes\SecondTestModel;
 
 abstract class TestCase extends BaseTestCase
 {
-    /** @var \Spatie\LaravelEndpointResources\Tests\Fakes\FakeRouter */
+    /** @var \Spatie\LaravelResourceEndpoints\Tests\Fakes\FakeRouter */
     protected $fakeRouter;
 
     protected function setUp() : void

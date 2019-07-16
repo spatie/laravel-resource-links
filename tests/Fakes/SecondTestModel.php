@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\LaravelEndpointResources\Tests\Fakes;
+namespace Spatie\LaravelResourceEndpoints\Tests\Fakes;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;

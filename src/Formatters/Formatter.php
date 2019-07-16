@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Spatie\LaravelEndpointResources\Formatters;
+namespace Spatie\LaravelResourceEndpoints\Formatters;
 
 
 interface Formatter

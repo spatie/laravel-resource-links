@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\LaravelEndpointResources\EndpointTypes;
+namespace Spatie\LaravelResourceEndpoints\EndpointTypes;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;

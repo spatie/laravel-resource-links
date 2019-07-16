@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\LaravelEndpointResources\Formatters;
+namespace Spatie\LaravelResourceEndpoints\Formatters;
 
 class DefaultFormatter implements Formatter
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\LaravelEndpointResources\Tests\Fakes;
+namespace Spatie\LaravelResourceEndpoints\Tests\Fakes;
 
 use Illuminate\Routing\Route;
 use Illuminate\Routing\RouteCollection;

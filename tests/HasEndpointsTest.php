@@ -1,23 +1,23 @@
 <?php
 
-namespace Spatie\LaravelEndpointResources\Tests;
+namespace Spatie\LaravelResourceEndpoints\Tests;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Spatie\LaravelEndpointResources\EndpointResource;
-use Spatie\LaravelEndpointResources\EndpointResourceType;
-use Spatie\LaravelEndpointResources\EndpointsGroup;
-use Spatie\LaravelEndpointResources\Formatters\LayeredFormatter;
-use Spatie\LaravelEndpointResources\HasEndpoints;
-use Spatie\LaravelEndpointResources\Tests\Fakes\TestController;
-use Spatie\LaravelEndpointResources\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
-use Spatie\LaravelEndpointResources\Tests\Fakes\TestInvokableCollectionController;
-use Spatie\LaravelEndpointResources\Tests\Fakes\TestInvokableController;
-use Spatie\LaravelEndpointResources\Tests\Fakes\TestModel;
+use Spatie\LaravelResourceEndpoints\EndpointResource;
+use Spatie\LaravelResourceEndpoints\EndpointResourceType;
+use Spatie\LaravelResourceEndpoints\EndpointsGroup;
+use Spatie\LaravelResourceEndpoints\Formatters\LayeredFormatter;
+use Spatie\LaravelResourceEndpoints\HasEndpoints;
+use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestController;
+use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
+use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestInvokableCollectionController;
+use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestInvokableController;
+use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestModel;
 
 class HasEndpointsTest extends TestCase
 {
-    /** @var \Spatie\LaravelEndpointResources\Tests\Fakes\TestModel */
+    /** @var \Spatie\LaravelResourceEndpoints\Tests\Fakes\TestModel */
     private $testModel;
 
     protected function setUp(): void

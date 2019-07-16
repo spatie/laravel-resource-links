@@ -1,11 +1,11 @@
 <?php
 
-namespace Spatie\LaravelEndpointResources;
+namespace Spatie\LaravelResourceEndpoints;
 
 use Closure;
 use Illuminate\Support\Arr;
-use Spatie\LaravelEndpointResources\EndpointTypes\ControllerEndpointType;
-use Spatie\LaravelEndpointResources\EndpointTypes\EndpointType;
+use Spatie\LaravelResourceEndpoints\EndpointTypes\ControllerEndpointType;
+use Spatie\LaravelResourceEndpoints\EndpointTypes\EndpointType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -14,7 +14,7 @@ class EndpointResource extends JsonResource
     /** @var string */
     private $endpointResourceType;
 
-    /** @var \Spatie\LaravelEndpointResources\EndpointsGroup */
+    /** @var \Spatie\LaravelResourceEndpoints\EndpointsGroup */
     private $endpointsGroup;
 
     public static function initialize(Model $model = null, string $endpointResourceType = null): EndpointResource

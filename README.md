@@ -1,4 +1,4 @@
-# Laravel Endpoint Resources
+# Laravel Resource Endpoints
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-endpoint-resources.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-endpoint-resources)
 [![Build Status](https://img.shields.io/travis/spatie/laravel-endpoint-resources/master.svg?style=flat-square)](https://travis-ci.org/spatie/laravel-endpoint-resources)
@@ -14,7 +14,7 @@ Laravel endpoint resources will add these endpoints to your resource based upon 
 ``` php
 class UserResource extends JsonResource
 {
-    use Spatie\LaravelEndpointResources\HasEndpoints;
+    use Spatie\LaravelResourceEndpoints\HasEndpoints;
 
     public function toArray($request): array
     {
@@ -95,7 +95,7 @@ composer require spatie/laravel-endpoint-resources
 
 ## Usage
 
-In your resources, add the `Spatie\LaravelEndpointResources\HasEndpoints` trait and a new attribute where the endpoints will be stored:
+In your resources, add the `Spatie\LaravelResourceEndpoints\HasEndpoints` trait and a new attribute where the endpoints will be stored:
 
 ``` php
 class UserResource extends JsonResource
@@ -573,7 +573,7 @@ Want a different representation for endpoints? For example something like this:
 }
 ```
 
-You can do this with formatters! You can create your own formatters by implementing the `Spatie\LaravelEndpointResources\Formatters\Formatter` interface.
+You can do this with formatters! You can create your own formatters by implementing the `Spatie\LaravelResourceEndpoints\Formatters\Formatter` interface.
 
 The package includes 3 formatters:
 
@@ -586,7 +586,7 @@ You can set the formatter used in the `laravel-endpoint-resources.php` config fi
 ```php
 $endpoints
 	->controller(UsersController::class)
-	->formatter(Spatie\LaravelEndpointResources\Formatters\ UrlFormatter::class);
+	->formatter(Spatie\LaravelResourceEndpoints\Formatters\ UrlFormatter::class);
 ``` 
 
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\LaravelEndpointResources;
+namespace Spatie\LaravelResourceEndpoints;
 
 class EndpointResourceType
 {

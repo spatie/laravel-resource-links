@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\LaravelEndpointResources;
+namespace Spatie\LaravelResourceEndpoints;
 
 use Illuminate\Routing\Exceptions\UrlGenerationException;
 use Illuminate\Routing\Route;

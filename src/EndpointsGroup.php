@@ -1,11 +1,11 @@
 <?php
 
-namespace Spatie\LaravelEndpointResources;
+namespace Spatie\LaravelResourceEndpoints;
 
 use Illuminate\Support\Collection;
-use Spatie\LaravelEndpointResources\EndpointTypes\ActionEndpointType;
-use Spatie\LaravelEndpointResources\EndpointTypes\ControllerEndpointType;
-use Spatie\LaravelEndpointResources\EndpointTypes\InvokableControllerEndpointType;
+use Spatie\LaravelResourceEndpoints\EndpointTypes\ActionEndpointType;
+use Spatie\LaravelResourceEndpoints\EndpointTypes\ControllerEndpointType;
+use Spatie\LaravelResourceEndpoints\EndpointTypes\InvokableControllerEndpointType;
 
 class EndpointsGroup
 {

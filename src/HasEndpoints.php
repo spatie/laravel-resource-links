@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\LaravelEndpointResources;
+namespace Spatie\LaravelResourceEndpoints;
 
 use Closure;
 use Illuminate\Support\Arr;
@@ -12,7 +12,7 @@ trait HasEndpoints
      * @param string|Closure|null|array $controller
      * @param null $parameters
      *
-     * @return \Spatie\LaravelEndpointResources\EndpointResource
+     * @return \Spatie\LaravelResourceEndpoints\EndpointResource
      */
     public function endpoints($controller = null, $parameters = null): EndpointResource
     {
@@ -23,7 +23,7 @@ trait HasEndpoints
      * @param string|Closure|null|array $controller
      * @param null $parameters
      *
-     * @return \Spatie\LaravelEndpointResources\EndpointResource
+     * @return \Spatie\LaravelResourceEndpoints\EndpointResource
      */
     public static function collectionEndpoints($controller = null, $parameters = null): EndpointResource
     {

@@ -1,18 +1,18 @@
 <?php
 
-namespace Spatie\LaravelEndpointResources\Tests\EndpointTypes;
+namespace Spatie\LaravelResourceEndpoints\Tests\EndpointTypes;
 
-use Spatie\LaravelEndpointResources\EndpointTypes\ControllerEndpointType;
-use Spatie\LaravelEndpointResources\EndpointTypes\InvokableControllerEndpointType;
-use Spatie\LaravelEndpointResources\Tests\Fakes\TestController;
-use Spatie\LaravelEndpointResources\Tests\Fakes\TestInvokableCollectionController;
-use Spatie\LaravelEndpointResources\Tests\Fakes\TestInvokableController;
-use Spatie\LaravelEndpointResources\Tests\Fakes\TestModel;
-use Spatie\LaravelEndpointResources\Tests\TestCase;
+use Spatie\LaravelResourceEndpoints\EndpointTypes\ControllerEndpointType;
+use Spatie\LaravelResourceEndpoints\EndpointTypes\InvokableControllerEndpointType;
+use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestController;
+use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestInvokableCollectionController;
+use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestInvokableController;
+use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestModel;
+use Spatie\LaravelResourceEndpoints\Tests\TestCase;
 
 class InvokableControllerEndpointTypeTest extends TestCase
 {
-    /** @var \Spatie\LaravelEndpointResources\Tests\Fakes\TestModel */
+    /** @var \Spatie\LaravelResourceEndpoints\Tests\Fakes\TestModel */
     private $testModel;
 
     protected function setUp(): void

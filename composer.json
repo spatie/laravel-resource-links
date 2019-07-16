@@ -26,12 +26,12 @@
     },
     "autoload" : {
         "psr-4" : {
-            "Spatie\\LaravelEndpointResources\\" : "src"
+            "Spatie\\LaravelResourceEndpoints\\" : "src"
         }
     },
     "autoload-dev" : {
         "psr-4" : {
-            "Spatie\\LaravelEndpointResources\\Tests\\" : "tests"
+            "Spatie\\LaravelResourceEndpoints\\Tests\\" : "tests"
         }
     },
     "scripts" : {
@@ -44,7 +44,7 @@
     "extra" : {
         "laravel" : {
             "providers" : [
-                "Spatie\\LaravelEndpointResources\\EndpointResourcesServiceProvider"
+                "Spatie\\LaravelResourceEndpoints\\EndpointResourcesServiceProvider"
             ]
         }
     }

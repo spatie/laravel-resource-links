@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'formatter' => Spatie\LaravelEndpointResources\Formatters\DefaultFormatter::class,
+    'formatter' => Spatie\LaravelResourceEndpoints\Formatters\DefaultFormatter::class,
 
     /*
     |--------------------------------------------------------------------------

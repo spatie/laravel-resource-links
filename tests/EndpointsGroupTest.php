@@ -1,14 +1,14 @@
 <?php
 
-namespace Spatie\LaravelEndpointResources\Tests;
+namespace Spatie\LaravelResourceEndpoints\Tests;
 
-use Spatie\LaravelEndpointResources\EndpointsGroup;
-use Spatie\LaravelEndpointResources\EndpointTypes\ActionEndpointType;
-use Spatie\LaravelEndpointResources\EndpointTypes\ControllerEndpointType;
-use Spatie\LaravelEndpointResources\EndpointTypes\InvokableControllerEndpointType;
-use Spatie\LaravelEndpointResources\Tests\Fakes\TestController;
-use Spatie\LaravelEndpointResources\Tests\Fakes\TestInvokableCollectionController;
-use Spatie\LaravelEndpointResources\Tests\Fakes\TestInvokableController;
+use Spatie\LaravelResourceEndpoints\EndpointsGroup;
+use Spatie\LaravelResourceEndpoints\EndpointTypes\ActionEndpointType;
+use Spatie\LaravelResourceEndpoints\EndpointTypes\ControllerEndpointType;
+use Spatie\LaravelResourceEndpoints\EndpointTypes\InvokableControllerEndpointType;
+use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestController;
+use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestInvokableCollectionController;
+use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestInvokableController;
 
 class EndpointsGroupTest extends TestCase
 {
