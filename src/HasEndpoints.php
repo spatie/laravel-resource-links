@@ -16,7 +16,7 @@ trait HasEndpoints
      */
     public function endpoints($controller = null, $parameters = null): EndpointResource
     {
-        return EndpointResource::initialize($this->resource, EndpointResourceType::ITEM)->endpoint($controller, $parameters);
+        return EndpointResource::create($this->resource, EndpointResourceType::ITEM)->endpoint($controller, $parameters);
     }
 
     /**
@@ -27,7 +27,7 @@ trait HasEndpoints
      */
     public static function collectionEndpoints($controller = null, $parameters = null): EndpointResource
     {
-        return EndpointResource::initialize(null, EndpointResourceType::COLLECTION)->endpoint($controller, $parameters);
+        return EndpointResource::create(null, EndpointResourceType::COLLECTION)->endpoint($controller, $parameters);
     }
 
     public static function collection($resource)

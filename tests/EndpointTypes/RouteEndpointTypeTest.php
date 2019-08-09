@@ -210,19 +210,30 @@ class RouteEndpointTypeTest extends TestCase
 
         $route = $this->fakeRouter->get('/{secondTestModel}/{testModel}', $action);
 
-        $secondTestModel = SecondTestModel::create([
-            'id' => 2,
-            'name' => 'secondTestModel'
-        ]);
-
         $endpoints =  RouteEndpointType::make($route)
-//            ->parameters([$secondTestModel])
             ->getEndpoints($this->testModel);
 
         $this->assertEquals([
             'copy' => [
                 'method' => 'GET',
-                'action' => ''
+                'action' => 'http://localhost/{secondTestModel}/1'
+            ]
+        ], $endpoints);
+    }
+    
+    /** @test */
+    public function a_route_without_provided_parameters_can_still_be_constructed()
+    {
+        $action = [TestController::class, 'copy'];
+
+        $route = $this->fakeRouter->get('/{secondTestModel}/{testModel}', $action);
+
+        $endpoints =  RouteEndpointType::make($route)->getEndpoints();
+
+        $this->assertEquals([
+            'copy' => [
+                'method' => 'GET',
+                'action' => 'http://localhost/{secondTestModel}/{testModel}'
             ]
         ], $endpoints);
     }

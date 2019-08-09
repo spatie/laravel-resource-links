@@ -24,47 +24,6 @@ class ControllerEndpointTypeTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function it_will_only_give_local_endpoints()
-    {
-        $indexAction = [TestController::class, 'index'];
-        $showAction = [TestController::class, 'show'];
-
-        $this->fakeRouter->get('', $indexAction);
-        $this->fakeRouter->get('{testModel}', $showAction);
-
-        $endpointType = ControllerEndpointType::make(TestController::class);
-
-        $endpoints = $endpointType->getEndpoints($this->testModel);
-
-        $this->assertEquals([
-            'show' => [
-                'method' => 'GET',
-                'action' => action($showAction, $this->testModel),
-            ],
-        ], $endpoints);
-    }
-
-    /** @test */
-    public function it_will_only_give_collection_endpoints()
-    {
-        $indexAction = [TestController::class, 'index'];
-        $showAction = [TestController::class, 'show'];
-
-        $this->fakeRouter->get('', $indexAction);
-        $this->fakeRouter->get('{testModel}', $showAction);
-
-        $endpointType = ControllerEndpointType::make(TestController::class);
-
-        $endpoints = $endpointType->getCollectionEndpoints();
-
-        $this->assertEquals([
-            'index' => [
-                'method' => 'GET',
-                'action' => action($indexAction),
-            ],
-        ], $endpoints);
-    }
 
     /** @test */
     public function it_will_create_all_possible_routes_when_a_model_is_available()
@@ -189,7 +148,7 @@ class ControllerEndpointTypeTest extends TestCase
     }
     
     /** @test */
-    public function a_controller_endpoint_type_can_have_no_endpoints()
+    public function a_controller_endpoint_type_can_have_an_empty_enpoints_array()
     {
         $endpoints = ControllerEndpointType::make(TestController::class)
             ->getEndpoints($this->testModel);

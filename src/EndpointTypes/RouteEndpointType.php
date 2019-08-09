@@ -58,7 +58,7 @@ class RouteEndpointType extends EndpointType
         $endpoint = Endpoint::make(
             $this->name ?? $this->route->getActionMethod(),
             $this->httpVerb ?? $this->getHttpVerbForRoute($this->route),
-            $urlResolver->resolve($this->route,$parameterResolver->forRoute($this->route)),
+            $urlResolver->resolve($this->route, $parameterResolver->forRoute($this->route)),
             $this->prefix
         );
 

@@ -19,12 +19,10 @@ class UrlResolver extends RouteUrlGenerator
 
     public function resolve(Route $route, array $parameters): string
     {
+        $parameters = $this->url->formatParameters($parameters);
+
         try {
-            return $this->to(
-                $route,
-                $this->url->formatParameters($parameters),
-                true
-            );
+            return $this->to($route, $parameters, true);
         } catch (UrlGenerationException $exception) {
             // Create an uri with missing parameters between brackets
             $domain = $this->getRouteDomain($route, $parameters);

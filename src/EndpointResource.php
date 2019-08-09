@@ -17,7 +17,7 @@ class EndpointResource extends JsonResource
     /** @var \Spatie\LaravelResourceEndpoints\EndpointsGroup */
     private $endpointsGroup;
 
-    public static function initialize(Model $model = null, string $endpointResourceType = null): EndpointResource
+    public static function create(Model $model = null, string $endpointResourceType = null): EndpointResource
     {
         return new self($model, $endpointResourceType);
     }
@@ -30,24 +30,19 @@ class EndpointResource extends JsonResource
         $this->endpointsGroup = new EndpointsGroup();
     }
 
-    public function endpoint($controller, $parameters = null, $httpVerb = null): EndpointResource
+    public function endpoint($endpoint, $parameters = null, $httpVerb = null): EndpointResource
     {
-        if ($controller instanceof Closure) {
-            $endpointsGroup = new EndpointsGroup();
-
-            $controller($endpointsGroup);
-
-            return $this->addEndpointsGroup($endpointsGroup);
-        }
-
-        if (is_array($controller)) {
-            return $this->addAction($controller, Arr::wrap($parameters), $httpVerb);
-        }
-
-        if (is_string($controller)) {
-            return method_exists($controller, '__invoke')
-                ? $this->addInvokableController($controller, Arr::wrap($parameters))
-                : $this->addController($controller, Arr::wrap($parameters));
+        if ($endpoint instanceof Closure) {
+            $endpoint($this->endpointsGroup);
+        } elseif (is_array($endpoint)) {
+            $this->endpointsGroup
+                ->action($endpoint)
+                ->httpVerb($httpVerb)
+                ->parameters(Arr::wrap($parameters));
+        } elseif (is_string($endpoint)) {
+            $this->endpointsGroup
+                ->controller($endpoint)
+                ->parameters(Arr::wrap($parameters));
         }
 
         return $this;
@@ -79,40 +74,6 @@ class EndpointResource extends JsonResource
                 return $endpointType->getEndpoints($this->resource);
             });
     }
-
-
-    private function addController(string $controller, $parameters = null): EndpointResource
-    {
-        $this->endpointsGroup->controller($controller)
-            ->parameters(Arr::wrap($parameters));
-
-        return $this;
-    }
-
-    private function addAction(array $action, $parameters = null, string $httpVerb = null): EndpointResource
-    {
-        $this->endpointsGroup->action($action)
-            ->httpVerb($httpVerb)
-            ->parameters(Arr::wrap($parameters));
-
-        return $this;
-    }
-
-    private function addInvokableController(string $controller, $parameters = null): EndpointResource
-    {
-        $this->endpointsGroup->invokableController($controller)
-            ->parameters(Arr::wrap($parameters));
-
-        return $this;
-    }
-
-    private function addEndpointsGroup(EndpointsGroup $endpointsGroup): EndpointResource
-    {
-        $this->endpointsGroup->endpointsGroup($endpointsGroup);
-
-        return $this;
-    }
-
 
     private function resolveEndpointsFromControllerEndpointType(ControllerEndpointType $endpointType): array
     {

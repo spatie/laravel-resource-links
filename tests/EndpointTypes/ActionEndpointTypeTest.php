@@ -61,7 +61,7 @@ class ActionEndpointTypeTest extends TestCase
     }
 
     /** @test */
-    public function it_can_create_an_action_endpoint_type_with_parameters()
+    public function it_can_create_an_action_endpoint_type_with_a_model_as_resource()
     {
         $action = [TestController::class, 'show'];
 
