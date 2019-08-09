@@ -5,11 +5,11 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/spatie/laravel-resource-endpoints.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/laravel-resource-endpoints)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-resource-endpoints.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-resource-endpoints)
 
-**This package is under heavy development, things will change and documentation may not be up to date!**
+**This package is under heavy development, things will change, and documentation may not be up to date!**
 
 Let's say you have a `UsersController` with `index`, `show`, `create`, `edit`, `store`, `update` and `delete` methods and an `UserResource`. Wouldn't it be nice if you had the URL's to these methods immediately in your `UserResource` without having to construct them from scratch?
 
-Laravel endpoint resources will add these endpoints to your resource based upon a controller or actions you define. Let's look at an example of a resource.
+This package will add these endpoints to your resource based upon a controller or actions you define. Let's look at an example of a resource.
 
 ``` php
 class UserResource extends JsonResource
@@ -138,20 +138,11 @@ Now every `UserResource` has an additional `EndpointResource` in which the respo
 }
 ```
 
-By default, we'll only construct endpoints from the `show`, `edit`, `update` and `delete` methods of your controller.  You can modify this behaviour by adding the `$endpointMethods` property on your controller:
-
-``` php
-class UsersController
-{
-    public $endPointMethods = ['show', 'update', 'delete', 'send'];
-    
-    ...
-}
-```
+By default, we'll only construct endpoints from the `show`, `edit`, `update` and `delete` methods of your controller.
 
 ### Collection endpoints
 
-What about endpoints like `index`, `create` and `store`? These endpoints are not generally not tied to a single item, so it's not a good idea to store them at that level. Instead it's better to put the links to those collection endpoints on the collection level of a resource.
+What about endpoints like `index`, `create` and `store`? These endpoints are not generally not tied to a single item, so it's not a good idea to store them at that level. Instead, it's better to put the links to those collection endpoints on the collection level of a resource.
 
 You can put the collection endpoints in the meta section of a resource collection like so:
 
@@ -198,20 +189,12 @@ Now when we create an `UserResource` collection, the meta section will look like
             "action":"https://app.laravel/admin/users"
          }
       }
+      ...
    }
 ```
 
 
-By default, the collection endpoints will only be constructed from the `index`, `create`  and `store` methods in your controller. This behavior can be changed by setting `$collectionEndpointMethods` property on your controller:
-
-``` php
-class UsersController
-{
-    public $collectionEndpointMethods = ['store', 'nuke'];
-    
-    ...
-}
-```
+By default, the collection endpoints will only be constructed from the `index`, `create`  and `store` methods in your controller.
 
 #### A small helper
 
@@ -235,9 +218,9 @@ This meta function will always be added when you use the `HasEndpoints` trait.
 
 #### Collection endpoints and a single resource
 
-When creating a single resource `UserResource::make($user)` you sometimes only want to have an object with a data section and without a meta section. So you can, for example, convert the resource to an array.
+When creating a single resource like `UserResource::make($user)` you sometimes not only want the endpoints tied to that resource but also the collection endpoints for that resource. In this case, you want not only the `show`, `edit`, `update` and `delete` endpoints but also the `index`, `create` and `store` endpoints for a single resource.
 
-In this case, collection endpoints will be excluded, and only the endpoints specific to the resource will be included. You can merge collection endpoints with the other endpoints like so:
+This can be done by merging the collection endpoints with the single resource endpoints like so:
 
 ``` php
 class UserResource extends JsonResource
@@ -301,16 +284,18 @@ The `UserResource` in a response will now look like this:
 
 #### Automatically merge collection endpoints
 
-Sometimes you yust want to automatically merge collection endpoints into a single endpoint resource when the model given to that resource does not exist or is null. Calling `->mergeCollectionEndpoints()` on every resource can be a bit tedious. So when setting `automatically-merge-endpoints` in `config\laravel-resource-endpoints.php` to true, each single endpoint resource will merge it's collection endpoints when a non-existing or null model is given to the resource.
+Sometimes you just want to automatically merge collection endpoints into a single endpoint resource when the model given to that resource does not exist or is null. This because you want to provide, for example, an endpoint to create a new model.
+
+Calling `->mergeCollectionEndpoints()` on every resource can be a bit tedious. So when setting `automatically-merge-endpoints` in `config\laravel-resource-endpoints.php` to `true`, each single endpoint resource will merge it's collection endpoints when a non-existing or null model is given to the resource.
 
 
 ### Route parameters
 
-An endpoint resource will try to deduce the parameters for a route as best as possible when generating the endpoint to that route. The first thing we do is looking at the model given to your resource, and the packages tries to create the endpoints from that.
+An endpoint resource will try to deduce the parameters for a route as best as possible when generating the endpoint to that route. There are a few steps in the resolving of parameters in a route.
 
-If no model is given or more parameters are required, then the package will start searching the parameters of the current route for parameters that can be used to construct the endpoint.
+First, we check if a model was given to the resource you created. Then we'll check the parameters of the current request of your application if they can be used to create the route.
 
-You can also manually specify the route parameters.
+Let's say you want to replace the parameters deduced from the request. You can do this by specifying them like this:
 
 ```php
 class UserResource extends JsonResource
@@ -330,7 +315,7 @@ class UserResource extends JsonResource
 ```
 
 
-You can also set the parameters for a collection endpoints:
+Or for collection endpoints:
    
 ``` php
 class UserResource extends JsonResource
@@ -352,11 +337,18 @@ class UserResource extends JsonResource
 }
 ```
 
-An endpoint will only be added when all parameters required are present. Endpoint resources will stop automatically deducing parameters when you manually give a set of parameters.
+When you manually specify the parameters, then we will not check the request for missing parameters. So you should add all the missing parameters by yourself.
 
+#### Endpoints that cannot be deduced
+
+Sometimes it is not possible to fully deduce all the endpoints for a resource. In this case, we will try to construct an endpoint as close as possible to the route. We do this by putting the parameters we cannot deduce between brackets.
+
+Let's look at an example: Say you want to link an `App\User` to an `App\Post`. The `link` method in your controller expects two parameters `$user` and `$post` with matching types. When the `App\User` is given to the resource but `App\Post` is missing the URL of the endpoint will then look like `/user/link/1/{post}` for the `App\User` with id 1.
+
+This becomes handy to debug which parameters are missing in the resource and should be manually specified for creating endpoints. You can also replace these parameters between brackets on the frontend of your application for a more dynamic endpoint!
 ### Action endpoints
 
-Sometimes you want to add endpoints not belonging to a specific controller. Then it is possible to add an action as an endpoint. This looks just like a standard Laravel action:
+Sometimes you want to add endpoints not belonging to a specific controller. Then it is possible to add an action as an endpoint. They look just like a standard Laravel action:
 
 ``` php
 class OtherResource extends JsonResource
@@ -372,7 +364,7 @@ class OtherResource extends JsonResource
 }
 ```
 
-We'll try to deduce the parameters for constructing the endpoint. But you can also manually set the parameters:
+You can also manually set the parameters for the action:
 
 ``` php
 class OtherResource extends JsonResource
@@ -391,7 +383,7 @@ class OtherResource extends JsonResource
 }
 ```
  
-The HTTP verb for the action will be deduced from the route in Laravel. Should you have an action with two verbs, then you can always specify the verb for a particular action:
+The HTTP verb for the action will be resolved from the route in Laravel. Should you have an action with two verbs, then you can always specify the verb for a particular action:
 
 ``` php
 class OtherResource extends JsonResource
@@ -433,7 +425,7 @@ class UserResource extends JsonResource
 
 ### Endpoint groups
 
-Sometimes a more fine grained control is needed to construct endpoints. Let's say you want to prefix a set of endpoints, change the name of an endpoint or just specify which endpoints to include. That's where endpoint groups come into place. You can now create a resource witg controller endpoints and an action endpoint as such:
+Sometimes a more fine-grained control is needed to construct endpoints. Let's say you want to prefix a set of endpoints, change the name of an endpoint, or specify which endpoints to include. That's where endpoint groups come into place. You can now create a resource with controller endpoint as such:
 
 ``` php
 class UserResource extends JsonResource
@@ -445,30 +437,29 @@ class UserResource extends JsonResource
         return [
             'endpoints' => $this->endpoints(function (EndpointsGroup $endpoints) {
                 $endpoints->controller(UsersController::class);
-                $endpoints->action([UsersController::class, 'create']);
             }),
         ];
     }
 }
 ```
 
-You can now specify the parameters for the endpoints:
+It is possible to specify the parameters for the endpoints:
 
 ```php
 $endpoints
-	->controller(UsersController::class)
-	->parameters(User::first());
+    ->controller(UsersController::class)
+    ->parameters(User::first());
 ```
 
 Or prefix all the endpoints of the controller:
 
 ```php
 $endpoints
-	->controller(UsersController::class)
-	->prefix('admin');
+    ->controller(UsersController::class)
+    ->prefix('admin');
 ```
 
-This will produce the following json:
+This will produce the following JSON:
 
 ``` json
 "endpoints":{  
@@ -489,19 +480,19 @@ You can also choose the methods of the controller to include as endpoints:
 
 ```php
 $endpoints
-	->controller(UsersController::class)
-	->methods(['create', 'index', 'show']);
+    ->controller(UsersController::class)
+    ->methods(['create', 'index', 'show']);
 ```
 
 Or even alias the name of methods:
 
 ```php
 $endpoints
-	->controller(UsersController::class)
-	->names(['index' => 'list']);
+    ->controller(UsersController::class)
+    ->names(['index' => 'list']);
 ```
 
-This will produce the following json:
+This will produce the following JSON:
 
 ``` json
 "endpoints":{  
@@ -514,30 +505,30 @@ This will produce the following json:
 }
 ```
 
-When working with invokable controllers you can alias `__invoke`:
+When working with invokable controllers, you can alias `__invoke`:
 
 ```php
 $endpoints
-	->controller(UsersController::class)
-	->name('publish');
+    ->controller(UsersController::class)
+    ->name('publish');
 ```
 
-Action endpoints can also be adjusted to their specific needs
+It is also possible to add action endpoints:
 
 ```php
 $endpoints
-	->action([UsersController::class, 'create'])
-	->prefix('users')
-	->parameters(User::first())
-	->name('build')
+    ->action([UsersController::class, 'create'])
+    ->prefix('users')
+    ->parameters(User::first())
+    ->name('build')
 ```
 
-It is even possible to change the http verb(POST, GET, ...)
+You can change the Http verb(POST, GET, ...) of the action
  
 ```php
 $endpoints
-	->action([UsersController::class, 'create'])
-	->httpVerb('POST');
+    ->action([UsersController::class, 'create'])
+    ->httpVerb('POST');
 ```
 
 And off course it is possible to use endpoint groups with collection endpoints:
@@ -554,8 +545,8 @@ class UserResource extends JsonResource
         return parent::collection($resource)->additional([
             'meta' => [
                 'endpoints' => self::collectionEndpoints(function (EndpointsGroup $endpoints) {
-	                $endpoints->controller(UsersController::class);
-	            })
+                    $endpoints->controller(UsersController::class);
+                })
              ],
          ]);
     }
@@ -564,29 +555,29 @@ class UserResource extends JsonResource
 
 ### Formatters
 
-Want a different representation for endpoints? For example something like this:
+Want a different representation for endpoints? For example, something like this:
 
 ```json
 "endpoints":{  
-	"show":"https://app.laravel/users/1",
-	"edit":"https://app.laravel/users/1/edit",
+    "show":"https://app.laravel/users/1",
+    "edit":"https://app.laravel/users/1/edit",
 }
 ```
 
-You can do this with formatters! You can create your own formatters by implementing the `Spatie\LaravelResourceEndpoints\Formatters\Formatter` interface.
+This can be done with formatters! You can create your own formatters by implementing the `Spatie\LaravelResourceEndpoints\Formatters\Formatter` interface.
 
 The package includes 3 formatters:
 
 - DefaultFormatter: the formatter from the examples above
 - LayeredFormatter: this formatter will put prefixed endpoints in their own prefixed array
-- UrlFormatter: a simple formatter which has an endpoint name as key and endpoint url as value
+- UrlFormatter: a simple formatter which has an endpoint name as key and endpoint URL as value
 
-You can set the formatter used in the `laravel-resource-endpoints.php` config file. Or if you are using endpoint groups it is possible to set an formatter specifically for each endpoint:
+You can set the formatter used in the `laravel-resource-endpoints.php` config file. Or if you are using endpoint groups, it is possible to set a formatter specifically for each endpoint:
 
 ```php
 $endpoints
-	->controller(UsersController::class)
-	->formatter(Spatie\LaravelResourceEndpoints\Formatters\ UrlFormatter::class);
+    ->controller(UsersController::class)
+    ->formatter(Spatie\LaravelResourceEndpoints\Formatters\ UrlFormatter::class);
 ``` 
 
 
