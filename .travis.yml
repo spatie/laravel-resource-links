@@ -1,16 +1,15 @@
+sudo: required
+
 language: php
 
-cache:
-    directories:
-        - $HOME/.composer/cache
+php:
+    - 7.2
+    - 7.3
 
-matrix:
-    fast_finish: true
-    include:
-        - php: 7.2
-          env: LARAVEL='5.8.*' TESTBENCH='3.8.*' COMPOSER_FLAGS='--prefer-lowest'
-        - php: 7.2
-          env: LARAVEL='5.8.*' TESTBENCH='3.8.*' COMPOSER_FLAGS='--prefer-stable'
+env:
+    matrix:
+        - COMPOSER_FLAGS="--prefer-lowest"
+        - COMPOSER_FLAGS=""
 
 before_install:
     - travis_retry composer self-update

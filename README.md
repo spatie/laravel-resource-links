@@ -1,7 +1,7 @@
 # Laravel Resource Endpoints
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-resource-endpoints.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-resource-endpoints)
-[![Build Status](https://img.shields.io/travis/spatie/laravel-resource-endpoints/master.svg?style=flat-square)](https://travis-ci.org/spatie/laravel-resource-endpoints)
+[![Build Status](https://travis-ci.org/spatie/laravel-resource-endpoints.svg?branch=master)](https://travis-ci.org/spatie/laravel-resource-endpoints)
 [![Quality Score](https://img.shields.io/scrutinizer/g/spatie/laravel-resource-endpoints.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/laravel-resource-endpoints)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-resource-endpoints.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-resource-endpoints)
 
