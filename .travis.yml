@@ -12,11 +12,10 @@ env:
         - COMPOSER_FLAGS=""
 
 before_install:
+    - sudo apt-get update
     - travis_retry composer self-update
-    - travis_retry composer require --no-update --no-interaction "illuminate/support:${LARAVEL}" "orchestra/testbench:${TESTBENCH}"
-
 install:
-    - travis_retry composer update ${COMPOSER_FLAGS} --prefer-dist --no-interaction --no-suggest
+    - travis_retry composer update --prefer-source $COMPOSER_FLAGS
 
 script:
     - vendor/bin/phpunit
