@@ -1,5 +1,5 @@
 ---
-title: Endpoint groups
+title: Actions
 weight: 4
 ---
 
