@@ -26,5 +26,5 @@ return [
     |
     */
 
-    'automatically-merge-endpoints' => 'false',
+    'automatically_merge_endpoints' => 'false',
 ];

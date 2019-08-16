@@ -3,7 +3,6 @@
 namespace Spatie\LaravelResourceEndpoints;
 
 use Closure;
-use Illuminate\Support\Arr;
 
 /** @mixin \Illuminate\Http\Resources\Json\JsonResource */
 trait HasEndpoints
@@ -28,36 +27,5 @@ trait HasEndpoints
     public static function collectionEndpoints($controller = null, $parameters = null): EndpointResource
     {
         return EndpointResource::create(null, EndpointResourceType::COLLECTION)->endpoint($controller, $parameters);
-    }
-
-    public static function collection($resource)
-    {
-        $meta = self::meta();
-
-        if (! count($meta)) {
-            parent::collection($resource);
-        }
-
-        return parent::collection($resource)->additional([
-            'meta' => $meta,
-        ]);
-    }
-
-    public static function make(...$parameters)
-    {
-        $meta = self::meta();
-
-        if (! count($meta)) {
-            parent::make(...$parameters);
-        }
-
-        return parent::make(...$parameters)->additional([
-            'meta' => $meta,
-        ]);
-    }
-
-    public static function meta()
-    {
-        return [];
     }
 }

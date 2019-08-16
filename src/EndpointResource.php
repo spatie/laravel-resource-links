@@ -34,15 +34,25 @@ class EndpointResource extends JsonResource
     {
         if ($endpoint instanceof Closure) {
             $endpoint($this->endpointsGroup);
-        } elseif (is_array($endpoint)) {
+
+            return $this;
+        }
+
+        if (is_array($endpoint)) {
             $this->endpointsGroup
                 ->action($endpoint)
                 ->httpVerb($httpVerb)
                 ->parameters(Arr::wrap($parameters));
-        } elseif (is_string($endpoint)) {
+
+            return $this;
+        }
+
+        if (is_string($endpoint)) {
             $this->endpointsGroup
                 ->controller($endpoint)
                 ->parameters(Arr::wrap($parameters));
+
+            return $this;
         }
 
         return $this;
@@ -101,7 +111,7 @@ class EndpointResource extends JsonResource
             return;
         }
 
-        if (config('laravel-resource-endpoints.automatically-merge-endpoints') === false) {
+        if (config('laravel-resource-endpoints.automatically_merge_endpoints') === false) {
             return;
         }
 

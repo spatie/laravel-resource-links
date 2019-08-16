@@ -13,7 +13,7 @@ class ResourceEndpointsServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/config.php' => config_path('laravel-resource-endpoints.php'),
+                __DIR__ . '/../config/resource-endpoints.php' => config_path('resource-endpoints.php'),
             ], 'config');
         }
     }
@@ -23,6 +23,6 @@ class ResourceEndpointsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'laravel-resource-endpoints');
+        $this->mergeConfigFrom(__DIR__ . '/../config/resource-endpoints.php', 'resource-endpoints');
     }
 }

@@ -42,9 +42,11 @@ class ParameterResolver
 
     private function getProvidedParameters(): array
     {
-        return optional($this->model)->exists
-            ? array_merge($this->defaultParameters, [$this->model])
-            : $this->defaultParameters;
+        if(optional($this->model)->exists){
+            return array_merge($this->defaultParameters, [$this->model]);
+        }
+
+        return $this->defaultParameters;
     }
 
     private function resolveParameter(ReflectionParameter $signatureParameter, array $providedParameters)

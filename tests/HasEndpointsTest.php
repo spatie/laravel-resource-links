@@ -9,6 +9,7 @@ use Spatie\LaravelResourceEndpoints\EndpointResourceType;
 use Spatie\LaravelResourceEndpoints\EndpointsGroup;
 use Spatie\LaravelResourceEndpoints\Formatters\LayeredFormatter;
 use Spatie\LaravelResourceEndpoints\HasEndpoints;
+use Spatie\LaravelResourceEndpoints\HasMeta;
 use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestController;
 use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
 use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestInvokableCollectionController;
@@ -38,7 +39,7 @@ class HasEndpointsTest extends TestCase
     {
         $testResource = new class(null) extends JsonResource
         {
-            use HasEndpoints;
+            use HasEndpoints, HasMeta;
 
             public function toArray($request)
             {
@@ -84,12 +85,7 @@ class HasEndpointsTest extends TestCase
     {
         $testResource = new class(null) extends JsonResource
         {
-            use HasEndpoints;
-
-            public function __construct($resource)
-            {
-                parent::__construct($resource);
-            }
+            use HasEndpoints, HasMeta;
 
             public function toArray($request)
             {
@@ -137,12 +133,7 @@ class HasEndpointsTest extends TestCase
     {
         $testResource = new class(null) extends JsonResource
         {
-            use HasEndpoints;
-
-            public function __construct($resource)
-            {
-                parent::__construct($resource);
-            }
+            use HasEndpoints, HasMeta;
 
             public function toArray($request)
             {
@@ -180,7 +171,7 @@ class HasEndpointsTest extends TestCase
 
         $testResource = new class(null) extends JsonResource
         {
-            use HasEndpoints;
+            use HasEndpoints, HasMeta;
 
             public function toArray($request)
             {
@@ -214,7 +205,7 @@ class HasEndpointsTest extends TestCase
 
         $testResource = new class(null) extends JsonResource
         {
-            use HasEndpoints;
+            use HasEndpoints, HasMeta;
 
             public function toArray($request)
             {
