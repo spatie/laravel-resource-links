@@ -1,6 +1,6 @@
 ---
 title: Merging endpoints
-weight: 3
+weight: 5
 ---
 
 When creating a single resource like `UserResource::make($user)` you sometimes not only want the endpoints tied to that resource but also the collection endpoints for that resource. In this case, you want not only the `show`, `edit`, `update` and `delete` endpoints but also the `index`, `create` and `store` endpoints for a single resource.

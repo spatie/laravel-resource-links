@@ -1,5 +1,5 @@
 ---
-title: Meta Helper
+title: Meta helper
 weight: 2
 ---
 

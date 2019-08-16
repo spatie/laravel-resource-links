@@ -1,5 +1,5 @@
 ---
-title: Endpoint Parameters
+title: Endpoint parameters
 weight: 4
 ---
 

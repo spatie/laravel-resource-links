@@ -1,6 +1,6 @@
 ---
 title: Action endpoints
-weight: 5
+weight: 3
 ---
 
 Sometimes you want to add endpoints not belonging to a specific controller. Then it is possible to add an action as an endpoint. They look just like a standard Laravel action:

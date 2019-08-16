@@ -1,5 +1,5 @@
 ---
-title: Resource Setup
+title: Resource setup
 weight: 1
 ---
 
@@ -23,7 +23,7 @@ class UserResource extends JsonResource
 ```
 
 
-Now every `UserResource` has an additional `EndpointResource` in which the responses will look like:
+Now every `UserResource` has an additional `EndpointResource` which in the responses will look like:
 
 ``` json
 "endpoints":{  

@@ -81,3 +81,9 @@ Now when creating an `UserResource` collection, you will have all the endpoints 
    }
 }
 ```
+
+## Why including endpoints in your resources?
+
+Let's say you're having a single-page application or an application built with [Inertia](https://inertiajs.com), then you have a PHP application running at the backend and a Javascript application at the front. These applications communicate with each other via an api but what if the frontend wants to route a user to another page? 
+
+Since routes are defined in the backend, the frontend has no idea where it has to route the user to. We could just write the url's in the javascript code but what if a route is changed? So why not pass these routes from the backend to the frontend? You can manually write down all these routes, or just use this package.

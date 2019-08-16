@@ -1,6 +1,6 @@
 ---
-title: Formatters
-weight: 7
+title: Json structure
+weight: 1
 ---
 
 Want a different representation for endpoints? For example, something like this:
@@ -16,7 +16,7 @@ This can be done with formatters! You can create your own formatters by implemen
 
 The package includes 3 formatters:
 
-- DefaultFormatter: the formatter from the examples above
+- DefaultFormatter: the formatter from the all the previous examples
 - LayeredFormatter: this formatter will put prefixed endpoints in their own prefixed array
 - UrlFormatter: a simple formatter which has an endpoint name as key and endpoint URL as value
 
