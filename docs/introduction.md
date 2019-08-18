@@ -82,7 +82,7 @@ Now when creating an `UserResource` collection, you will have all the endpoints 
 }
 ```
 
-## Why including endpoints in your resources?
+## Why include endpoints in your resources?
 
 Let's say you're having a single-page application or an application built with [Inertia](https://inertiajs.com), then you have a PHP application running at the backend and a Javascript application at the front. These applications communicate with each other via an api but what if the frontend wants to route a user to another page? 
 
