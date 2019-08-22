@@ -32,26 +32,6 @@ class ParameterResolverTest extends TestCase
     }
 
     /** @test */
-    public function it_will_first_look_for_a_model_specified_by_key()
-    {
-        $testModel = TestModel::create([
-            'name' => 'TestModel',
-        ]);
-
-        $otherTestModel = TestModel::create([
-            'name' => 'otherTestModel',
-        ]);
-
-        $route = $this->fakeRouter->get('{testModel}', [TestController::class, 'show']);
-
-        $parameterResolver = new ParameterResolver($otherTestModel, ['testModel' => $testModel]);
-
-        $this->assertEquals([
-            'testModel' => $testModel,
-        ], $parameterResolver->forRoute($route));
-    }
-
-    /** @test */
     public function it_will_try_to_find_the_model_in_the_default_parameters_if_none_was_given()
     {
         $testModel = TestModel::create([
@@ -99,7 +79,7 @@ class ParameterResolverTest extends TestCase
             'testModel' => $testModel,
         ], $parameterResolver->forRoute($route));
     }
-    
+
     /** @test */
     public function it_will_use_the_names_provided_to_bind_models_to_parameters()
     {
@@ -120,7 +100,7 @@ class ParameterResolverTest extends TestCase
             'otherTestModel' => $otherTestModel,
         ], $parameterResolver->forRoute($route));
     }
-    
+
     /** @test */
     public function when_a_model_cannot_be_found_by_its_parameter_name_the_resource_will_be_taken_if_same_type()
     {
@@ -134,14 +114,14 @@ class ParameterResolverTest extends TestCase
 
         $route = $this->fakeRouter->get('{testModel}/{otherTestModel}', [TestController::class, 'sync']);
 
-        $parameterResolver = new ParameterResolver($otherTestModel, ['testModel' => $testModel]);
+        $parameterResolver = new ParameterResolver(null, ['testModel' => $testModel]);
 
         $this->assertEquals([
             'testModel' => $testModel,
             'otherTestModel' => $testModel,
         ], $parameterResolver->forRoute($route));
     }
-    
+
     /** @test */
     public function it_cannot_deduce_parameters_with_name_and_without_value()
     {
@@ -158,11 +138,49 @@ class ParameterResolverTest extends TestCase
         $route = $this->fakeRouter->get('{withoutType}', [TestController::class, 'read']);
 
         $parameterResolver = new ParameterResolver(null, [
-            'withoutType' => 42
+            'withoutType' => 42,
         ]);
 
         $this->assertEquals([
-            'withoutType' => 42
+            'withoutType' => 42,
+        ], $parameterResolver->forRoute($route));
+    }
+
+    /** @test */
+    public function it_will_add_primitive_parameters_at_the_end_if_they_cannot_be()
+    {
+        $testModel = TestModel::create([
+            'name' => 'TestModel',
+        ]);
+
+        $secondTestModel = SecondTestModel::create([
+            'name' => 'otherTestModel',
+        ]);
+
+        $route = $this->fakeRouter->get('{testModel}/{secondTestModel}/{aString}/{aNumber}/{aBool}',
+            function (
+                TestModel $testModel,
+                SecondTestModel $secondTestModel,
+                string $aString,
+                int $aNumber,
+                bool $aBool
+            ) {
+
+            });
+
+        $parameterResolver = new ParameterResolver($testModel, [
+            'secondTestModel' => $secondTestModel,
+            'test',
+            false,
+            42,
+        ]);
+
+        $this->assertEquals([
+            'testModel' => $testModel,
+            'secondTestModel' => $secondTestModel,
+            'aString' => 'test',
+            'aNumber' => 42,
+            'aBool' => false,
         ], $parameterResolver->forRoute($route));
     }
 }

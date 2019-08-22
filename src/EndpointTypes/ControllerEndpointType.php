@@ -25,7 +25,7 @@ class ControllerEndpointType extends EndpointType
 
     public static function make(string $controller): ControllerEndpointType
     {
-        return new self($controller);
+        return new ControllerEndpointType($controller);
     }
 
     public function __construct(string $controller)

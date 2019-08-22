@@ -15,7 +15,13 @@ trait HasEndpoints
      */
     public function endpoints($controller = null, $parameters = null): EndpointResource
     {
-        return EndpointResource::create($this->resource, EndpointResourceType::ITEM)->endpoint($controller, $parameters);
+        $resource = EndpointResource::create($this->resource, EndpointResourceType::ITEM)->endpoint($controller, $parameters);
+
+        if (property_exists($this, 'mergeCollectionEndpoints') && $this->mergeCollectionEndpoints === true) {
+            $resource->mergeCollectionEndpoints();
+        }
+
+        return $resource;
     }
 
     /**

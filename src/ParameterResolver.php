@@ -3,8 +3,8 @@
 namespace Spatie\LaravelResourceEndpoints;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Routing\Exceptions\UrlGenerationException;
 use Illuminate\Routing\Route;
+use Illuminate\Support\Arr;
 use ReflectionParameter;
 
 class ParameterResolver
@@ -29,7 +29,7 @@ class ParameterResolver
         return collect($route->signatureParameters())
             ->mapWithKeys(function (ReflectionParameter $signatureParameter) use ($providedParameters) {
                 return [
-                    $signatureParameter->getName() => $this->resolveParameter(
+                    $signatureParameter->getName() => $this->findParameter(
                         $signatureParameter,
                         $providedParameters
                     ),
@@ -42,29 +42,89 @@ class ParameterResolver
 
     private function getProvidedParameters(): array
     {
-        if(optional($this->model)->exists){
-            return array_merge($this->defaultParameters, [$this->model]);
-        }
-
         return $this->defaultParameters;
     }
 
-    private function resolveParameter(ReflectionParameter $signatureParameter, array $providedParameters)
+    private function findParameter(ReflectionParameter $signatureParameter, array &$providedParameters)
     {
-        if (array_key_exists($signatureParameter->getName(), $providedParameters)) {
-            return $providedParameters[$signatureParameter->getName()];
+        if ($this->expectsModelAsParameter($signatureParameter)) {
+            return $this->model;
         }
 
-        foreach ($providedParameters as $providedParameter) {
-            if (! is_object($providedParameter) || $signatureParameter->getType() === null) {
+        if ($this->parameterWithKeyExists($signatureParameter, $providedParameters)) {
+            return Arr::pull($providedParameters, $signatureParameter->getName());
+        }
+
+        if ($this->expectsPrimitiveParameter($signatureParameter)) {
+            return $this->searchPrimitiveParameter($signatureParameter, $providedParameters);
+        }
+
+        foreach ($providedParameters as $index => $providedParameter) {
+            if (! is_object($providedParameter) || $signatureParameter->getClass() === null) {
                 continue;
             }
 
-            if ($signatureParameter->getType()->getName() === get_class($providedParameter)) {
-                return $providedParameter;
+            if ($signatureParameter->getClass()->isInstance($providedParameter)) {
+                return Arr::pull($providedParameters, $index);
             }
         }
 
         return null;
+    }
+
+    private function expectsModelAsParameter(ReflectionParameter $signatureParameter): bool
+    {
+        if ($this->model === null) {
+            return false;
+        }
+
+        if ($signatureParameter->getClass() === null) {
+            return false;
+        }
+
+        return $signatureParameter->getClass()->isInstance($this->model);
+    }
+
+    private function parameterWithKeyExists(
+        ReflectionParameter $signatureParameter,
+        array $providedParameters
+    ): bool {
+        return array_key_exists(
+            $signatureParameter->getName(),
+            $providedParameters
+        );
+    }
+
+    private function expectsPrimitiveParameter(
+        ReflectionParameter $signatureParameter
+    ): bool {
+        if($signatureParameter->getType() === null){
+            return false;
+        }
+
+        return $signatureParameter->getType()->isBuiltin();
+    }
+
+    private function searchPrimitiveParameter(
+        ReflectionParameter $signatureParameter,
+        array &$providedParameters
+    ) {
+        foreach ($providedParameters as $index => $providedParameter) {
+            if ($this->getParameterPrimitiveType($providedParameter) === $signatureParameter->getType()->getName()) {
+                return Arr::pull($providedParameters, $index);
+            }
+        }
+
+        return null;
+    }
+
+    private function getParameterPrimitiveType($parameter): string
+    {
+        $typeName = gettype($parameter);
+
+        return strtr($typeName, [
+            'boolean' => 'bool',
+            'integer' => 'int',
+        ]);
     }
 }

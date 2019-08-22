@@ -19,10 +19,6 @@ class EndpointsGroup
 
     public function controller(string $controller): ControllerEndpointType
     {
-        if (method_exists($controller, '__invoke')) {
-            return $this->invokableController($controller);
-        }
-
         $controllerEndpointType = ControllerEndpointType::make($controller);
 
         $this->endpointTypes[] = $controllerEndpointType;

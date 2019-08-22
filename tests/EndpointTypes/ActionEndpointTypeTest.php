@@ -78,7 +78,7 @@ class ActionEndpointTypeTest extends TestCase
     }
 
     /** @test */
-    public function it_will_overwrite_a_model_given_as_resource()
+    public function it_will_not_overwrite_a_model_given_as_resource()
     {
         $action = [TestController::class, 'show'];
 
@@ -96,7 +96,7 @@ class ActionEndpointTypeTest extends TestCase
         $this->assertEquals([
             'show' => [
                 'method' => 'GET',
-                'action' => action($action, $otherTestModel),
+                'action' => action($action, $this->testModel),
             ],
         ], $endpoints);
     }

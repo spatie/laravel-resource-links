@@ -3,8 +3,9 @@
 namespace Spatie\LaravelResourceEndpoints\EndpointTypes;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
-class InvokableControllerEndpointType extends ControllerEndpointType
+class InvokableControllerEndpointType extends EndpointType
 {
     /** @var string */
     private $controller;
@@ -12,15 +13,13 @@ class InvokableControllerEndpointType extends ControllerEndpointType
     /** @var string|null */
     private $name;
 
-    public static function make(string $controller): ControllerEndpointType
+    public static function make(string $controller): InvokableControllerEndpointType
     {
         return new InvokableControllerEndpointType($controller);
     }
 
     public function __construct(string $controller)
     {
-        parent::__construct($controller);
-
         $this->controller = $controller;
     }
 
@@ -34,11 +33,6 @@ class InvokableControllerEndpointType extends ControllerEndpointType
     public function getEndpoints(Model $model = null): array
     {
         return $this->resolveEndpointType()->getEndpoints($model);
-    }
-
-    public function getCollectionEndpoints(): array
-    {
-        return $this->resolveEndpointType()->getEndpoints();
     }
 
     private function resolveEndpointType(): ActionEndpointType

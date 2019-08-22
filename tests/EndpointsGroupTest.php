@@ -50,25 +50,12 @@ class EndpointsGroupTest extends TestCase
                 ->contains(InvokableControllerEndpointType::make(TestInvokableController::class))
         );
     }
-
-    /** @test */
-    public function it_can_add_an_invokable_controller_as_controller()
-    {
-        $endpointsGroup = new EndpointsGroup();
-
-        $endpointsGroup->controller(TestInvokableController::class);
-
-        $this->assertTrue(
-            $endpointsGroup->getEndpointTypes()
-                ->contains(InvokableControllerEndpointType::make(TestInvokableController::class))
-        );
-    }
     
     /** @test */
     public function it_can_add_an_endpoints_group()
     {
         $endpointsGroup = new EndpointsGroup();
-        $endpointsGroup->controller(TestInvokableController::class);
+        $endpointsGroup->invokableController(TestInvokableController::class);
 
         $secondEndpointsGroup = new EndpointsGroup();
         $secondEndpointsGroup->action([TestController::class, 'index']);

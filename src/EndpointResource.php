@@ -47,6 +47,14 @@ class EndpointResource extends JsonResource
             return $this;
         }
 
+        if (is_string($endpoint) && method_exists($endpoint, '__invoke')) {
+            $this->endpointsGroup
+                ->invokableController($endpoint)
+                ->parameters(Arr::wrap($parameters));
+
+            return $this;
+        }
+
         if (is_string($endpoint)) {
             $this->endpointsGroup
                 ->controller($endpoint)
