@@ -65,6 +65,11 @@ class ControllerEndpointType extends EndpointType
         return $this->resolveEndpoints($methodsToInclude);
     }
 
+    public static function clearCache()
+    {
+        self::$cachedRoutes = [];
+    }
+
     private function resolveEndpoints(array $methodsToInclude, Model $model = null): array
     {
         $endpoints = self::getRoutesForController($this->controller)
@@ -88,7 +93,7 @@ class ControllerEndpointType extends EndpointType
 
     private static function getRoutesForController(string $controller): Collection
     {
-        if (in_array($controller, self::$cachedRoutes)) {
+        if (array_key_exists($controller, self::$cachedRoutes)) {
             return self::$cachedRoutes[$controller];
         }
 

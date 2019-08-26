@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as BaseTestCase;
+use Spatie\LaravelResourceEndpoints\EndpointTypes\ControllerEndpointType;
 use Spatie\LaravelResourceEndpoints\ResourceEndpointsServiceProvider;
 use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestModel;
 use Spatie\LaravelResourceEndpoints\Tests\Fakes\FakeRouter;
@@ -22,6 +23,8 @@ abstract class TestCase extends BaseTestCase
 
         $this->setUpEnvironment();
         $this->setUpDatabase();
+
+        ControllerEndpointType::clearCache(); // Remove cache
 
         $this->fakeRouter = FakeRouter::setup();
     }

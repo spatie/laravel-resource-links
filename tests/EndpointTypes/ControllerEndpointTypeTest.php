@@ -120,7 +120,7 @@ class ControllerEndpointTypeTest extends TestCase
             ],
         ], $endpoints);
     }
-    
+
     /** @test */
     public function it_will_merge_layered_formatted_endpoints()
     {
@@ -146,9 +146,9 @@ class ControllerEndpointTypeTest extends TestCase
             ]
         ], $endpoints);
     }
-    
+
     /** @test */
-    public function a_controller_endpoint_type_can_have_an_empty_enpoints_array()
+    public function a_controller_endpoint_type_can_have_an_empty_endpoints_array()
     {
         $endpoints = ControllerEndpointType::make(TestController::class)
             ->getEndpoints($this->testModel);
