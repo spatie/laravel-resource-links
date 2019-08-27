@@ -1,6 +1,6 @@
 ---
 title: Endpoint parameters
-weight: 3
+weight: 4
 ---
 
 An endpoint resource will try to deduce the parameters for a route as best as possible when generating the endpoint to that route. Without extra configuration the parameters of the current request and the current model given to the resource are used to construct the endpoints.

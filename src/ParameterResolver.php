@@ -51,6 +51,10 @@ class ParameterResolver
             return $this->model;
         }
 
+        if ($this->parameterWithKeyExists($signatureParameter, $providedParameters)) {
+            return Arr::pull($providedParameters, $signatureParameter->getName());
+        }
+
         if ($this->expectsPrimitiveParameter($signatureParameter)) {
             return $this->searchPrimitiveParameter($signatureParameter, $providedParameters);
         }

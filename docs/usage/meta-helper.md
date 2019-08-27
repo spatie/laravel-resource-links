@@ -1,6 +1,6 @@
 ---
 title: Meta helper
-weight: 2
+weight: 3
 ---
 
 ## A little helper
