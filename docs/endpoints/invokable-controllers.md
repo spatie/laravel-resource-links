@@ -35,7 +35,7 @@ You can alias `invoke` to another name:
 
 ```php
 $endpoints
-    ->controller(UsersController::class)
+    ->invokableController(UsersController::class)
     ->name('download');
 ```
 
@@ -48,12 +48,13 @@ Now your JSON will look like this:
        "action":"https://app.laravel/admin/users/1/download"
     },
 }
+```
 
 Just like a regular controller it is possible to specify the parameters for the endpoints:
 
 ```php
 $endpoints
-    ->controller(DownloadUserController::class)
+    ->invokableController(DownloadUserController::class)
     ->parameters(User::first());
 ```
 
@@ -61,6 +62,6 @@ Or prefix the endpoint:
 
 ```php
 $endpoints
-    ->controller(DownloadUserController::class)
+    ->invokableController(DownloadUserController::class)
     ->prefix('admin');
 ```

@@ -286,7 +286,7 @@ The `UserResource` in a response will now look like this:
 
 Sometimes you just want to automatically merge collection endpoints into a single endpoint resource when the model given to that resource does not exist or is null. This because you want to provide, for example, an endpoint to create a new model.
 
-Calling `->mergeCollectionEndpoints()` on every resource can be a bit tedious. So when setting `automatically-merge-endpoints` in `config\laravel-resource-endpoints.php` to `true`, each single endpoint resource will merge it's collection endpoints when a non-existing or null model is given to the resource.
+Calling `->mergeCollectionEndpoints()` on every resource can be a bit tedious. So when setting `automatically-merge-endpoints` in `config\resource-endpoints.php` to `true`, each single endpoint resource will merge it's collection endpoints when a non-existing or null model is given to the resource.
 
 
 ### Route parameters
@@ -572,7 +572,7 @@ The package includes 3 formatters:
 - LayeredFormatter: this formatter will put prefixed endpoints in their own prefixed array
 - UrlFormatter: a simple formatter which has an endpoint name as key and endpoint URL as value
 
-You can set the formatter used in the `laravel-resource-endpoints.php` config file. Or if you are using endpoint groups, it is possible to set a formatter specifically for each endpoint:
+You can set the formatter used in the `resource-endpoints.php` config file. Or if you are using endpoint groups, it is possible to set a formatter specifically for each endpoint:
 
 ```php
 $endpoints

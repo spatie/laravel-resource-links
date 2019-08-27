@@ -75,8 +75,6 @@ class EndpointResource extends JsonResource
 
     public function toArray($request)
     {
-        $this->ensureCollectionEndpointsAreAutomaticallyMerged();
-
         return $this->endpointsGroup
             ->getEndpointTypes()
             ->map(function (EndpointType $endpointType) use ($request) {
@@ -111,20 +109,5 @@ class EndpointResource extends JsonResource
         }
 
         return [];
-    }
-
-    private function ensureCollectionEndpointsAreAutomaticallyMerged()
-    {
-        if ($this->endpointResourceType !== EndpointResourceType::ITEM) {
-            return;
-        }
-
-        if (config('laravel-resource-endpoints.automatically_merge_endpoints') === false) {
-            return;
-        }
-
-        if (is_null($this->resource) || $this->resource->exists === false) {
-            $this->mergeCollectionEndpoints();
-        }
     }
 }

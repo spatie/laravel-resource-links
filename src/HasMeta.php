@@ -24,16 +24,6 @@ trait HasMeta
     public static function make(...$parameters)
     {
         return parent::make(...$parameters)->mergeCollectionEndpoints();
-
-//        $meta = self::meta();
-//
-//        if (! count($meta)) {
-//            parent::make(...$parameters);
-//        }
-//
-//        return parent::make(...$parameters)->additional([
-//            'meta' => $meta,
-//        ]);
     }
 
     public function mergeCollectionEndpoints()

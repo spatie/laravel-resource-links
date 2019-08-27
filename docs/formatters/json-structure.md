@@ -20,7 +20,7 @@ The package includes 3 formatters:
 - LayeredFormatter: this formatter will put prefixed endpoints in their own prefixed array
 - UrlFormatter: a simple formatter which has an endpoint name as key and endpoint URL as value
 
-You can set the formatter used in the `laravel-resource-endpoints.php` config file. Or if you are using endpoint groups, it is possible to set a formatter specifically for each endpoint:
+You can set the formatter used in the `resource-endpoints.php` config file. Or if you are using endpoint groups, it is possible to set a formatter specifically for each endpoint:
 
 ```php
 $endpoints

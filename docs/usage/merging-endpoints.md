@@ -1,9 +1,9 @@
 ---
 title: Merging endpoints
-weight: 5
+weight: 4
 ---
 
-When creating a single resource like `UserResource::make($user)` you sometimes not only want the endpoints tied to that resource but also the collection endpoints for that resource. In this case, you want not only the `show`, `edit`, `update` and `delete` endpoints but also the `index`, `create` and `store` endpoints for a single resource.
+When creating a single resource like `UserResource::make($user)` you not only want the endpoints tied to that resource but also the collection endpoints for that resource. In this case next to the `show`, `edit`, `update` and `delete` endpoints you also want the `index`, `create` and `store` endpoints in your resource.
 
 This can be done by merging the collection endpoints with the single resource endpoints like so:
 
@@ -69,7 +69,14 @@ The `UserResource` in a response will now look like this:
 
 #### Automatically merge collection endpoints
 
-Sometimes you just want to automatically merge collection endpoints into a single endpoint resource when the model given to that resource does not exist or is null. This because you want to provide, for example, an endpoint to create a new model.
+Calling `mergeCollectionEndpoints` on every resource can be a bit tedious. That's why when you include the `Spatie\LaravelResourceEndpoints\HasMeta` we'll not only add the [meta](https://docs.spatie.be/laravel-resource-endpoints/v1/usage/meta-helper/) helper but also automatic endpoint merging when you would make a single resource.
 
-Calling `->mergeCollectionEndpoints()` on every resource can be a bit tedious. So when setting `automatically_merge_endpoints` in `config\laravel-resource-endpoints.php` to `true`, each single endpoint resource will merge it's collection endpoints when a non-existing or null model is given to the resource.
+Let's have a look, now when creating a single resource:
 
+
+```php
+UserResource::make($user);
+
+```
+
+You would get all the endpoints: `show`, `edit`, `update`, `delete`, `index`, `create` and `store`. This will only work when making a single resource, collection resources will have their collection endpoints in the meta section.
