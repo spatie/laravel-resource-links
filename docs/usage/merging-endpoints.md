@@ -67,16 +67,15 @@ The `UserResource` in a response will now look like this:
 }
 ```
 
-#### Automatically merge collection endpoints
+### Automatically merge collection endpoints
 
 Calling `mergeCollectionEndpoints` on every resource can be a bit tedious. That's why when you include the `Spatie\LaravelResourceEndpoints\HasMeta` we'll not only add the [meta](https://docs.spatie.be/laravel-resource-endpoints/v1/usage/meta-helper/) helper but also automatic endpoint merging when you would make a single resource.
 
-Let's have a look, now when creating a single resource:
+Let's have a look, now when creating a single resource like so:
 
 
 ```php
 UserResource::make($user);
-
 ```
 
 You would get all the endpoints: `show`, `edit`, `update`, `delete`, `index`, `create` and `store`. This will only work when making a single resource, collection resources will have their collection endpoints in the meta section.

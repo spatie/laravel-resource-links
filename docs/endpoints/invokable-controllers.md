@@ -30,12 +30,13 @@ By default the `__invoke()` method of this controller will be the only endpoint 
        "action":"https://app.laravel/admin/users/1/download"
     },
 }
+```
 
 You can alias `invoke` to another name:
 
 ```php
 $endpoints
-    ->invokableController(UsersController::class)
+    ->invokableController(DownloadUserController::class)
     ->name('download');
 ```
 

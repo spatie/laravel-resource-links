@@ -4,6 +4,7 @@ namespace Spatie\LaravelResourceEndpoints\Tests\EndpointTypes;
 
 use Spatie\LaravelResourceEndpoints\EndpointTypes\ControllerEndpointType;
 use Spatie\LaravelResourceEndpoints\Formatters\LayeredFormatter;
+use Spatie\LaravelResourceEndpoints\Tests\Fakes\SecondTestModel;
 use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestController;
 use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestModel;
 use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
@@ -14,6 +15,9 @@ class ControllerEndpointTypeTest extends TestCase
     /** @var \Spatie\LaravelResourceEndpoints\Tests\Fakes\TestModel */
     private $testModel;
 
+    /** @var \Spatie\LaravelResourceEndpoints\Tests\Fakes\SecondTestModel */
+    private $secondTestModel;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -21,6 +25,11 @@ class ControllerEndpointTypeTest extends TestCase
         $this->testModel = TestModel::create([
             'id' => 1,
             'name' => 'TestModel',
+        ]);
+
+        $this->secondTestModel = SecondTestModel::create([
+            'id' => 1,
+            'name' => 'SecondTestModel',
         ]);
     }
 
@@ -143,7 +152,7 @@ class ControllerEndpointTypeTest extends TestCase
                     'method' => 'PUT',
                     'action' => action([TestController::class, 'update'], $this->testModel),
                 ],
-            ]
+            ],
         ], $endpoints);
     }
 
@@ -154,5 +163,56 @@ class ControllerEndpointTypeTest extends TestCase
             ->getEndpoints($this->testModel);
 
         $this->assertEquals([], $endpoints);
+    }
+
+    /** @test */
+    public function there_are_different_ways_to_define_parameters()
+    {
+        $action = [TestController::class, 'copy'];
+
+        $this->fakeRouter->get('{testModel}/{secondTestModel}', $action);
+
+        $expected = [
+            'copy' => [
+                'method' => 'GET',
+                'action' => action($action, [$this->testModel, $this->secondTestModel]),
+            ],
+        ];
+
+        $this->assertEquals($expected,
+            ControllerEndpointType::make(TestController::class)
+                ->methods(['copy'])
+                ->parameters($this->secondTestModel)
+                ->getEndpoints($this->testModel)
+        );
+
+        $this->assertEquals($expected,
+            ControllerEndpointType::make(TestController::class)
+                ->methods(['copy'])
+                ->parameters($this->testModel)
+                ->getEndpoints($this->secondTestModel)
+        );
+
+        $this->assertEquals($expected,
+            ControllerEndpointType::make(TestController::class)
+                ->methods(['copy'])
+                ->parameters($this->secondTestModel, $this->testModel)
+                ->getEndpoints()
+        );
+
+        $this->assertEquals($expected,
+            ControllerEndpointType::make(TestController::class)
+                ->methods(['copy'])
+                ->parameters([$this->secondTestModel, $this->testModel])
+                ->getEndpoints()
+        );
+
+        $this->assertEquals($expected,
+            ControllerEndpointType::make(TestController::class)
+                ->methods(['copy'])
+                ->parameters($this->testModel)
+                ->parameters($this->secondTestModel)
+                ->getEndpoints()
+        );
     }
 }

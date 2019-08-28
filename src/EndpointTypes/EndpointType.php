@@ -18,9 +18,11 @@ abstract class EndpointType
 
     abstract public function getEndpoints(Model $model = null): array;
 
-    public function parameters($parameters)
+    public function parameters(...$parameters)
     {
-        $this->parameters = Arr::wrap($parameters);
+        foreach ($parameters as $parameter){
+            $this->parameters = array_merge($this->parameters, Arr::wrap($parameter));
+        }
 
         return $this;
     }
@@ -37,10 +39,5 @@ abstract class EndpointType
         $this->formatter = $formatter;
 
         return $this;
-    }
-
-    public function hasParameters(): bool
-    {
-        return count($this->parameters) > 0;
     }
 }
