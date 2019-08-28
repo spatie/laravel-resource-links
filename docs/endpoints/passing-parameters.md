@@ -18,7 +18,7 @@ Or by array:
 $endpoints
     ->controller(UsersController::class)
     ->parameters([User::first(), Post::first()]);
-``
+```
 
 You can even pass an associative array where the keys will be used for [parameter deducing](https://docs.spatie.be/laravel-resource-endpoints/v1/usage/endpoint-parameters/#parameter-resolving-rules):
 
