@@ -47,6 +47,26 @@ class UserResource extends JsonResource
 }
 ```
 
+And for actions:
+
+``` php
+class OtherResource extends JsonResource
+{
+    use HasEndpoints;
+
+    public function toArray($request)
+    {
+        $user = Auth::user();
+
+        return [
+            'endpoints' => $this->endpoints()->addAction([UsersController::class, 'show'], [
+                'user' => Auth::user(),
+            ]),
+        ];
+    }
+}
+```
+
 When you manually specify the parameters, then we will not check the request for missing parameters. So you should add all the missing parameters by yourself.
 
 ### Parameter resolving rules

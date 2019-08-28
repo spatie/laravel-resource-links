@@ -27,7 +27,7 @@ class UserResource extends JsonResource
     public static function meta()
     {
         return [
-            'endpoints' => self::collectionEndpoints(UsersController::class)
+            'endpoints' => self::collectionEndpoints(UsersController::class),
         ];
     }
 }
@@ -82,6 +82,6 @@ Now when creating an `UserResource` collection, you will have all the endpoints 
 
 ## Why include endpoints in your resources?
 
-Let's say you're having a single-page application or an application built with [Inertia](https://inertiajs.com), then you have a PHP application running at the backend and a Javascript application at the front. These applications communicate with each other via an api but what if the frontend wants to route a user to another page? 
+Let's say you're building a single-page application or an application built with [Inertia](https://inertiajs.com), then you have a PHP application running at the backend and a Javascript application at the front. These applications communicate with each other via an api but what if the frontend wants to route a user to another page? 
 
 Since routes are defined in the backend, the frontend has no idea where it has to route the user to. We could just write the url's in the javascript code but what if a route is changed? So why not pass these routes from the backend to the frontend? You could just manually write down all these routes, or let this package do that job for you.

@@ -3,7 +3,7 @@ title: Resource setup
 weight: 1
 ---
 
-In your resources, add the `Spatie\LaravelResourceEndpoints\HasEndpoints` trait and a new attribute where the endpoints will be stored:
+In your resources, add the `Spatie\LaravelResourceEndpoints\HasEndpoints` trait and a new key where the endpoints will be stored:
 
 ``` php
 class UserResource extends JsonResource

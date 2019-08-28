@@ -18,25 +18,6 @@ class OtherResource extends JsonResource
     }
 }
 ```
-
-You can also manually set the parameters for the action:
-
-``` php
-class OtherResource extends JsonResource
-{
-    use HasEndpoints;
-
-    public function toArray($request)
-    {
-        $user = Auth::user();
-
-        return [
-            'endpoints' => $this->endpoints()
-                ->addAction([UsersController::class, 'show'], [$user]),
-        ];
-    }
-}
-```
  
 The HTTP verb for the action will be resolved from the route in Laravel. Should you have an action with two verbs, then you can always specify the verb for a particular action:
 
@@ -51,7 +32,7 @@ class OtherResource extends JsonResource
 
         return [
             'endpoints' => $this->endpoints()
-                ->addAction([UsersController::class, 'update'], $user, 'PUT'),
+                ->addAction([UsersController::class, 'update'], [], 'PUT'),
         ];
     }
 }
@@ -71,7 +52,7 @@ class UserResource extends JsonResource
         return parent::collection($resource)->additional([
             'meta' => [
                 'endpoints' => self::collectionEndpoints(UsersController::class)
-                    ->addAction([UsersController::class, 'update'], $user, 'PUT'),
+                    ->addAction([UsersController::class, 'update'], [], 'PUT'),
              ],
          ]);
     }
