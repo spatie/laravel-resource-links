@@ -9,7 +9,6 @@ You can pass parameters in different ways to an endpoint type. By value's:
 $endpoints
     ->controller(UsersController::class)
     ->parameters(User::first(), Post::first());
-    
 ```
 
 Or by array: 
@@ -28,7 +27,7 @@ $endpoints
     ->parameters(['user' => User::first(), 'post' => Post::first()]);
 ```
 
-Lastly, the parameters function can be called as many times as you want:
+Lastly, `parameters` can be called as many times as you want:
 
 ```php
 $endpoints
