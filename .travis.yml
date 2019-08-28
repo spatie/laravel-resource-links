@@ -1,5 +1,3 @@
-sudo: required
-
 language: php
 
 php:
@@ -11,11 +9,12 @@ env:
         - COMPOSER_FLAGS="--prefer-lowest"
         - COMPOSER_FLAGS=""
 
-before_install:
-    - sudo apt-get update
+before_script:
     - travis_retry composer self-update
-install:
-    - travis_retry composer update --prefer-source $COMPOSER_FLAGS
+    - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
 
 script:
-    - vendor/bin/phpunit
+    - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
+
+after_script:
+    - php vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover
