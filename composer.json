@@ -21,7 +21,7 @@
         "illuminate/routing" : "~5.8.0|~6.0.0"
     },
     "require-dev" : {
-        "orchestra/testbench" : "~3.8.0|~3.9.0|~4.0.0",
+        "orchestra/testbench" : "~3.8.0|~4.0.0",
         "phpunit/phpunit" : "^8.0"
     },
     "autoload" : {
