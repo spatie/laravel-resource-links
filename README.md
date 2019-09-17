@@ -5,15 +5,18 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/spatie/laravel-resource-endpoints.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/laravel-resource-endpoints)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-resource-endpoints.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-resource-endpoints)
 
-Let's say you have a `UsersController` with `index`, `show`, `create`, `edit`, `store`, `update` and `delete` methods and an `UserResource`. Wouldn't it be nice if you had the URL's to these methods immediately in your `UserResource` without having to construct them from scratch?
+Let's say you have a `UsersController` with the usual `index`, `show`, `create`, `edit`, `store`, `update`, and `delete` methods. Wouldn't it be nice if you had the URLs to these methods readily available in your `UserResource` without having to construct them from scratch?
 
 This package will add these endpoints to your resource based upon a controller or actions you define. Let's look at an example of a resource.
 
 ``` php
+use Spatie\ResourceEndpoints\HasEndpoints;
+use Spatie\ResourceEndpoints\HasMeta;
+
 class UserResource extends JsonResource
 {
-    use Spatie\LaravelResourceEndpoints\HasEndpoints;
-    use Spatie\LaravelResourceEndpoints\HasMeta;
+    use HasEndpoints;
+    use HasMeta;
 
     public function toArray($request): array
     {
@@ -23,7 +26,7 @@ class UserResource extends JsonResource
             'endpoints' => $this->endpoints(UsersController::class),
         ];
     }
-    
+
     public static function meta()
     {
         return [
@@ -36,44 +39,44 @@ class UserResource extends JsonResource
 Now when creating an `UserResource` collection, you will have all the endpoints from the `UserController` available:
 
 ```json
-{  
-   "data":[  
-      {  
-         "id":1,
-         "name":"Ruben Van Assche",
-         "endpoints":{  
-            "show":{  
-               "method":"GET",
-               "action":"https://app.laravel/users/1"
+{
+   "data": [
+      {
+         "id": 1,
+         "name": "Ruben Van Assche",
+         "endpoints": {
+            "show": {
+               "method": "GET",
+               "action": "https://laravel.app/users/1"
             },
-            "edit":{  
-               "method":"GET",
-               "action":"https://app.laravel/users/1/edit"
+            "edit": {
+               "method": "GET",
+               "action": "https://laravel.app/users/1/edit"
             },
-            "update":{  
-               "method":"PUT",
-               "action":"https://app.laravel/users/1"
+            "update": {
+               "method": "PUT",
+               "action": "https://laravel.app/users/1"
             },
-            "delete":{  
-               "method":"DELETE",
-               "action":"https://app.laravel/users/1"
+            "delete": {
+               "method": "DELETE",
+               "action": "https://laravel.app/users/1"
             }
          }
-      }  
+      }
    ],
-   "meta":{  
-      "endpoints":{  
-         "index":{  
-            "method":"GET",
-            "action":"https://app.laravel/users"
+   "meta": {
+      "endpoints": {
+         "index": {
+            "method": "GET",
+            "action": "https://laravel.app/users"
          },
-         "create":{  
-            "method":"GET",
-            "action":"https://app.laravel/users/create"
+         "create": {
+            "method": "GET",
+            "action": "https://laravel.app/users/create"
          },
-         "store":{  
-            "method":"POST",
-            "action":"https://app.laravel/users"
+         "store": {
+            "method": "POST",
+            "action": "https://laravel.app/users"
          }
       }
    }
@@ -82,9 +85,9 @@ Now when creating an `UserResource` collection, you will have all the endpoints 
 
 ## Why include endpoints in your resources?
 
-Let's say you're building a single-page application or an application built with [Inertia](https://inertiajs.com), then you have a PHP application running at the backend and a Javascript application at the front. These applications communicate with each other via an api but what if the frontend wants to route a user to another page? 
+When building a SPA or an application with [Inertia](https://inertiajs.com), you'll have PHP running on the server and Javascript on the client. These applications communicate with each other via an API or by passing JSON. The client doesn't have access to the `action` and `route` helpers like Blade does.
 
-Since routes are defined in the backend, the frontend has no idea where it has to route the user to. We could just write the url's in the javascript code but what if a route is changed? So why not pass these routes from the backend to the frontend? You could just manually write down all these routes, or let this package do that job for you.
+You could hard code URLs in the JavaScript app, but that makes it difficult to refactor. This package streamlines the process of passing URLs to the client in your Laravel resources.
 
 ## Setting up resource endpoints
 
@@ -125,7 +128,7 @@ We publish all received postcards [on our company website](https://spatie.be/en/
 
 Spatie is a webdesign agency based in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
 
-Does your business depend on our contributions? Reach out and support us on [Patreon](https://www.patreon.com/spatie). 
+Does your business depend on our contributions? Reach out and support us on [Patreon](https://www.patreon.com/spatie).
 All pledges will be dedicated to allocating workforce on maintenance and new awesome stuff.
 
 ## License
