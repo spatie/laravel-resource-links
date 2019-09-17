@@ -18,7 +18,7 @@ class UserResource extends JsonResource
 	        'endpoints' => $this->endpoints(UsersController::class, [
 	            'user' => Auth::user(),
 	        ]),
-	        ...
+	        //
 	    ];
     }
 }
@@ -26,14 +26,14 @@ class UserResource extends JsonResource
 
 Or for collection endpoints:
 
-   
+
 ``` php
 class UserResource extends JsonResource
 {
     use HasEndpoints;
 
-    ...
-    
+    //
+
     public static function collection($resource)
     {
         return parent::collection($resource)->additional([
@@ -56,8 +56,6 @@ class OtherResource extends JsonResource
 
     public function toArray($request)
     {
-        $user = Auth::user();
-
         return [
             'endpoints' => $this->endpoints()->addAction([UsersController::class, 'show'], [
                 'user' => Auth::user(),

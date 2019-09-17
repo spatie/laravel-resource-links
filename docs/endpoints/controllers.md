@@ -40,17 +40,17 @@ $endpoints
 This will produce the following JSON:
 
 ``` json
-"endpoints":{  
-    "admin.show":{  
-       "method":"GET",
-       "action":"https://app.laravel/admin/users/1"
+"endpoints": {
+    "admin.show": {
+       "method": "GET",
+       "action": "https://laravel.app/admin/users/1"
     },
-    "admin.edit":{  
-       "method":"GET",
-       "action":"https://app.laravel/admin/users/1/edit"
+    "admin.edit": {
+       "method": "GET",
+       "action": "https://laravel.app/admin/users/1/edit"
     },
-    
-    ...
+
+    //
 }
 ```
 
@@ -73,12 +73,12 @@ $endpoints
 This will produce the following JSON:
 
 ``` json
-"endpoints":{  
-    "list":{  
-       "method":"GET",
-       "action":"https://app.laravel/admin/users"
+"endpoints": {
+    "list": {
+       "method": "GET",
+       "action": "https://laravel.app/admin/users"
     },
-    
-    ...
+
+    //
 }
 ```

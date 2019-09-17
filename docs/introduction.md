@@ -20,7 +20,7 @@ class UserResource extends JsonResource
             'endpoints' => $this->endpoints(UsersController::class),
         ];
     }
-    
+
     public static function meta()
     {
         return [
@@ -33,44 +33,44 @@ class UserResource extends JsonResource
 Now when creating an `UserResource` collection, you will have all the endpoints from the `UserController` available:
 
 ```json
-{  
-   "data":[  
-      {  
+{
+   "data":[
+      {
          "id":1,
-         "name":"Ruben Van Assche",
-         "endpoints":{  
-            "show":{  
-               "method":"GET",
-               "action":"https://app.laravel/users/1"
+         "name": "Ruben Van Assche",
+         "endpoints": {
+            "show": {
+               "method": "GET",
+               "action": "https://laravel.app/users/1"
             },
-            "edit":{  
-               "method":"GET",
-               "action":"https://app.laravel/users/1/edit"
+            "edit": {
+               "method": "GET",
+               "action": "https://laravel.app/users/1/edit"
             },
-            "update":{  
-               "method":"PUT",
-               "action":"https://app.laravel/users/1"
+            "update": {
+               "method": "PUT",
+               "action": "https://laravel.app/users/1"
             },
-            "delete":{  
-               "method":"DELETE",
-               "action":"https://app.laravel/users/1"
+            "delete": {
+               "method": "DELETE",
+               "action": "https://laravel.app/users/1"
             }
          }
-      }  
+      }
    ],
-   "meta":{  
-      "endpoints":{  
-         "index":{  
-            "method":"GET",
-            "action":"https://app.laravel/users"
+   "meta": {
+      "endpoints": {
+         "index": {
+            "method": "GET",
+            "action": "https://laravel.app/users"
          },
-         "create":{  
-            "method":"GET",
-            "action":"https://app.laravel/users/create"
+         "create": {
+            "method": "GET",
+            "action": "https://laravel.app/users/create"
          },
-         "store":{  
-            "method":"POST",
-            "action":"https://app.laravel/users"
+         "store": {
+            "method": "POST",
+            "action": "https://laravel.app/users"
          }
       }
    }
@@ -79,6 +79,6 @@ Now when creating an `UserResource` collection, you will have all the endpoints 
 
 ## Why include endpoints in your resources?
 
-Let's say you're building a single-page application or an application built with [Inertia](https://inertiajs.com), then you have a PHP application running at the backend and a Javascript application at the front. These applications communicate with each other via an api but what if the frontend wants to route a user to another page? 
+Let's say you're building a single-page application or an application built with [Inertia](https://inertiajs.com), then you have a PHP application running at the backend and a Javascript application at the front. These applications communicate with each other via an api but what if the frontend wants to route a user to another page?
 
 Since routes are defined in the backend, the frontend has no idea where it has to route the user to. We could just write the url's in the javascript code but what if a route is changed? So why not pass these routes from the backend to the frontend? You could just manually write down all these routes, or let this package do that job for you.

@@ -45,8 +45,8 @@ $endpoints
     ->name('build');
 ```
 
-Changing the Http verb(POST, GET, ...) of the action can be done as such:
- 
+Changing the Http verb(POST, GET, …) of the action can be done as such:
+
 ```php
 $endpoints
     ->action([UsersController::class, 'create'])

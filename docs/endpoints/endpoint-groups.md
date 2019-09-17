@@ -28,8 +28,8 @@ class UserResource extends JsonResource
 {
     use HasEndpoints;
 
-    ...
-    
+    //
+
     public static function collection($resource)
     {
         return parent::collection($resource)->additional([

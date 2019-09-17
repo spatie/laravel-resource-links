@@ -6,9 +6,9 @@ weight: 1
 Want a different representation for endpoints? For example, something like this:
 
 ```json
-"endpoints":{  
-    "show":"https://app.laravel/users/1",
-    "edit":"https://app.laravel/users/1/edit",
+"endpoints": {
+    "show": "https://laravel.app/users/1",
+    "edit": "https://laravel.app/users/1/edit",
 }
 ```
 
@@ -26,4 +26,4 @@ You can set the formatter used in the `resource-endpoints.php` config file. Or i
 $endpoints
     ->controller(UsersController::class)
     ->formatter(Spatie\LaravelResourceEndpoints\Formatters\ UrlFormatter::class);
-``` 
+```

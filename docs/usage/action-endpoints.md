@@ -18,7 +18,7 @@ class OtherResource extends JsonResource
     }
 }
 ```
- 
+
 The HTTP verb for the action will be resolved from the route in Laravel. Should you have an action with two verbs, then you can always specify the verb for a particular action:
 
 ``` php
@@ -45,8 +45,8 @@ class UserResource extends JsonResource
 {
     use HasEndpoints;
 
-    ...
-    
+    //
+
     public static function collection($resource)
     {
         return parent::collection($resource)->additional([

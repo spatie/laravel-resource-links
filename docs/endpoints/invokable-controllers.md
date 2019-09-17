@@ -3,7 +3,7 @@ title: Invokable controllers
 weight: 3
 ---
 
-An invokable controller can be added as such: 
+An invokable controller can be added as such:
 
 ``` php
 class UserResource extends JsonResource
@@ -24,10 +24,10 @@ class UserResource extends JsonResource
 By default the `__invoke()` method of this controller will be the only endpoint that will be created named `invoke. This will produce following JSON:
 
 ``` json
-"endpoints":{  
-    "invoke":{  
-       "method":"GET",
-       "action":"https://app.laravel/admin/users/1/download"
+"endpoints": {
+    "invoke": {
+       "method": "GET",
+       "action": "https://laravel.app/admin/users/1/download"
     },
 }
 ```
@@ -43,10 +43,10 @@ $endpoints
 Now your JSON will look like this:
 
 ``` json
-"endpoints":{  
-    "download":{  
-       "method":"GET",
-       "action":"https://app.laravel/admin/users/1/download"
+"endpoints": {
+    "download": {
+       "method": "GET",
+       "action": "https://laravel.app/admin/users/1/download"
     },
 }
 ```

@@ -3,9 +3,11 @@ title: Resource setup
 weight: 1
 ---
 
-In your resources, add the `Spatie\LaravelResourceEndpoints\HasEndpoints` trait and a new key where the endpoints will be stored:
+In your resources, add the `HasEndpoints` trait and a new key where the endpoints will be stored:
 
 ``` php
+use Spatie\ResourceEndpoints\HasEndpoints;
+
 class UserResource extends JsonResource
 {
     use HasEndpoints;
@@ -22,26 +24,25 @@ class UserResource extends JsonResource
 
 ```
 
-
 Now every `UserResource` has an additional `EndpointResource` which in the responses will look like:
 
 ``` json
-"endpoints":{  
-    "show":{  
-       "method":"GET",
-       "action":"https://app.laravel/admin/users/1"
+"endpoints": {
+    "show": {
+       "method": "GET",
+       "action": "https://laravel.app/admin/users/1"
     },
-    "edit":{  
-       "method":"GET",
-       "action":"https://app.laravel/admin/users/1/edit"
+    "edit": {
+       "method": "GET",
+       "action": "https://laravel.app/admin/users/1/edit"
     },
-    "update":{  
-       "method":"PUT",
-       "action":"https://app.laravel/admin/users/1"
+    "update": {
+       "method": "PUT",
+       "action": "https://laravel.app/admin/users/1"
     },
-    "delete":{  
-       "method":"DELETE",
-       "action":"https://app.laravel/admin/users/1"
+    "delete": {
+       "method": "DELETE",
+       "action": "https://laravel.app/admin/users/1"
     }
 }
 ```
@@ -50,7 +51,7 @@ By default, we'll only construct endpoints from the `show`, `edit`, `update` and
 
 ## Collection endpoints
 
-What about endpoints like `index`, `create` and `store`? These endpoints are not generally not tied to a single item, so it's not a good idea to store them at that level. Instead, it's better to put the links to those collection endpoints on the collection level of a resource.
+What about endpoints like `index`, `create` and `store`? These endpoints are not tied to a single model instance, so it's not a good idea to store them at that level. Instead, it's better to put the links to those collection endpoints on the collection level of a resource.
 
 You can put the collection endpoints in the meta section of a resource collection like so:
 
@@ -67,7 +68,7 @@ class UserResource extends JsonResource
             'endpoints' => $this->endpoints(UsersController::class),
         ];
     }
-    
+
     public static function collection($resource)
     {
         return parent::collection($resource)->additional([
@@ -82,24 +83,23 @@ class UserResource extends JsonResource
 Now when we create an `UserResource` collection, the meta section will look like this:
 
 ``` json
-   "meta":{  
-      "endpoints":{  
-         "index":{  
-            "method":"GET",
-            "action":"https://app.laravel/admin/users"
-         },
-          "create":{  
-            "method":"POST",
-            "action":"https://app.laravel/admin/users/create"
-         },
-         "store":{  
-            "method":"POST",
-            "action":"https://app.laravel/admin/users"
-         }
+"meta": {
+   "endpoints": {
+      "index": {
+         "method": "GET",
+         "action": "https://laravel.app/admin/users"
+      },
+         "create": {
+         "method": "POST",
+         "action": "https://laravel.app/admin/users/create"
+      },
+      "store": {
+         "method": "POST",
+         "action": "https://laravel.app/admin/users"
       }
-      ...
-   }
+   },
+   //
+}
 ```
 
-
-By default, the collection endpoints will only be constructed from the `index`, `create`  and `store` methods in your controller.
+By default, the collection endpoints will only be constructed for the `index`, `create` and `store` methods in your controller.
