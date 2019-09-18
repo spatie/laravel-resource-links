@@ -4,7 +4,7 @@ namespace Spatie\ResourceLinks\Tests\EndpointTypes;
 
 use Exception;
 use Spatie\ResourceLinks\EndpointTypes\ActionEndpointType;
-use Spatie\ResourceLinks\Formatters\LayeredFormatter;
+use Spatie\ResourceLinks\Serializers\LayeredSerializer;
 use Spatie\ResourceLinks\Tests\Fakes\TestController;
 use Spatie\ResourceLinks\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
 use Spatie\ResourceLinks\Tests\Fakes\TestModel;
@@ -166,11 +166,11 @@ class ActionEndpointTypeTest extends TestCase
         $this->fakeRouter->get('', $action);
 
         $endpoints = ActionEndpointType::make($action)
-            ->formatter(LayeredFormatter::class)
+            ->formatter(LayeredSerializer::class)
             ->getEndpoints();
 
         $layeredEndpoints = ActionEndpointType::make($action)
-            ->formatter(LayeredFormatter::class)
+            ->formatter(LayeredSerializer::class)
             ->prefix('tests')
             ->getEndpoints();
 

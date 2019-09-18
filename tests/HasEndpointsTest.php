@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Route;
 use Spatie\ResourceLinks\LinkResource;
 use Spatie\ResourceLinks\LinkResourceType;
 use Spatie\ResourceLinks\Links;
-use Spatie\ResourceLinks\Formatters\LayeredFormatter;
-use Spatie\ResourceLinks\HasEndpoints;
+use Spatie\ResourceLinks\Serializers\LayeredSerializer;
+use Spatie\ResourceLinks\HasLinks;
 use Spatie\ResourceLinks\HasMeta;
 use Spatie\ResourceLinks\Tests\Fakes\TestController;
 use Spatie\ResourceLinks\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
@@ -41,7 +41,7 @@ class HasEndpointsTest extends TestCase
     {
         $testResource = new class(null) extends JsonResource
         {
-            use HasEndpoints, HasMeta;
+            use HasLinks, HasMeta;
 
             public function toArray($request)
             {
@@ -76,7 +76,7 @@ class HasEndpointsTest extends TestCase
     {
         $testResource = new class(null) extends JsonResource
         {
-            use HasEndpoints, HasMeta;
+            use HasLinks, HasMeta;
 
             public function toArray($request)
             {
@@ -126,7 +126,7 @@ class HasEndpointsTest extends TestCase
 
         $testResource = new class(null) extends JsonResource
         {
-            use HasEndpoints, HasMeta;
+            use HasLinks, HasMeta;
 
             public function toArray($request)
             {
@@ -159,7 +159,7 @@ class HasEndpointsTest extends TestCase
 
         $testResource = new class(null) extends JsonResource
         {
-            use HasEndpoints, HasMeta;
+            use HasLinks, HasMeta;
 
             public function toArray($request)
             {
@@ -226,7 +226,7 @@ class HasEndpointsTest extends TestCase
 
         $testResource = new class(null) extends JsonResource
         {
-            use HasEndpoints, HasMeta;
+            use HasLinks, HasMeta;
 
             public function toArray($request)
             {

@@ -13,5 +13,5 @@ return [
     |
     */
 
-    'formatter' => Spatie\ResourceLinks\Formatters\DefaultFormatter::class,
+    'formatter' => Spatie\ResourceLinks\Serializers\DefaultSerializer::class,
 ];

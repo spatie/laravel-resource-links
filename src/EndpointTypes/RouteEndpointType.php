@@ -4,10 +4,10 @@ namespace Spatie\ResourceLinks\EndpointTypes;
 
 use Illuminate\Routing\RouteUrlGenerator;
 use Spatie\ResourceLinks\Exceptions\EndpointGenerationException;
-use Spatie\ResourceLinks\Formatters\LayeredFormatter;
-use Spatie\ResourceLinks\Formatters\Endpoint;
-use Spatie\ResourceLinks\Formatters\DefaultFormatter;
-use Spatie\ResourceLinks\Formatters\Formatter;
+use Spatie\ResourceLinks\Serializers\LayeredSerializer;
+use Spatie\ResourceLinks\Serializers\Endpoint;
+use Spatie\ResourceLinks\Serializers\DefaultSerializer;
+use Spatie\ResourceLinks\Serializers\Serializer;
 use Spatie\ResourceLinks\ParameterResolver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Exceptions\UrlGenerationException;
@@ -76,7 +76,7 @@ class RouteEndpointType extends EndpointType
         return $httpVerbs[0];
     }
 
-    private function resolveFormatter(): Formatter
+    private function resolveFormatter(): Serializer
     {
         $formatter = is_null($this->formatter)
             ? config('resource-links.formatter')

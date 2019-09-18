@@ -3,7 +3,7 @@
 namespace Spatie\ResourceLinks\Tests\EndpointTypes;
 
 use Spatie\ResourceLinks\EndpointTypes\ControllerEndpointType;
-use Spatie\ResourceLinks\Formatters\LayeredFormatter;
+use Spatie\ResourceLinks\Serializers\LayeredSerializer;
 use Spatie\ResourceLinks\Tests\Fakes\SecondTestModel;
 use Spatie\ResourceLinks\Tests\Fakes\TestController;
 use Spatie\ResourceLinks\Tests\Fakes\TestModel;
@@ -139,7 +139,7 @@ class ControllerEndpointTypeTest extends TestCase
         $endpoints = ControllerEndpointType::make(TestController::class)
             ->methods(['show', 'update'])
             ->prefix('filter')
-            ->formatter(LayeredFormatter::class)
+            ->formatter(LayeredSerializer::class)
             ->getEndpoints($this->testModel);
 
         $this->assertEquals([

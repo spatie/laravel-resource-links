@@ -7,8 +7,8 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\URL;
 use Spatie\ResourceLinks\EndpointTypes\RouteEndpointType;
 use Spatie\ResourceLinks\Exceptions\EndpointGenerationException;
-use Spatie\ResourceLinks\Formatters\LayeredFormatter;
-use Spatie\ResourceLinks\Formatters\UrlFormatter;
+use Spatie\ResourceLinks\Serializers\LayeredSerializer;
+use Spatie\ResourceLinks\Serializers\UrlSerializer;
 use Spatie\ResourceLinks\ParameterResolver;
 use Spatie\ResourceLinks\Tests\Fakes\TestController;
 use Spatie\ResourceLinks\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
@@ -182,7 +182,7 @@ class RouteEndpointTypeTest extends TestCase
         $route = $this->fakeRouter->get('', $action);
 
         $endpoints = RouteEndpointType::make($route)
-            ->formatter(UrlFormatter::class)
+            ->formatter(UrlSerializer::class)
             ->getEndpoints();
 
         $this->assertEquals([
@@ -197,7 +197,7 @@ class RouteEndpointTypeTest extends TestCase
 
         $route = $this->fakeRouter->get('', $action);
 
-        app(config()->set('resource-links.formatter', UrlFormatter::class));
+        app(config()->set('resource-links.formatter', UrlSerializer::class));
 
         $endpoints = RouteEndpointType::make($route)->getEndpoints();
 
