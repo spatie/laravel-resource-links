@@ -1,21 +1,21 @@
 <?php
 
-namespace Spatie\LaravelResourceEndpoints\Tests;
+namespace Spatie\ResourceLinks\Tests;
 
-use Spatie\LaravelResourceEndpoints\EndpointsGroup;
-use Spatie\LaravelResourceEndpoints\EndpointTypes\ActionEndpointType;
-use Spatie\LaravelResourceEndpoints\EndpointTypes\ControllerEndpointType;
-use Spatie\LaravelResourceEndpoints\EndpointTypes\InvokableControllerEndpointType;
-use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestController;
-use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestInvokableCollectionController;
-use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestInvokableController;
+use Spatie\ResourceLinks\Links;
+use Spatie\ResourceLinks\EndpointTypes\ActionEndpointType;
+use Spatie\ResourceLinks\EndpointTypes\ControllerEndpointType;
+use Spatie\ResourceLinks\EndpointTypes\InvokableControllerEndpointType;
+use Spatie\ResourceLinks\Tests\Fakes\TestController;
+use Spatie\ResourceLinks\Tests\Fakes\TestInvokableCollectionController;
+use Spatie\ResourceLinks\Tests\Fakes\TestInvokableController;
 
 class EndpointsGroupTest extends TestCase
 {
     /** @test */
     public function it_can_add_an_action()
     {
-        $endpointsGroup = new EndpointsGroup();
+        $endpointsGroup = new Links();
 
         $endpointsGroup->action([TestInvokableController::class]);
 
@@ -28,7 +28,7 @@ class EndpointsGroupTest extends TestCase
     /** @test */
     public function it_can_add_a_controller()
     {
-        $endpointsGroup = new EndpointsGroup();
+        $endpointsGroup = new Links();
 
         $endpointsGroup->controller(TestController::class);
 
@@ -41,7 +41,7 @@ class EndpointsGroupTest extends TestCase
     /** @test */
     public function it_can_add_an_invokable_controller()
     {
-        $endpointsGroup = new EndpointsGroup();
+        $endpointsGroup = new Links();
 
         $endpointsGroup->invokableController(TestInvokableController::class);
 
@@ -54,10 +54,10 @@ class EndpointsGroupTest extends TestCase
     /** @test */
     public function it_can_add_an_endpoints_group()
     {
-        $endpointsGroup = new EndpointsGroup();
+        $endpointsGroup = new Links();
         $endpointsGroup->invokableController(TestInvokableController::class);
 
-        $secondEndpointsGroup = new EndpointsGroup();
+        $secondEndpointsGroup = new Links();
         $secondEndpointsGroup->action([TestController::class, 'index']);
 
         $endpointsGroup->endpointsGroup($secondEndpointsGroup);

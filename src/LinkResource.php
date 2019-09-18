@@ -1,23 +1,23 @@
 <?php
 
-namespace Spatie\LaravelResourceEndpoints;
+namespace Spatie\ResourceLinks;
 
 use Closure;
 use Illuminate\Support\Arr;
-use Spatie\LaravelResourceEndpoints\EndpointTypes\ControllerEndpointType;
-use Spatie\LaravelResourceEndpoints\EndpointTypes\EndpointType;
+use Spatie\ResourceLinks\EndpointTypes\ControllerEndpointType;
+use Spatie\ResourceLinks\EndpointTypes\EndpointType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class EndpointResource extends JsonResource
+class LinkResource extends JsonResource
 {
     /** @var string */
     private $endpointResourceType;
 
-    /** @var \Spatie\LaravelResourceEndpoints\EndpointsGroup */
+    /** @var \Spatie\ResourceLinks\Links */
     private $endpointsGroup;
 
-    public static function create(Model $model = null, string $endpointResourceType = null): EndpointResource
+    public static function create(Model $model = null, string $endpointResourceType = null): LinkResource
     {
         return new self($model, $endpointResourceType);
     }
@@ -26,11 +26,11 @@ class EndpointResource extends JsonResource
     {
         parent::__construct($model);
 
-        $this->endpointResourceType = $endpointResourceType ?? EndpointResourceType::ITEM;
-        $this->endpointsGroup = new EndpointsGroup();
+        $this->endpointResourceType = $endpointResourceType ?? LinkResourceType::ITEM;
+        $this->endpointsGroup = new Links();
     }
 
-    public function endpoint($endpoint, $parameters = null, $httpVerb = null): EndpointResource
+    public function endpoint($endpoint, $parameters = null, $httpVerb = null): LinkResource
     {
         if ($endpoint instanceof Closure) {
             $endpoint($this->endpointsGroup);
@@ -66,9 +66,9 @@ class EndpointResource extends JsonResource
         return $this;
     }
 
-    public function mergeCollectionEndpoints(): EndpointResource
+    public function mergeCollectionEndpoints(): LinkResource
     {
-        $this->endpointResourceType = EndpointResourceType::MULTI;
+        $this->endpointResourceType = LinkResourceType::MULTI;
 
         return $this;
     }
@@ -90,15 +90,15 @@ class EndpointResource extends JsonResource
 
     private function resolveEndpointsFromControllerEndpointType(ControllerEndpointType $endpointType): array
     {
-        if ($this->endpointResourceType === EndpointResourceType::ITEM) {
+        if ($this->endpointResourceType === LinkResourceType::ITEM) {
             return $endpointType->getEndpoints($this->resource);
         }
 
-        if ($this->endpointResourceType === EndpointResourceType::COLLECTION) {
+        if ($this->endpointResourceType === LinkResourceType::COLLECTION) {
             return $endpointType->getCollectionEndpoints();
         }
 
-        if ($this->endpointResourceType === EndpointResourceType::MULTI) {
+        if ($this->endpointResourceType === LinkResourceType::MULTI) {
             return array_merge(
                 $endpointType->getEndpoints($this->resource),
                 $endpointType->getCollectionEndpoints()

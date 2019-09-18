@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\LaravelResourceEndpoints;
+namespace Spatie\ResourceLinks;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Route;

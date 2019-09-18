@@ -1,13 +1,13 @@
 <?php
 
-namespace Spatie\LaravelResourceEndpoints;
+namespace Spatie\ResourceLinks;
 
 use Illuminate\Support\Collection;
-use Spatie\LaravelResourceEndpoints\EndpointTypes\ActionEndpointType;
-use Spatie\LaravelResourceEndpoints\EndpointTypes\ControllerEndpointType;
-use Spatie\LaravelResourceEndpoints\EndpointTypes\InvokableControllerEndpointType;
+use Spatie\ResourceLinks\EndpointTypes\ActionEndpointType;
+use Spatie\ResourceLinks\EndpointTypes\ControllerEndpointType;
+use Spatie\ResourceLinks\EndpointTypes\InvokableControllerEndpointType;
 
-class EndpointsGroup
+class Links
 {
     /** @var \Illuminate\Support\Collection */
     private $endpointTypes;
@@ -44,7 +44,7 @@ class EndpointsGroup
         return $actionEndpointType;
     }
 
-    public function endpointsGroup(EndpointsGroup $endpointsGroup)
+    public function endpointsGroup(Links $endpointsGroup)
     {
         $this->endpointTypes = $this->endpointTypes->merge(
             $endpointsGroup->getEndpointTypes()

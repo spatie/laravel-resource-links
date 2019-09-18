@@ -2,6 +2,8 @@
 title: Introduction
 weight: 1
 ---
+**This package is under development and will change drastically**
+
 Let's say you have a `UsersController` with `index`, `show`, `create`, `edit`, `store`, `update` and `delete` methods and an `UserResource`. Wouldn't it be nice if you had the URL's to these methods immediately in your `UserResource` without having to construct them from scratch?
 
 This package will add these endpoints to your resource based upon a controller or actions you define. Let's look at an example of a resource.
@@ -9,8 +11,8 @@ This package will add these endpoints to your resource based upon a controller o
 ``` php
 class UserResource extends JsonResource
 {
-    use Spatie\LaravelResourceEndpoints\HasEndpoints;
-    use Spatie\LaravelResourceEndpoints\HasMeta;
+    use Spatie\ResourceLinks\HasEndpoints;
+    use Spatie\ResourceLinks\HasMeta;
 
     public function toArray($request): array
     {

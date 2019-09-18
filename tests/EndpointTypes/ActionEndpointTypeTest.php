@@ -1,19 +1,19 @@
 <?php
 
-namespace Spatie\LaravelResourceEndpoints\Tests\EndpointTypes;
+namespace Spatie\ResourceLinks\Tests\EndpointTypes;
 
 use Exception;
-use Spatie\LaravelResourceEndpoints\EndpointTypes\ActionEndpointType;
-use Spatie\LaravelResourceEndpoints\Formatters\LayeredFormatter;
-use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestController;
-use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
-use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestModel;
-use Spatie\LaravelResourceEndpoints\Tests\Fakes\SecondTestModel;
-use Spatie\LaravelResourceEndpoints\Tests\TestCase;
+use Spatie\ResourceLinks\EndpointTypes\ActionEndpointType;
+use Spatie\ResourceLinks\Formatters\LayeredFormatter;
+use Spatie\ResourceLinks\Tests\Fakes\TestController;
+use Spatie\ResourceLinks\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
+use Spatie\ResourceLinks\Tests\Fakes\TestModel;
+use Spatie\ResourceLinks\Tests\Fakes\SecondTestModel;
+use Spatie\ResourceLinks\Tests\TestCase;
 
 class ActionEndpointTypeTest extends TestCase
 {
-    /** @var \Spatie\LaravelResourceEndpoints\Tests\Fakes\TestModel */
+    /** @var \Spatie\ResourceLinks\Tests\Fakes\TestModel */
     private $testModel;
 
     protected function setUp(): void

@@ -1,21 +1,21 @@
 <?php
 
-namespace Spatie\LaravelResourceEndpoints\Tests\EndpointTypes;
+namespace Spatie\ResourceLinks\Tests\EndpointTypes;
 
-use Spatie\LaravelResourceEndpoints\EndpointTypes\ControllerEndpointType;
-use Spatie\LaravelResourceEndpoints\Formatters\LayeredFormatter;
-use Spatie\LaravelResourceEndpoints\Tests\Fakes\SecondTestModel;
-use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestController;
-use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestModel;
-use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
-use Spatie\LaravelResourceEndpoints\Tests\TestCase;
+use Spatie\ResourceLinks\EndpointTypes\ControllerEndpointType;
+use Spatie\ResourceLinks\Formatters\LayeredFormatter;
+use Spatie\ResourceLinks\Tests\Fakes\SecondTestModel;
+use Spatie\ResourceLinks\Tests\Fakes\TestController;
+use Spatie\ResourceLinks\Tests\Fakes\TestModel;
+use Spatie\ResourceLinks\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
+use Spatie\ResourceLinks\Tests\TestCase;
 
 class ControllerEndpointTypeTest extends TestCase
 {
-    /** @var \Spatie\LaravelResourceEndpoints\Tests\Fakes\TestModel */
+    /** @var \Spatie\ResourceLinks\Tests\Fakes\TestModel */
     private $testModel;
 
-    /** @var \Spatie\LaravelResourceEndpoints\Tests\Fakes\SecondTestModel */
+    /** @var \Spatie\ResourceLinks\Tests\Fakes\SecondTestModel */
     private $secondTestModel;
 
     protected function setUp(): void

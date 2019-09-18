@@ -13,5 +13,5 @@ return [
     |
     */
 
-    'formatter' => Spatie\LaravelResourceEndpoints\Formatters\DefaultFormatter::class,
+    'formatter' => Spatie\ResourceLinks\Formatters\DefaultFormatter::class,
 ];

@@ -1,24 +1,24 @@
 <?php
 
-namespace Spatie\LaravelResourceEndpoints\Tests\EndpointTypes;
+namespace Spatie\ResourceLinks\Tests\EndpointTypes;
 
 use Illuminate\Routing\Route;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\URL;
-use Spatie\LaravelResourceEndpoints\EndpointTypes\RouteEndpointType;
-use Spatie\LaravelResourceEndpoints\Exceptions\EndpointGenerationException;
-use Spatie\LaravelResourceEndpoints\Formatters\LayeredFormatter;
-use Spatie\LaravelResourceEndpoints\Formatters\UrlFormatter;
-use Spatie\LaravelResourceEndpoints\ParameterResolver;
-use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestController;
-use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
-use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestModel;
-use Spatie\LaravelResourceEndpoints\Tests\Fakes\SecondTestModel;
-use Spatie\LaravelResourceEndpoints\Tests\TestCase;
+use Spatie\ResourceLinks\EndpointTypes\RouteEndpointType;
+use Spatie\ResourceLinks\Exceptions\EndpointGenerationException;
+use Spatie\ResourceLinks\Formatters\LayeredFormatter;
+use Spatie\ResourceLinks\Formatters\UrlFormatter;
+use Spatie\ResourceLinks\ParameterResolver;
+use Spatie\ResourceLinks\Tests\Fakes\TestController;
+use Spatie\ResourceLinks\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
+use Spatie\ResourceLinks\Tests\Fakes\TestModel;
+use Spatie\ResourceLinks\Tests\Fakes\SecondTestModel;
+use Spatie\ResourceLinks\Tests\TestCase;
 
 class RouteEndpointTypeTest extends TestCase
 {
-    /** @var \Spatie\LaravelResourceEndpoints\Tests\Fakes\TestModel */
+    /** @var \Spatie\ResourceLinks\Tests\Fakes\TestModel */
     private $testModel;
 
     protected function setUp(): void
@@ -197,7 +197,7 @@ class RouteEndpointTypeTest extends TestCase
 
         $route = $this->fakeRouter->get('', $action);
 
-        app(config()->set('resource-endpoints.formatter', UrlFormatter::class));
+        app(config()->set('resource-links.formatter', UrlFormatter::class));
 
         $endpoints = RouteEndpointType::make($route)->getEndpoints();
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace Spatie\LaravelResourceEndpoints;
+namespace Spatie\ResourceLinks;
 
 use Illuminate\Support\ServiceProvider;
 
-class ResourceEndpointsServiceProvider extends ServiceProvider
+class ResourceLinksServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -13,7 +13,7 @@ class ResourceEndpointsServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/resource-endpoints.php' => config_path('resource-endpoints.php'),
+                __DIR__ . '/../config/resource-links.php' => config_path('resource-links.php'),
             ], 'config');
         }
     }
@@ -23,6 +23,6 @@ class ResourceEndpointsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/resource-endpoints.php', 'resource-endpoints');
+        $this->mergeConfigFrom(__DIR__ . '/../config/resource-links.php', 'resource-links');
     }
 }

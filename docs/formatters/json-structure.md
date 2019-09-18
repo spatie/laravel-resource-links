@@ -12,7 +12,7 @@ Want a different representation for endpoints? For example, something like this:
 }
 ```
 
-This can be done with formatters! You can create your own formatters by implementing the `Spatie\LaravelResourceEndpoints\Formatters\Formatter` interface.
+This can be done with formatters! You can create your own formatters by implementing the `Spatie\ResourceLinks\Formatters\Formatter` interface.
 
 The package includes 3 formatters:
 

@@ -69,7 +69,7 @@ The `UserResource` in a response will now look like this:
 
 ### Automatically merge collection endpoints
 
-Calling `mergeCollectionEndpoints` on every resource can be a bit tedious. That's why when you include the `Spatie\LaravelResourceEndpoints\HasMeta` we'll not only add the [meta](https://docs.spatie.be/laravel-resource-endpoints/v1/usage/meta-helper/) helper but also automatic endpoint merging when you would make a single resource.
+Calling `mergeCollectionEndpoints` on every resource can be a bit tedious. That's why when you include the `Spatie\ResourceLinks\HasMeta` we'll not only add the [meta](https://docs.spatie.be/laravel-resource-endpoints/v1/usage/meta-helper/) helper but also automatic endpoint merging when you would make a single resource.
 
 Let's have a look, now when creating a single resource like so:
 

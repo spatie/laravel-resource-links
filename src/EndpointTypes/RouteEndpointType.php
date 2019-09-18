@@ -1,18 +1,18 @@
 <?php
 
-namespace Spatie\LaravelResourceEndpoints\EndpointTypes;
+namespace Spatie\ResourceLinks\EndpointTypes;
 
 use Illuminate\Routing\RouteUrlGenerator;
-use Spatie\LaravelResourceEndpoints\Exceptions\EndpointGenerationException;
-use Spatie\LaravelResourceEndpoints\Formatters\LayeredFormatter;
-use Spatie\LaravelResourceEndpoints\Formatters\Endpoint;
-use Spatie\LaravelResourceEndpoints\Formatters\DefaultFormatter;
-use Spatie\LaravelResourceEndpoints\Formatters\Formatter;
-use Spatie\LaravelResourceEndpoints\ParameterResolver;
+use Spatie\ResourceLinks\Exceptions\EndpointGenerationException;
+use Spatie\ResourceLinks\Formatters\LayeredFormatter;
+use Spatie\ResourceLinks\Formatters\Endpoint;
+use Spatie\ResourceLinks\Formatters\DefaultFormatter;
+use Spatie\ResourceLinks\Formatters\Formatter;
+use Spatie\ResourceLinks\ParameterResolver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Exceptions\UrlGenerationException;
 use Illuminate\Routing\Route;
-use Spatie\LaravelResourceEndpoints\UrlResolver;
+use Spatie\ResourceLinks\UrlResolver;
 
 class RouteEndpointType extends EndpointType
 {
@@ -79,7 +79,7 @@ class RouteEndpointType extends EndpointType
     private function resolveFormatter(): Formatter
     {
         $formatter = is_null($this->formatter)
-            ? config('resource-endpoints.formatter')
+            ? config('resource-links.formatter')
             : $this->formatter;
 
         return new $formatter;

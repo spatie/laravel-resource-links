@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\LaravelResourceEndpoints;
+namespace Spatie\ResourceLinks;
 
 /** @mixin \Illuminate\Http\Resources\Json\JsonResource */
 trait HasMeta

@@ -1,8 +1,8 @@
 <?php
 
-namespace Spatie\LaravelResourceEndpoints;
+namespace Spatie\ResourceLinks;
 
-class EndpointResourceType
+class LinkResourceType
 {
     public const COLLECTION = 'collection';
     public const ITEM = 'item';

@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\LaravelResourceEndpoints\EndpointTypes;
+namespace Spatie\ResourceLinks\EndpointTypes;
 
 use Exception;
 use Illuminate\Database\Eloquent\Model;

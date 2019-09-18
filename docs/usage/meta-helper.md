@@ -10,7 +10,7 @@ When using collection endpoints in your resource the code for adding these colle
 ``` php
 class UserResource extends JsonResource
 {
-    use Spatie\LaravelResourceEndpoints\HasEndpoints;
+    use Spatie\ResourceLinks\HasEndpoints;
     
     public static function collection($resource)
     {
@@ -28,8 +28,8 @@ That's why we've added a little helper which puts endpoints immediately in the m
 ``` php
 class UserResource extends JsonResource
 {
-    use Spatie\LaravelResourceEndpoints\HasEndpoints;
-    use Spatie\LaravelResourceEndpoints\HasMeta;
+    use Spatie\ResourceLinks\HasEndpoints;
+    use Spatie\ResourceLinks\HasMeta;
     
     public static function meta()
     {
@@ -40,4 +40,4 @@ class UserResource extends JsonResource
 }
 ```
 
-You can use this little helper by including the `Spatie\LaravelResourceEndpoints\HasMeta` trait in your resource.
+You can use this little helper by including the `Spatie\ResourceLinks\HasMeta` trait in your resource.

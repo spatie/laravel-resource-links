@@ -16,7 +16,7 @@ The package will automatically register a service provider.
 Publishing the config file is optional:
 
 ```bash
-php artisan vendor:publish --provider="Spatie\LaravelResourceEndpoints\ResourceEndpointsServiceProvider" --tag="config"
+php artisan vendor:publish --provider="Spatie\ResourceLinks\ResourceEndpointsServiceProvider" --tag="config"
 ```
 
 This is the default content of the config file:
@@ -35,6 +35,6 @@ return [
     |
     */
 
-    'formatter' => Spatie\LaravelResourceEndpoints\Formatters\DefaultFormatter::class,
+    'formatter' => Spatie\ResourceLinks\Formatters\DefaultFormatter::class,
 ];
 ```

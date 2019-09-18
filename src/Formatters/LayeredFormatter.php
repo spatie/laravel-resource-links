@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\LaravelResourceEndpoints\Formatters;
+namespace Spatie\ResourceLinks\Formatters;
 
 class LayeredFormatter implements Formatter
 {

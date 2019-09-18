@@ -1,26 +1,26 @@
 <?php
 
-namespace Spatie\LaravelResourceEndpoints\Tests;
+namespace Spatie\ResourceLinks\Tests;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
-use Spatie\LaravelResourceEndpoints\EndpointResource;
-use Spatie\LaravelResourceEndpoints\EndpointResourceType;
-use Spatie\LaravelResourceEndpoints\EndpointsGroup;
-use Spatie\LaravelResourceEndpoints\Formatters\LayeredFormatter;
-use Spatie\LaravelResourceEndpoints\HasEndpoints;
-use Spatie\LaravelResourceEndpoints\HasMeta;
-use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestController;
-use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
-use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestInvokableCollectionController;
-use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestInvokableController;
-use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestModel;
+use Spatie\ResourceLinks\LinkResource;
+use Spatie\ResourceLinks\LinkResourceType;
+use Spatie\ResourceLinks\Links;
+use Spatie\ResourceLinks\Formatters\LayeredFormatter;
+use Spatie\ResourceLinks\HasEndpoints;
+use Spatie\ResourceLinks\HasMeta;
+use Spatie\ResourceLinks\Tests\Fakes\TestController;
+use Spatie\ResourceLinks\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
+use Spatie\ResourceLinks\Tests\Fakes\TestInvokableCollectionController;
+use Spatie\ResourceLinks\Tests\Fakes\TestInvokableController;
+use Spatie\ResourceLinks\Tests\Fakes\TestModel;
 
 class HasEndpointsTest extends TestCase
 {
-    /** @var \Spatie\LaravelResourceEndpoints\Tests\Fakes\TestModel */
+    /** @var \Spatie\ResourceLinks\Tests\Fakes\TestModel */
     private $testModel;
 
     protected function setUp(): void
@@ -164,7 +164,7 @@ class HasEndpointsTest extends TestCase
             public function toArray($request)
             {
                 return [
-                    'endpoints' => $this->endpoints(function (EndpointsGroup $endpoints) {
+                    'endpoints' => $this->endpoints(function (Links $endpoints) {
                         $endpoints->controller(TestController::class);
                         $endpoints->invokableController(TestInvokableController::class)->name('invoke');
                     }),
@@ -174,7 +174,7 @@ class HasEndpointsTest extends TestCase
             public static function meta()
             {
                 return [
-                    'endpoints' => self::collectionEndpoints(function (EndpointsGroup $endpoints) {
+                    'endpoints' => self::collectionEndpoints(function (Links $endpoints) {
                         $endpoints->controller(TestController::class);
                         $endpoints->action([TestController::class, 'index'])->name('action');
                     }),

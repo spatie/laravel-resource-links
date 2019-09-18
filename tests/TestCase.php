@@ -1,20 +1,20 @@
 <?php
 
-namespace Spatie\LaravelResourceEndpoints\Tests;
+namespace Spatie\ResourceLinks\Tests;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as BaseTestCase;
-use Spatie\LaravelResourceEndpoints\EndpointTypes\ControllerEndpointType;
-use Spatie\LaravelResourceEndpoints\ResourceEndpointsServiceProvider;
-use Spatie\LaravelResourceEndpoints\Tests\Fakes\TestModel;
-use Spatie\LaravelResourceEndpoints\Tests\Fakes\FakeRouter;
-use Spatie\LaravelResourceEndpoints\Tests\Fakes\SecondTestModel;
+use Spatie\ResourceLinks\EndpointTypes\ControllerEndpointType;
+use Spatie\ResourceLinks\ResourceLinksServiceProvider;
+use Spatie\ResourceLinks\Tests\Fakes\TestModel;
+use Spatie\ResourceLinks\Tests\Fakes\FakeRouter;
+use Spatie\ResourceLinks\Tests\Fakes\SecondTestModel;
 
 abstract class TestCase extends BaseTestCase
 {
-    /** @var \Spatie\LaravelResourceEndpoints\Tests\Fakes\FakeRouter */
+    /** @var \Spatie\ResourceLinks\Tests\Fakes\FakeRouter */
     protected $fakeRouter;
 
     protected function setUp() : void
@@ -31,7 +31,7 @@ abstract class TestCase extends BaseTestCase
 
     protected function getPackageProviders($app)
     {
-        return [ResourceEndpointsServiceProvider::class];
+        return [ResourceLinksServiceProvider::class];
     }
 
     private function setUpDatabase()

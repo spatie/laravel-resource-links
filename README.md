@@ -5,6 +5,8 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/spatie/laravel-resource-endpoints.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/laravel-resource-endpoints)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-resource-endpoints.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-resource-endpoints)
 
+**This package is under development and will change drastically**
+
 Let's say you have a `UsersController` with the usual `index`, `show`, `create`, `edit`, `store`, `update`, and `delete` methods. Wouldn't it be nice if you had the URLs to these methods readily available in your `UserResource` without having to construct them from scratch?
 
 This package will add these endpoints to your resource based upon a controller or actions you define. Let's look at an example of a resource.
