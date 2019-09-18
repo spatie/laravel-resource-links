@@ -1,9 +1,9 @@
 <?php
 
 
-namespace Spatie\ResourceLinks\Formatters;
+namespace Spatie\ResourceLinks\Serializers;
 
-interface Formatter
+interface Serializer
 {
     public function format(Endpoint $endpoint): array;
 }

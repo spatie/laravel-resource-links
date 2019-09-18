@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\ResourceLinks\Formatters;
+namespace Spatie\ResourceLinks\Serializers;
 
 class Endpoint
 {

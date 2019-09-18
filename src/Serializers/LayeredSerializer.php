@@ -1,8 +1,8 @@
 <?php
 
-namespace Spatie\ResourceLinks\Formatters;
+namespace Spatie\ResourceLinks\Serializers;
 
-class LayeredFormatter implements Formatter
+class LayeredSerializer implements Serializer
 {
     public function format(Endpoint $endpoint): array
     {

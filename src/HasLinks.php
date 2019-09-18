@@ -5,7 +5,7 @@ namespace Spatie\ResourceLinks;
 use Closure;
 
 /** @mixin \Illuminate\Http\Resources\Json\JsonResource */
-trait HasEndpoints
+trait HasLinks
 {
     /**
      * @param string|Closure|null|array $controller

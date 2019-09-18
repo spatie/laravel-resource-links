@@ -1,8 +1,8 @@
 <?php
 
-namespace Spatie\ResourceLinks\Formatters;
+namespace Spatie\ResourceLinks\Serializers;
 
-class UrlFormatter implements Formatter
+class UrlSerializer implements Serializer
 {
     public function format(Endpoint $endpoint): array
     {
