@@ -1,17 +1,16 @@
 <?php
 
-namespace Spatie\ResourceLinks\Tests\EndpointTypes;
+namespace Spatie\ResourceLinks\Tests\LinkTypes;
 
 use Exception;
-use Spatie\ResourceLinks\EndpointTypes\ActionEndpointType;
+use Spatie\ResourceLinks\LinkTypes\ActionLinkType;
 use Spatie\ResourceLinks\Serializers\LayeredSerializer;
 use Spatie\ResourceLinks\Tests\Fakes\TestController;
-use Spatie\ResourceLinks\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
 use Spatie\ResourceLinks\Tests\Fakes\TestModel;
 use Spatie\ResourceLinks\Tests\Fakes\SecondTestModel;
 use Spatie\ResourceLinks\Tests\TestCase;
 
-class ActionEndpointTypeTest extends TestCase
+class ActionLinkTypeTest extends TestCase
 {
     /** @var \Spatie\ResourceLinks\Tests\Fakes\TestModel */
     private $testModel;
@@ -33,48 +32,48 @@ class ActionEndpointTypeTest extends TestCase
 
         $this->fakeRouter->get('', $action);
 
-        $endpoints = ActionEndpointType::make($action)->getEndpoints();
+        $links = ActionLinkType::make($action)->getLinks();
 
         $this->assertEquals([
             'index' => [
                 'method' => 'GET',
                 'action' => action($action),
             ],
-        ], $endpoints);
+        ], $links);
     }
 
     /** @test */
-    public function it_can_create_an_action_endpoint_type()
+    public function it_can_create_an_action_links_type()
     {
         $action = [TestController::class, 'index'];
 
         $this->fakeRouter->get('', $action);
 
-        $endpoints = ActionEndpointType::make($action)->getEndpoints();
+        $links = ActionLinkType::make($action)->getLinks();
 
         $this->assertEquals([
             'index' => [
                 'method' => 'GET',
                 'action' => action($action),
             ],
-        ], $endpoints);
+        ], $links);
     }
 
     /** @test */
-    public function it_can_create_an_action_endpoint_type_with_a_model_as_resource()
+    public function it_can_create_an_action_link_type_with_a_model_as_resource()
     {
         $action = [TestController::class, 'show'];
 
         $this->fakeRouter->get('{testModel}', $action);
 
-        $endpoints = ActionEndpointType::make($action)->getEndpoints($this->testModel);
+        $links = ActionLinkType::make($action)->getLinks($this->testModel);
 
         $this->assertEquals([
             'show' => [
                 'method' => 'GET',
                 'action' => action($action, $this->testModel),
             ],
-        ], $endpoints);
+        ], $links);
     }
 
     /** @test */
@@ -89,16 +88,16 @@ class ActionEndpointTypeTest extends TestCase
             'name' => 'OtherTestModel',
         ]);
 
-        $endpoints = ActionEndpointType::make($action)
+        $links = ActionLinkType::make($action)
             ->parameters([$otherTestModel])
-            ->getEndpoints($this->testModel);
+            ->getLinks($this->testModel);
 
         $this->assertEquals([
             'show' => [
                 'method' => 'GET',
                 'action' => action($action, $this->testModel),
             ],
-        ], $endpoints);
+        ], $links);
     }
 
     /** @test */
@@ -113,10 +112,10 @@ class ActionEndpointTypeTest extends TestCase
             'name' => 'secondTestModel',
         ]);
 
-        $endpoints = ActionEndpointType::make($action)
+        $links = ActionLinkType::make($action)
             ->httpVerb('GET')
             ->parameters([$secondTestModel])
-            ->getEndpoints($this->testModel);
+            ->getLinks($this->testModel);
 
         $this->assertEquals([
             'copy' => [
@@ -126,7 +125,7 @@ class ActionEndpointTypeTest extends TestCase
                     [$this->testModel, $secondTestModel]
                 ),
             ],
-        ], $endpoints);
+        ], $links);
     }
 
     /** @test */
@@ -136,50 +135,50 @@ class ActionEndpointTypeTest extends TestCase
 
         $action = [TestController::class, 'index'];
 
-        ActionEndpointType::make($action)->getEndpoints();
+        ActionLinkType::make($action)->getLinks();
     }
 
     /** @test */
-    public function it_can_prefix_an_action_endpoint()
+    public function it_can_prefix_an_action_link()
     {
         $action = [TestController::class, 'index'];
 
         $this->fakeRouter->get('', $action);
 
-        $endpoints = ActionEndpointType::make($action)
+        $links = ActionLinkType::make($action)
             ->prefix('this-')
-            ->getEndpoints();
+            ->getLinks();
 
         $this->assertEquals([
             'this-index' => [
                 'method' => 'GET',
                 'action' => action($action),
             ],
-        ], $endpoints);
+        ], $links);
     }
 
     /** @test */
-    public function it_can_change_the_formatter_to_layered()
+    public function it_can_change_the_serializer_to_layered()
     {
         $action = [TestController::class, 'index'];
 
         $this->fakeRouter->get('', $action);
 
-        $endpoints = ActionEndpointType::make($action)
-            ->formatter(LayeredSerializer::class)
-            ->getEndpoints();
+        $links = ActionLinkType::make($action)
+            ->serializer(LayeredSerializer::class)
+            ->getLinks();
 
-        $layeredEndpoints = ActionEndpointType::make($action)
-            ->formatter(LayeredSerializer::class)
+        $layeredLinks = ActionLinkType::make($action)
+            ->serializer(LayeredSerializer::class)
             ->prefix('tests')
-            ->getEndpoints();
+            ->getLinks();
 
         $this->assertEquals([
             'index' => [
                 'method' => 'GET',
                 'action' => action($action),
             ],
-        ], $endpoints);
+        ], $links);
 
         $this->assertEquals([
             'tests' => [
@@ -188,6 +187,6 @@ class ActionEndpointTypeTest extends TestCase
                     'action' => action($action),
                 ],
             ],
-        ], $layeredEndpoints);
+        ], $layeredLinks);
     }
 }

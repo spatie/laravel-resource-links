@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as BaseTestCase;
-use Spatie\ResourceLinks\EndpointTypes\ControllerEndpointType;
+use Spatie\ResourceLinks\LinkTypes\ControllerLinkType;
 use Spatie\ResourceLinks\ResourceLinksServiceProvider;
 use Spatie\ResourceLinks\Tests\Fakes\TestModel;
 use Spatie\ResourceLinks\Tests\Fakes\FakeRouter;
@@ -24,7 +24,7 @@ abstract class TestCase extends BaseTestCase
         $this->setUpEnvironment();
         $this->setUpDatabase();
 
-        ControllerEndpointType::clearCache(); // Remove cache
+        ControllerLinkType::clearCache(); // Remove cache
 
         $this->fakeRouter = FakeRouter::setup();
     }

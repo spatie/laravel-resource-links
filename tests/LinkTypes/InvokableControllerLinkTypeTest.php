@@ -1,16 +1,16 @@
 <?php
 
-namespace Spatie\ResourceLinks\Tests\EndpointTypes;
+namespace Spatie\ResourceLinks\Tests\LinkTypes;
 
-use Spatie\ResourceLinks\EndpointTypes\ControllerEndpointType;
-use Spatie\ResourceLinks\EndpointTypes\InvokableControllerEndpointType;
+use Spatie\ResourceLinks\LinkTypes\ControllerLinkType;
+use Spatie\ResourceLinks\LinkTypes\InvokableControllerLinkType;
 use Spatie\ResourceLinks\Tests\Fakes\TestController;
 use Spatie\ResourceLinks\Tests\Fakes\TestInvokableCollectionController;
 use Spatie\ResourceLinks\Tests\Fakes\TestInvokableController;
 use Spatie\ResourceLinks\Tests\Fakes\TestModel;
 use Spatie\ResourceLinks\Tests\TestCase;
 
-class InvokableControllerEndpointTypeTest extends TestCase
+class InvokableControllerLinkTypeTest extends TestCase
 {
     /** @var \Spatie\ResourceLinks\Tests\Fakes\TestModel */
     private $testModel;
@@ -26,59 +26,59 @@ class InvokableControllerEndpointTypeTest extends TestCase
     }
 
     /** @test */
-    public function it_will_generate_endpoints_for_invokable_controllers()
+    public function it_will_generate_links_for_invokable_controllers()
     {
         $action = TestInvokableController::class;
 
         $this->fakeRouter->invokableGet('{testModel}', $action);
 
-        $endpointType = InvokableControllerEndpointType::make(TestInvokableController::class);
+        $linkType = InvokableControllerLinkType::make(TestInvokableController::class);
 
-        $endpoints = $endpointType->getEndpoints($this->testModel);
+        $links = $linkType->getLinks($this->testModel);
 
         $this->assertEquals([
             'invoke' => [
                 'method' => 'GET',
                 'action' => action($action, $this->testModel),
             ],
-        ], $endpoints);
+        ], $links);
     }
     
     /** @test */
-    public function it_can_name_an_endpoint()
+    public function it_can_name_a_link()
     {
         $action = TestInvokableController::class;
 
         $this->fakeRouter->invokableGet('{testModel}', $action);
 
-        $endpoints = InvokableControllerEndpointType::make($action)
+        $links = InvokableControllerLinkType::make($action)
             ->name('purge')
-            ->getEndpoints($this->testModel);
+            ->getLinks($this->testModel);
 
         $this->assertEquals([
             'purge' => [
                 'method' => 'GET',
                 'action' => action(TestInvokableController::class, $this->testModel),
             ],
-        ], $endpoints);
+        ], $links);
     }
 
     /** @test */
-    public function it_can_prefix_endpoints()
+    public function it_can_prefix_links()
     {
         $action = TestInvokableController::class;
 
         $this->fakeRouter->invokableGet('{testModel}', $action);
 
-        $endpoints = InvokableControllerEndpointType::make($action)
+        $links = InvokableControllerLinkType::make($action)
             ->prefix('this-')
-            ->getEndpoints($this->testModel);
+            ->getLinks($this->testModel);
 
         $this->assertEquals([
             'this-invoke' => [
                 'method' => 'GET',
                 'action' => action($action, $this->testModel),
             ],
-        ], $endpoints);
+        ], $links);
     }
 }

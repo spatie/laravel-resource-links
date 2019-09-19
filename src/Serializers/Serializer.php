@@ -5,5 +5,5 @@ namespace Spatie\ResourceLinks\Serializers;
 
 interface Serializer
 {
-    public function format(Endpoint $endpoint): array;
+    public function format(LinkContainer $linkContainer): array;
 }

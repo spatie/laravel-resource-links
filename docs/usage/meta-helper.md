@@ -5,36 +5,36 @@ weight: 3
 
 ## A little helper
 
-When using collection endpoints in your resource the code for adding these collection endpoints can be quite confusing:
+When using collection links in your resource the code for adding these collection links can be quite confusing:
 
 ``` php
 class UserResource extends JsonResource
 {
-    use Spatie\ResourceLinks\HasEndpoints;
+    use Spatie\ResourceLinks\HasLinks;
     
     public static function collection($resource)
     {
         return parent::collection($resource)->additional([
             'meta' => [
-                'endpoints' => self::collectionEndpoints(UsersController::class)
+                'links' => self::collectionLinks(UsersController::class)
              ],
          ]);
     }
 }
 ```
 
-That's why we've added a little helper which puts endpoints immediately in the meta section of a resource collection:
+That's why we've added a little helper which puts links immediately in the meta section of a resource collection:
 
 ``` php
 class UserResource extends JsonResource
 {
-    use Spatie\ResourceLinks\HasEndpoints;
+    use Spatie\ResourceLinks\HasLinks;
     use Spatie\ResourceLinks\HasMeta;
     
     public static function meta()
     {
         return [
-            'endpoints' => self::collectionEndpoints(UsersController::class)
+            'links' => self::collectionLinks(UsersController::class)
         ];
     }
 }

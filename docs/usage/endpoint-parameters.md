@@ -1,21 +1,21 @@
 ---
-title: Endpoint parameters
+title: Link parameters
 weight: 4
 ---
 
-An endpoint resource will try to deduce the parameters for a route as best as possible when generating the endpoint to that route. Without extra configuration the parameters of the current request and the current model given to the resource are used to construct the endpoints.
+An link resource will try to deduce the parameters for a route as best as possible when generating the link to that route. Without extra configuration the parameters of the current request and the current model given to the resource are used to construct the links.
 
 But it is also possible to specify your own parameters:
 
 ```php
 class UserResource extends JsonResource
 {
-    use HasEndpoints;
+    use HasLinks;
 
     public function toArray($request)
     {
 	    return [
-	        'endpoints' => $this->endpoints(UsersController::class, [
+	        'links' => $this->links(UsersController::class, [
 	            'user' => Auth::user(),
 	        ]),
 	        //
@@ -24,13 +24,13 @@ class UserResource extends JsonResource
 }
 ```
 
-Or for collection endpoints:
+Or for collection links:
 
 
 ``` php
 class UserResource extends JsonResource
 {
-    use HasEndpoints;
+    use HasLinks;
 
     //
 
@@ -38,7 +38,7 @@ class UserResource extends JsonResource
     {
         return parent::collection($resource)->additional([
             'meta' => [
-                'endpoints' => self::collectionEndpoints(UsersController::class, [
+                'links' => self::collectionLinks(UsersController::class, [
                     'user' => Auth::user()
                 ])
              ],
@@ -52,12 +52,12 @@ And for actions:
 ``` php
 class OtherResource extends JsonResource
 {
-    use HasEndpoints;
+    use HasLinks;
 
     public function toArray($request)
     {
         return [
-            'endpoints' => $this->endpoints()->addAction([UsersController::class, 'show'], [
+            'links' => $this->links()->addAction([UsersController::class, 'show'], [
                 'user' => Auth::user(),
             ]),
         ];
@@ -67,7 +67,7 @@ class OtherResource extends JsonResource
 
 ### Parameter resolving rules
 
-An endpoint has zero or more signature parameters(i.e. the parameters of your function you're routing to) that should be filled in when creating a url to an endpoint.
+An link has zero or more signature parameters(i.e. the parameters of your function you're routing to) that should be filled in when creating a url to an link.
 
 We use a set of rules to deduce a correct value for the signature parameters. For each signature parameter these rules are checked: when a value of a rule fits the signature parameter it will be used.
 
@@ -79,10 +79,10 @@ The rule are executed in following order:
 
 The provided parameters are the parameters you provided explicitly with the parameters we find in the current request appended.
 
-### Endpoints that cannot be deduced
+### Links that cannot be deduced
 
-Sometimes it is not possible to fully deduce all the endpoints for a resource. In this case, we will try to construct an endpoint as close as possible to the route. We do this by putting the parameters we cannot deduce between brackets.
+Sometimes it is not possible to fully deduce all the links for a resource. In this case, we will try to construct an link as close as possible to the route. We do this by putting the parameters we cannot deduce between brackets.
 
-Let's look at an example: say you want to link an `App\User` to an `App\Post`. The `link` method in your controller expects two parameters `$user` and `$post` with matching types. When the `App\User` is given to the resource but `App\Post` is missing the URL of the endpoint will then look like `/user/link/1/{post}` for the `App\User` with id 1.
+Let's look at an example: say you want to link an `App\User` to an `App\Post`. The `link` method in your controller expects two parameters `$user` and `$post` with matching types. When the `App\User` is given to the resource but `App\Post` is missing the URL of the link will then look like `/user/link/1/{post}` for the `App\User` with id 1.
 
-This becomes handy to debug which parameters are missing in the resource and should be manually specified for creating endpoints. You can also replace these parameters between brackets on the frontend of your application for a more dynamic endpoint!
+This becomes handy to debug which parameters are missing in the resource and should be manually specified for creating links. You can also replace these parameters between brackets on the frontend of your application for a more dynamic link!

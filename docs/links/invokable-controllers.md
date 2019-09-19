@@ -8,23 +8,23 @@ An invokable controller can be added as such:
 ``` php
 class UserResource extends JsonResource
 {
-    use HasEndpoints;
+    use HasLinks;
 
     public function toArray($request)
     {
         return [
-            'endpoints' => $this->endpoints(function (EndpointsGroup $endpoints) {
-                $endpoints->invokableController(DownloadUserController::class);
+            'links' => $this->links(function (Links $links) {
+                $links->invokableController(DownloadUserController::class);
             }),
         ];
     }
 }
 ```
 
-By default the `__invoke()` method of this controller will be the only endpoint that will be created named `invoke. This will produce following JSON:
+By default the `__invoke()` method of this controller will be the only link that will be created named `invoke. This will produce following JSON:
 
 ``` json
-"endpoints": {
+"links": {
     "invoke": {
        "method": "GET",
        "action": "https://laravel.app/admin/users/1/download"
@@ -35,7 +35,7 @@ By default the `__invoke()` method of this controller will be the only endpoint 
 You can alias `invoke` to another name:
 
 ```php
-$endpoints
+$links
     ->invokableController(DownloadUserController::class)
     ->name('download');
 ```
@@ -43,7 +43,7 @@ $endpoints
 Now your JSON will look like this:
 
 ``` json
-"endpoints": {
+"links": {
     "download": {
        "method": "GET",
        "action": "https://laravel.app/admin/users/1/download"
@@ -51,18 +51,18 @@ Now your JSON will look like this:
 }
 ```
 
-Just like a regular controller it is possible to specify the parameters for the endpoints:
+Just like a regular controller it is possible to specify the parameters for the links:
 
 ```php
-$endpoints
+$links
     ->invokableController(DownloadUserController::class)
     ->parameters(User::first());
 ```
 
-Or prefix the endpoint:
+Or prefix the link:
 
 ```php
-$endpoints
+$links
     ->invokableController(DownloadUserController::class)
     ->prefix('admin');
 ```

@@ -2,23 +2,15 @@
 
 namespace Spatie\ResourceLinks\Tests;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Routing\Router;
-use Illuminate\Support\Facades\Route;
-use Spatie\ResourceLinks\LinkResource;
-use Spatie\ResourceLinks\LinkResourceType;
 use Spatie\ResourceLinks\Links;
-use Spatie\ResourceLinks\Serializers\LayeredSerializer;
 use Spatie\ResourceLinks\HasLinks;
 use Spatie\ResourceLinks\HasMeta;
 use Spatie\ResourceLinks\Tests\Fakes\TestController;
-use Spatie\ResourceLinks\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
-use Spatie\ResourceLinks\Tests\Fakes\TestInvokableCollectionController;
 use Spatie\ResourceLinks\Tests\Fakes\TestInvokableController;
 use Spatie\ResourceLinks\Tests\Fakes\TestModel;
 
-class HasEndpointsTest extends TestCase
+class HasLinksTest extends TestCase
 {
     /** @var \Spatie\ResourceLinks\Tests\Fakes\TestModel */
     private $testModel;
@@ -37,16 +29,15 @@ class HasEndpointsTest extends TestCase
     }
 
     /** @test */
-    public function it_will_generate_endpoints_when_making_a_resource()
+    public function it_will_generate_links_when_making_a_resource()
     {
-        $testResource = new class(null) extends JsonResource
-        {
+        $testResource = new class(null) extends JsonResource {
             use HasLinks, HasMeta;
 
             public function toArray($request)
             {
                 return [
-                    'endpoints' => $this->endpoints(TestController::class),
+                    'linkss' => $this->links(TestController::class),
                 ];
             }
         };
@@ -57,7 +48,7 @@ class HasEndpointsTest extends TestCase
 
         $this->get('/resource')->assertExactJson([
             'data' => [
-                'endpoints' => [
+                'linkss' => [
                     'show' => [
                         'method' => 'GET',
                         'action' => action([TestController::class, 'show'], $this->testModel),
@@ -72,23 +63,22 @@ class HasEndpointsTest extends TestCase
     }
 
     /** @test */
-    public function it_will_generate_endpoints_when_collecting_a_resource()
+    public function it_will_generate_links_when_collecting_a_resource()
     {
-        $testResource = new class(null) extends JsonResource
-        {
+        $testResource = new class(null) extends JsonResource {
             use HasLinks, HasMeta;
 
             public function toArray($request)
             {
                 return [
-                    'endpoints' => $this->endpoints(TestController::class),
+                    'linkss' => $this->links(TestController::class),
                 ];
             }
 
             public static function meta()
             {
                 return [
-                    'endpoints' => self::collectionEndpoints(TestController::class),
+                    'linkss' => self::collectionLinks(TestController::class),
                 ];
             }
         };
@@ -100,7 +90,7 @@ class HasEndpointsTest extends TestCase
         $this->get('/resource')->assertExactJson([
             'data' => [
                 0 => [
-                    'endpoints' => [
+                    'linkss' => [
                         'show' => [
                             'method' => 'GET',
                             'action' => action([TestController::class, 'show'], $this->testModel),
@@ -109,7 +99,7 @@ class HasEndpointsTest extends TestCase
                 ],
             ],
             'meta' => [
-                'endpoints' => [
+                'linkss' => [
                     'index' => [
                         'method' => 'GET',
                         'action' => action([TestController::class, 'index']),
@@ -120,18 +110,17 @@ class HasEndpointsTest extends TestCase
     }
 
     /** @test */
-    public function it_can_use_invokable_controllers_when_creating_endpoints()
+    public function it_can_use_invokable_controllers_when_creating_links()
     {
         $this->fakeRouter->invokableGet('/show/{testModel}', TestInvokableController::class);
 
-        $testResource = new class(null) extends JsonResource
-        {
+        $testResource = new class(null) extends JsonResource {
             use HasLinks, HasMeta;
 
             public function toArray($request)
             {
                 return [
-                    'endpoints' => $this->endpoints(TestInvokableController::class),
+                    'linkss' => $this->links(TestInvokableController::class),
                 ];
             }
         };
@@ -142,7 +131,7 @@ class HasEndpointsTest extends TestCase
 
         $this->get('/resource')->assertExactJson([
             'data' => [
-                'endpoints' => [
+                'linkss' => [
                     'invoke' => [
                         'method' => 'GET',
                         'action' => action(TestInvokableController::class, $this->testModel),
@@ -153,20 +142,19 @@ class HasEndpointsTest extends TestCase
     }
 
     /** @test */
-    public function it_will_generate_endpoints_when_making_a_resource_using_endpoint_groups()
+    public function it_will_generate_links_when_making_a_resource_using_links()
     {
         $this->fakeRouter->invokableGet('/invoke/{testModel}', TestInvokableController::class);
 
-        $testResource = new class(null) extends JsonResource
-        {
+        $testResource = new class(null) extends JsonResource {
             use HasLinks, HasMeta;
 
             public function toArray($request)
             {
                 return [
-                    'endpoints' => $this->endpoints(function (Links $endpoints) {
-                        $endpoints->controller(TestController::class);
-                        $endpoints->invokableController(TestInvokableController::class)->name('invoke');
+                    'linkss' => $this->links(function (Links $links) {
+                        $links->controller(TestController::class);
+                        $links->invokableController(TestInvokableController::class)->name('invoke');
                     }),
                 ];
             }
@@ -174,9 +162,9 @@ class HasEndpointsTest extends TestCase
             public static function meta()
             {
                 return [
-                    'endpoints' => self::collectionEndpoints(function (Links $endpoints) {
-                        $endpoints->controller(TestController::class);
-                        $endpoints->action([TestController::class, 'index'])->name('action');
+                    'linkss' => self::collectionLinks(function (Links $links) {
+                        $links->controller(TestController::class);
+                        $links->action([TestController::class, 'index'])->name('action');
                     }),
                 ];
             }
@@ -189,7 +177,7 @@ class HasEndpointsTest extends TestCase
         $this->get('/resource')->assertExactJson([
             'data' => [
                 [
-                    'endpoints' => [
+                    'linkss' => [
                         'show' => [
                             'method' => 'GET',
                             'action' => action([TestController::class, 'show'], $this->testModel),
@@ -202,7 +190,7 @@ class HasEndpointsTest extends TestCase
                 ],
             ],
             'meta' => [
-                'endpoints' => [
+                'linkss' => [
                     'index' => [
                         'method' => 'GET',
                         'action' => action([TestController::class, 'index']),
@@ -224,22 +212,21 @@ class HasEndpointsTest extends TestCase
             'name' => 'testModel',
         ]);
 
-        $testResource = new class(null) extends JsonResource
-        {
+        $testResource = new class(null) extends JsonResource {
             use HasLinks, HasMeta;
 
             public function toArray($request)
             {
                 return [
                     'id' => $this->id,
-                    'endpoints' => $this->endpoints(TestController::class),
+                    'linkss' => $this->links(TestController::class),
                 ];
             }
 
             public static function meta()
             {
                 return [
-                    'endpoints' => self::collectionEndpoints(TestController::class),
+                    'linkss' => self::collectionLinks(TestController::class),
                 ];
             }
         };
@@ -252,7 +239,7 @@ class HasEndpointsTest extends TestCase
             'data' => [
                 [
                     'id' => 1,
-                    'endpoints' => [
+                    'linkss' => [
                         'show' => [
                             'method' => 'GET',
                             'action' => action([TestController::class, 'show'], $this->testModel),
@@ -261,7 +248,7 @@ class HasEndpointsTest extends TestCase
                 ],
                 [
                     'id' => 2,
-                    'endpoints' => [
+                    'linkss' => [
                         'show' => [
                             'method' => 'GET',
                             'action' => action([TestController::class, 'show'], $otherTestModel),
@@ -270,7 +257,7 @@ class HasEndpointsTest extends TestCase
                 ],
             ],
             'meta' => [
-                'endpoints' => [
+                'linkss' => [
                     'index' => [
                         'method' => 'GET',
                         'action' => action([TestController::class, 'index']),

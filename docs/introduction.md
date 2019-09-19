@@ -6,12 +6,12 @@ weight: 1
 
 Let's say you have a `UsersController` with `index`, `show`, `create`, `edit`, `store`, `update` and `delete` methods and an `UserResource`. Wouldn't it be nice if you had the URL's to these methods immediately in your `UserResource` without having to construct them from scratch?
 
-This package will add these endpoints to your resource based upon a controller or actions you define. Let's look at an example of a resource.
+This package will add these links to your resource based upon a controller or actions you define. Let's look at an example of a resource.
 
 ``` php
 class UserResource extends JsonResource
 {
-    use Spatie\ResourceLinks\HasEndpoints;
+    use Spatie\ResourceLinks\HasLinks;
     use Spatie\ResourceLinks\HasMeta;
 
     public function toArray($request): array
@@ -19,20 +19,20 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'endpoints' => $this->endpoints(UsersController::class),
+            'links' => $this->links(UsersController::class),
         ];
     }
 
     public static function meta()
     {
         return [
-            'endpoints' => self::collectionEndpoints(UsersController::class),
+            'links' => self::collectionLinks(UsersController::class),
         ];
     }
 }
 ```
 
-Now when creating an `UserResource` collection, you will have all the endpoints from the `UserController` available:
+Now when creating an `UserResource` collection, you will have all the links from the `UserController` available:
 
 ```json
 {
@@ -40,7 +40,7 @@ Now when creating an `UserResource` collection, you will have all the endpoints 
       {
          "id":1,
          "name": "Ruben Van Assche",
-         "endpoints": {
+         "links": {
             "show": {
                "method": "GET",
                "action": "https://laravel.app/users/1"
@@ -61,7 +61,7 @@ Now when creating an `UserResource` collection, you will have all the endpoints 
       }
    ],
    "meta": {
-      "endpoints": {
+      "links": {
          "index": {
             "method": "GET",
             "action": "https://laravel.app/users"
@@ -79,7 +79,7 @@ Now when creating an `UserResource` collection, you will have all the endpoints 
 }
 ```
 
-## Why include endpoints in your resources?
+## Why include links in your resources?
 
 Let's say you're building a single-page application or an application built with [Inertia](https://inertiajs.com), then you have a PHP application running at the backend and a Javascript application at the front. These applications communicate with each other via an api but what if the frontend wants to route a user to another page?
 

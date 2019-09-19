@@ -6,7 +6,7 @@ namespace Spatie\ResourceLinks;
 trait HasMeta
 {
     /** @var bool  */
-    private $mergeCollectionEndpoints = false;
+    private $withCollectionLinks = false;
 
     public static function collection($resource)
     {
@@ -23,12 +23,12 @@ trait HasMeta
 
     public static function make(...$parameters)
     {
-        return parent::make(...$parameters)->mergeCollectionEndpoints();
+        return parent::make(...$parameters)->withCollectionLinks();
     }
 
-    public function mergeCollectionEndpoints()
+    public function withCollectionLinks()
     {
-        $this->mergeCollectionEndpoints = true;
+        $this->withCollectionLinks = true;
 
         return $this;
     }

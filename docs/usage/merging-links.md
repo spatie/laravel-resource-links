@@ -1,23 +1,23 @@
 ---
-title: Merging endpoints
+title: Merging links
 weight: 5
 ---
 
-When creating a single resource like `UserResource::make($user)` you not only want the endpoints tied to that resource but also the collection endpoints for that resource. In this case next to the `show`, `edit`, `update` and `delete` endpoints you also want the `index`, `create` and `store` endpoints in your resource.
+When creating a single resource like `UserResource::make($user)` you not only want the links tied to that resource but also the collection links for that resource. In this case next to the `show`, `edit`, `update` and `delete` links you also want the `index`, `create` and `store` links in your resource.
 
-This can be done by merging the collection endpoints with the single resource endpoints like so:
+This can be done by merging the collection links with the single resource links like so:
 
 ``` php
 class UserResource extends JsonResource
 {
-    use HasEndpoints;
+    use HasLinks;
 
     public function toArray($request)
     {
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'endpoints' => $this->endpoints(UsersController::class)->mergeCollectionEndpoints(),
+            'links' => $this->links(UsersController::class)->withCollectionLinks(),
         ];
     }
 }
@@ -32,7 +32,7 @@ The `UserResource` in a response will now look like this:
       {
          "id":1,
          "name": "Ruben Van Assche",
-         "endpoints": {
+         "links": {
             "show": {
                "method": "GET",
                "action": "https://laravel.app/users/1"
@@ -67,9 +67,9 @@ The `UserResource` in a response will now look like this:
 }
 ```
 
-### Automatically merge collection endpoints
+### Automatically merge collection links
 
-Calling `mergeCollectionEndpoints` on every resource can be a bit tedious. That's why when you include the `Spatie\ResourceLinks\HasMeta` we'll not only add the [meta](https://docs.spatie.be/laravel-resource-endpoints/v1/usage/meta-helper/) helper but also automatic endpoint merging when you would make a single resource.
+Calling `withCollectionLinks` on every resource can be a bit tedious. That's why when you include the `Spatie\ResourceLinks\HasMeta` we'll not only add the [meta](https://docs.spatie.be/laravel-resource-links/v1/usage/meta-helper/) helper but also automatic link merging when you would make a single resource.
 
 Let's have a look, now when creating a single resource like so:
 
@@ -77,4 +77,4 @@ Let's have a look, now when creating a single resource like so:
 UserResource::make($user);
 ```
 
-You would get all the endpoints: `show`, `edit`, `update`, `delete`, `index`, `create` and `store`. This will only work when making a single resource, collection resources will have their collection endpoints in the meta section.
+You would get all the links: `show`, `edit`, `update`, `delete`, `index`, `create` and `store`. This will only work when making a single resource, collection resources will have their collection links in the meta section.

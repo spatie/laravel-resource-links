@@ -4,17 +4,17 @@ namespace Spatie\ResourceLinks\Serializers;
 
 class LayeredSerializer implements Serializer
 {
-    public function format(Endpoint $endpoint): array
+    public function format(LinkContainer $linkContainer): array
     {
         $format = [
-            $endpoint->name => [
-                'method' => $endpoint->method,
-                'action' => $endpoint->action,
+            $linkContainer->name => [
+                'method' => $linkContainer->method,
+                'action' => $linkContainer->action,
             ],
         ];
 
-        return is_null($endpoint->prefix)
+        return is_null($linkContainer->prefix)
             ? $format
-            : [$endpoint->prefix => $format];
+            : [$linkContainer->prefix => $format];
     }
 }

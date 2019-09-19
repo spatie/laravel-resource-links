@@ -4,60 +4,60 @@ namespace Spatie\ResourceLinks;
 
 use Closure;
 use Illuminate\Support\Arr;
-use Spatie\ResourceLinks\EndpointTypes\ControllerEndpointType;
-use Spatie\ResourceLinks\EndpointTypes\EndpointType;
+use Spatie\ResourceLinks\LinkTypes\ControllerLinkType;
+use Spatie\ResourceLinks\LinkTypes\LinkType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class LinkResource extends JsonResource
 {
     /** @var string */
-    private $endpointResourceType;
+    private $linkResourceType;
 
     /** @var \Spatie\ResourceLinks\Links */
-    private $endpointsGroup;
+    private $linksGroup;
 
-    public static function create(Model $model = null, string $endpointResourceType = null): LinkResource
+    public static function create(Model $model = null, string $linkResourceType = null): LinkResource
     {
-        return new self($model, $endpointResourceType);
+        return new self($model, $linkResourceType);
     }
 
-    public function __construct(Model $model = null, string $endpointResourceType = null)
+    public function __construct(Model $model = null, string $linkResourceType = null)
     {
         parent::__construct($model);
 
-        $this->endpointResourceType = $endpointResourceType ?? LinkResourceType::ITEM;
-        $this->endpointsGroup = new Links();
+        $this->linkResourceType = $linkResourceType ?? LinkResourceType::ITEM;
+        $this->linksGroup = new Links();
     }
 
-    public function endpoint($endpoint, $parameters = null, $httpVerb = null): LinkResource
+    public function link($link, $parameters = null, $httpVerb = null): LinkResource
     {
-        if ($endpoint instanceof Closure) {
-            $endpoint($this->endpointsGroup);
+        if ($link instanceof Closure) {
+            $link($this->linksGroup);
 
             return $this;
         }
 
-        if (is_array($endpoint)) {
-            $this->endpointsGroup
-                ->action($endpoint)
+        if (is_array($link)) {
+            $this->linksGroup
+                ->action($link)
                 ->httpVerb($httpVerb)
                 ->parameters(Arr::wrap($parameters));
 
             return $this;
         }
 
-        if (is_string($endpoint) && method_exists($endpoint, '__invoke')) {
-            $this->endpointsGroup
-                ->invokableController($endpoint)
+        if (is_string($link) && method_exists($link, '__invoke')) {
+            $this->linksGroup
+                ->invokableController($link)
                 ->parameters(Arr::wrap($parameters));
 
             return $this;
         }
 
-        if (is_string($endpoint)) {
-            $this->endpointsGroup
-                ->controller($endpoint)
+        if (is_string($link)) {
+            $this->linksGroup
+                ->controller($link)
                 ->parameters(Arr::wrap($parameters));
 
             return $this;
@@ -66,42 +66,42 @@ class LinkResource extends JsonResource
         return $this;
     }
 
-    public function mergeCollectionEndpoints(): LinkResource
+    public function withCollectionLinks(): LinkResource
     {
-        $this->endpointResourceType = LinkResourceType::MULTI;
+        $this->linkResourceType = LinkResourceType::MULTI;
 
         return $this;
     }
 
     public function toArray($request)
     {
-        return $this->endpointsGroup
-            ->getEndpointTypes()
-            ->mapWithKeys(function (EndPointType $endpointType) use ($request) {
-                $endpointType->parameters($request->route()->parameters());
+        return $this->linksGroup
+            ->getLinkTypes()
+            ->mapWithKeys(function (LinkType $linkType) use ($request) {
+                $linkType->parameters($request->route()->parameters());
 
-                if ($endpointType instanceof ControllerEndpointType) {
-                    return $this->resolveEndpointsFromControllerEndpointType($endpointType);
+                if ($linkType instanceof ControllerLinkType) {
+                    return $this->resolveLinksFromControllerLinkType($linkType);
                 }
 
-                return $endpointType->getEndpoints($this->resource);
+                return $linkType->getLinks($this->resource);
             });
     }
 
-    private function resolveEndpointsFromControllerEndpointType(ControllerEndpointType $endpointType): array
+    private function resolveLinksFromControllerLinkType(ControllerLinkType $controllerLinkType): array
     {
-        if ($this->endpointResourceType === LinkResourceType::ITEM) {
-            return $endpointType->getEndpoints($this->resource);
+        if ($this->linkResourceType === LinkResourceType::ITEM) {
+            return $controllerLinkType->getLinks($this->resource);
         }
 
-        if ($this->endpointResourceType === LinkResourceType::COLLECTION) {
-            return $endpointType->getCollectionEndpoints();
+        if ($this->linkResourceType === LinkResourceType::COLLECTION) {
+            return $controllerLinkType->getCollectionLinks();
         }
 
-        if ($this->endpointResourceType === LinkResourceType::MULTI) {
+        if ($this->linkResourceType === LinkResourceType::MULTI) {
             return array_merge(
-                $endpointType->getEndpoints($this->resource),
-                $endpointType->getCollectionEndpoints()
+                $controllerLinkType->getLinks($this->resource),
+                $controllerLinkType->getCollectionLinks()
             );
         }
 

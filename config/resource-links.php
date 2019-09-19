@@ -4,14 +4,15 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Formatter
+    | Serializer
     |--------------------------------------------------------------------------
     |
-    | The formatter will be used for the conversion of endpoints to their array
-    | representation, when no formatter is explicitly defined for an endpoint
-    | resource this formatter will be used.
+    | The serializer will be used for the conversion of links to their array
+    | representation, when no serializer is explicitly defined for an link
+    | resource this serializer will be used.
     |
     */
 
-    'formatter' => Spatie\ResourceLinks\Serializers\DefaultSerializer::class,
+
+    'serializer' => Spatie\ResourceLinks\Serializers\DefaultSerializer::class,
 ];

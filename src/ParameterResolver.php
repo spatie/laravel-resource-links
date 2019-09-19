@@ -98,7 +98,7 @@ class ParameterResolver
     private function expectsPrimitiveParameter(
         ReflectionParameter $signatureParameter
     ): bool {
-        if($signatureParameter->getType() === null){
+        if ($signatureParameter->getType() === null) {
             return false;
         }
 

@@ -3,31 +3,31 @@ title: Resource setup
 weight: 1
 ---
 
-In your resources, add the `HasEndpoints` trait and a new key where the endpoints will be stored:
+In your resources, add the `HasLinks` trait and a new key where the links will be stored:
 
 ``` php
-use Spatie\ResourceEndpoints\HasEndpoints;
+use Spatie\ResourceLinks\HasLinks;
 
 class UserResource extends JsonResource
 {
-    use HasEndpoints;
+    use HasLinks;
 
     public function toArray($request)
     {
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'endpoints' => $this->endpoints(UsersController::class),
+            'links' => $this->links(UsersController::class),
         ];
     }
 }
 
 ```
 
-Now every `UserResource` has an additional `EndpointResource` which in the responses will look like:
+Now every `UserResource` has an additional `LinkResource` which in the responses will look like:
 
 ``` json
-"endpoints": {
+"links": {
     "show": {
        "method": "GET",
        "action": "https://laravel.app/admin/users/1"
@@ -47,25 +47,25 @@ Now every `UserResource` has an additional `EndpointResource` which in the respo
 }
 ```
 
-By default, we'll only construct endpoints from the `show`, `edit`, `update` and `delete` methods of your controller.
+By default, we'll only construct links from the `show`, `edit`, `update` and `delete` methods of your controller.
 
-## Collection endpoints
+## Collection links
 
-What about endpoints like `index`, `create` and `store`? These endpoints are not tied to a single model instance, so it's not a good idea to store them at that level. Instead, it's better to put the links to those collection endpoints on the collection level of a resource.
+What about links like `index`, `create` and `store`? These links are not tied to a single model instance, so it's not a good idea to store them at that level. Instead, it's better to put the links to those collection links on the collection level of a resource.
 
-You can put the collection endpoints in the meta section of a resource collection like so:
+You can put the collection links in the meta section of a resource collection like so:
 
 ``` php
 class UserResource extends JsonResource
 {
-    use HasEndpoints;
+    use HasLinks;
 
     public function toArray($request)
     {
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'endpoints' => $this->endpoints(UsersController::class),
+            'links' => $this->links(UsersController::class),
         ];
     }
 
@@ -73,7 +73,7 @@ class UserResource extends JsonResource
     {
         return parent::collection($resource)->additional([
             'meta' => [
-                'endpoints' => self::collectionEndpoints(UsersController::class)
+                'links' => self::collectionLinks(UsersController::class)
              ],
          ]);
     }
@@ -84,7 +84,7 @@ Now when we create an `UserResource` collection, the meta section will look like
 
 ``` json
 "meta": {
-   "endpoints": {
+   "links": {
       "index": {
          "method": "GET",
          "action": "https://laravel.app/admin/users"
@@ -102,4 +102,4 @@ Now when we create an `UserResource` collection, the meta section will look like
 }
 ```
 
-By default, the collection endpoints will only be constructed for the `index`, `create` and `store` methods in your controller.
+By default, the collection links will only be constructed for the `index`, `create` and `store` methods in your controller.

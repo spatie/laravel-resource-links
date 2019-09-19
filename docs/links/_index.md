@@ -1,4 +1,4 @@
 ---
-title: Endpoints
+title: Links
 weight: 2
 ---

@@ -1,16 +1,15 @@
 <?php
 
-namespace Spatie\ResourceLinks\Tests\EndpointTypes;
+namespace Spatie\ResourceLinks\Tests\LinkTypes;
 
-use Spatie\ResourceLinks\EndpointTypes\ControllerEndpointType;
+use Spatie\ResourceLinks\LinkTypes\ControllerLinkType;
 use Spatie\ResourceLinks\Serializers\LayeredSerializer;
 use Spatie\ResourceLinks\Tests\Fakes\SecondTestModel;
 use Spatie\ResourceLinks\Tests\Fakes\TestController;
 use Spatie\ResourceLinks\Tests\Fakes\TestModel;
-use Spatie\ResourceLinks\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
 use Spatie\ResourceLinks\Tests\TestCase;
 
-class ControllerEndpointTypeTest extends TestCase
+class ControllerLinkTypeTest extends TestCase
 {
     /** @var \Spatie\ResourceLinks\Tests\Fakes\TestModel */
     private $testModel;
@@ -47,9 +46,9 @@ class ControllerEndpointTypeTest extends TestCase
             'name' => 'TestModel',
         ]);
 
-        $endpointType = ControllerEndpointType::make(TestController::class);
+        $linkType = ControllerLinkType::make(TestController::class);
 
-        $endpoints = $endpointType->getEndpoints($testModel);
+        $links = $linkType->getLinks($testModel);
 
         $this->assertEquals([
             'show' => [
@@ -60,7 +59,7 @@ class ControllerEndpointTypeTest extends TestCase
                 'method' => 'PATCH',
                 'action' => action($updateAction, $testModel),
             ],
-        ], $endpoints);
+        ], $links);
     }
 
     /** @test */
@@ -72,9 +71,9 @@ class ControllerEndpointTypeTest extends TestCase
         $this->fakeRouter->get('', $indexAction);
         $this->fakeRouter->get('{testModel}', $showAction);
 
-        $endpoints = ControllerEndpointType::make(TestController::class)
+        $links = ControllerLinkType::make(TestController::class)
             ->methods(['index', 'show'])
-            ->getEndpoints($this->testModel);
+            ->getLinks($this->testModel);
 
         $this->assertEquals([
             'show' => [
@@ -85,62 +84,62 @@ class ControllerEndpointTypeTest extends TestCase
                 'method' => 'GET',
                 'action' => action($indexAction),
             ],
-        ], $endpoints);
+        ], $links);
     }
 
     /** @test */
-    public function it_can_alias_endpoints()
+    public function it_can_alias_links()
     {
         $indexAction = [TestController::class, 'index'];
 
         $this->fakeRouter->get('', $indexAction);
 
-        $endpoints = ControllerEndpointType::make(TestController::class)
+        $links = ControllerLinkType::make(TestController::class)
             ->methods(['index'])
             ->names([
                 'index' => 'home',
             ])
-            ->getEndpoints($this->testModel);
+            ->getLinks($this->testModel);
 
         $this->assertEquals([
             'home' => [
                 'method' => 'GET',
                 'action' => action($indexAction),
             ],
-        ], $endpoints);
+        ], $links);
     }
 
     /** @test */
-    public function it_can_prefix_endpoints()
+    public function it_can_prefix_links()
     {
         $indexAction = [TestController::class, 'index'];
 
         $this->fakeRouter->get('', $indexAction);
 
-        $endpoints = ControllerEndpointType::make(TestController::class)
+        $links = ControllerLinkType::make(TestController::class)
             ->methods(['index'])
             ->prefix('this-')
-            ->getEndpoints($this->testModel);
+            ->getLinks($this->testModel);
 
         $this->assertEquals([
             'this-index' => [
                 'method' => 'GET',
                 'action' => action($indexAction),
             ],
-        ], $endpoints);
+        ], $links);
     }
 
     /** @test */
-    public function it_will_merge_layered_formatted_endpoints()
+    public function it_will_merge_layered_formatted_links()
     {
         $this->fakeRouter->get('/users/{testModel}', [TestController::class, 'show']);
         $this->fakeRouter->put('/users/{testModel}', [TestController::class, 'update']);
 
-        $endpoints = ControllerEndpointType::make(TestController::class)
+        $links = ControllerLinkType::make(TestController::class)
             ->methods(['show', 'update'])
             ->prefix('filter')
-            ->formatter(LayeredSerializer::class)
-            ->getEndpoints($this->testModel);
+            ->serializer(LayeredSerializer::class)
+            ->getLinks($this->testModel);
 
         $this->assertEquals([
             'filter' => [
@@ -153,16 +152,16 @@ class ControllerEndpointTypeTest extends TestCase
                     'action' => action([TestController::class, 'update'], $this->testModel),
                 ],
             ],
-        ], $endpoints);
+        ], $links);
     }
 
     /** @test */
-    public function a_controller_endpoint_type_can_have_an_empty_endpoints_array()
+    public function a_controller_link_type_can_have_an_empty_links_array()
     {
-        $endpoints = ControllerEndpointType::make(TestController::class)
-            ->getEndpoints($this->testModel);
+        $links = ControllerLinkType::make(TestController::class)
+            ->getLinks($this->testModel);
 
-        $this->assertEquals([], $endpoints);
+        $this->assertEquals([], $links);
     }
 
     /** @test */
@@ -179,40 +178,45 @@ class ControllerEndpointTypeTest extends TestCase
             ],
         ];
 
-        $this->assertEquals($expected,
-            ControllerEndpointType::make(TestController::class)
+        $this->assertEquals(
+            $expected,
+            ControllerLinkType::make(TestController::class)
                 ->methods(['copy'])
                 ->parameters($this->secondTestModel)
-                ->getEndpoints($this->testModel)
+                ->getLinks($this->testModel)
         );
 
-        $this->assertEquals($expected,
-            ControllerEndpointType::make(TestController::class)
+        $this->assertEquals(
+            $expected,
+            ControllerLinkType::make(TestController::class)
                 ->methods(['copy'])
                 ->parameters($this->testModel)
-                ->getEndpoints($this->secondTestModel)
+                ->getLinks($this->secondTestModel)
         );
 
-        $this->assertEquals($expected,
-            ControllerEndpointType::make(TestController::class)
+        $this->assertEquals(
+            $expected,
+            ControllerLinkType::make(TestController::class)
                 ->methods(['copy'])
                 ->parameters($this->secondTestModel, $this->testModel)
-                ->getEndpoints()
+                ->getLinks()
         );
 
-        $this->assertEquals($expected,
-            ControllerEndpointType::make(TestController::class)
+        $this->assertEquals(
+            $expected,
+            ControllerLinkType::make(TestController::class)
                 ->methods(['copy'])
                 ->parameters([$this->secondTestModel, $this->testModel])
-                ->getEndpoints()
+                ->getLinks()
         );
 
-        $this->assertEquals($expected,
-            ControllerEndpointType::make(TestController::class)
+        $this->assertEquals(
+            $expected,
+            ControllerLinkType::make(TestController::class)
                 ->methods(['copy'])
                 ->parameters($this->testModel)
                 ->parameters($this->secondTestModel)
-                ->getEndpoints()
+                ->getLinks()
         );
     }
 }

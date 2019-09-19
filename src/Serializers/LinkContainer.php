@@ -2,7 +2,7 @@
 
 namespace Spatie\ResourceLinks\Serializers;
 
-class Endpoint
+class LinkContainer
 {
     /** @var string */
     public $name;

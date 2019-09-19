@@ -3,36 +3,36 @@ title: Actions
 weight: 4
 ---
 
-Next to controller, you can also add actions to an endpoints group:
+Next to controller, you can also add actions to an links group:
 
 ``` php
 class UserResource extends JsonResource
 {
-    use HasEndpoints;
+    use HasLinks;
 
     public function toArray($request)
     {
         return [
-            'endpoints' => $this->endpoints(function (EndpointsGroup $endpoints) {
-                $endpoints->action([UsersController::class, 'create']);
+            'links' => $this->links(function (Links $links) {
+                $links->action([UsersController::class, 'create']);
             }),
         ];
     }
 }
 ```
 
-Is possible to specify the parameters for the endpoints:
+Is possible to specify the parameters for the links:
 
 ```php
-$endpoints
+$links
     ->action([UsersController::class, 'create'])
     ->parameters(User::first());
 ```
 
-Or prefix the endpoint:
+Or prefix the link:
 
 ```php
-$endpoints
+$links
     ->action([UsersController::class, 'create'])
     ->prefix('admin');
 ```
@@ -40,7 +40,7 @@ $endpoints
 The name of the action can also be changed:
 
 ```php
-$endpoints
+$links
     ->action([UsersController::class, 'create'])
     ->name('build');
 ```
@@ -48,7 +48,7 @@ $endpoints
 Changing the Http verb(POST, GET, …) of the action can be done as such:
 
 ```php
-$endpoints
+$links
     ->action([UsersController::class, 'create'])
     ->httpVerb('POST');
 ```

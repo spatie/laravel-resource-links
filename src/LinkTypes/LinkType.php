@@ -1,11 +1,11 @@
 <?php
 
-namespace Spatie\ResourceLinks\EndpointTypes;
+namespace Spatie\ResourceLinks\LinkTypes;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
-abstract class EndpointType
+abstract class LinkType
 {
     /** @var array */
     protected $parameters = [];
@@ -14,13 +14,13 @@ abstract class EndpointType
     protected $prefix;
 
     /** @var string|null */
-    protected $formatter;
+    protected $serializer;
 
-    abstract public function getEndpoints(Model $model = null): array;
+    abstract public function getLinks(Model $model = null): array;
 
     public function parameters(...$parameters)
     {
-        foreach ($parameters as $parameter){
+        foreach ($parameters as $parameter) {
             $this->parameters = array_merge($this->parameters, Arr::wrap($parameter));
         }
 
@@ -34,9 +34,9 @@ abstract class EndpointType
         return $this;
     }
 
-    public function formatter(?string $formatter)
+    public function serializer(?string $serializer)
     {
-        $this->formatter = $formatter;
+        $this->serializer = $serializer;
 
         return $this;
     }

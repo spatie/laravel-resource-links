@@ -1,22 +1,16 @@
 <?php
 
-namespace Spatie\ResourceLinks\Tests\EndpointTypes;
+namespace Spatie\ResourceLinks\Tests\LinkTypes;
 
-use Illuminate\Routing\Route;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\URL;
-use Spatie\ResourceLinks\EndpointTypes\RouteEndpointType;
-use Spatie\ResourceLinks\Exceptions\EndpointGenerationException;
-use Spatie\ResourceLinks\Serializers\LayeredSerializer;
+
+use Spatie\ResourceLinks\LinkTypes\RouteLinkType;
 use Spatie\ResourceLinks\Serializers\UrlSerializer;
-use Spatie\ResourceLinks\ParameterResolver;
 use Spatie\ResourceLinks\Tests\Fakes\TestController;
-use Spatie\ResourceLinks\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
 use Spatie\ResourceLinks\Tests\Fakes\TestModel;
 use Spatie\ResourceLinks\Tests\Fakes\SecondTestModel;
 use Spatie\ResourceLinks\Tests\TestCase;
 
-class RouteEndpointTypeTest extends TestCase
+class RouteLinkTypeTest extends TestCase
 {
     /** @var \Spatie\ResourceLinks\Tests\Fakes\TestModel */
     private $testModel;
@@ -32,37 +26,37 @@ class RouteEndpointTypeTest extends TestCase
     }
 
     /** @test */
-    public function it_can_create_a_route_endpoint_type()
+    public function it_can_create_a_route_link_type()
     {
         $action = [TestController::class, 'index'];
 
         $route = $this->fakeRouter->get('', $action);
 
-        $endpoints = RouteEndpointType::make($route)->getEndpoints();
+        $links = RouteLinkType::make($route)->getLinks();
 
         $this->assertEquals([
             'index' => [
                 'method' => 'GET',
                 'action' => action($action),
             ],
-        ], $endpoints);
+        ], $links);
     }
 
     /** @test */
-    public function it_can_create_an_route_endpoint_type_with_parameters()
+    public function it_can_create_an_route_link_type_with_parameters()
     {
         $action = [TestController::class, 'show'];
 
         $route = $this->fakeRouter->get('{testModel}', $action);
 
-        $endpoints = RouteEndpointType::make($route)->getEndpoints($this->testModel);
+        $links = RouteLinkType::make($route)->getLinks($this->testModel);
 
         $this->assertEquals([
             'show' => [
                 'method' => 'GET',
                 'action' => action($action, $this->testModel),
             ],
-        ], $endpoints);
+        ], $links);
     }
 
     /** @test */
@@ -72,16 +66,16 @@ class RouteEndpointTypeTest extends TestCase
 
         $route = $this->fakeRouter->get('{testModel}', $action);
 
-        $endpoints = RouteEndpointType::make($route)
+        $links = RouteLinkType::make($route)
             ->parameters([$this->testModel])
-            ->getEndpoints();
+            ->getLinks();
 
         $this->assertEquals([
             'show' => [
                 'method' => 'GET',
                 'action' => action($action, $this->testModel),
             ],
-        ], $endpoints);
+        ], $links);
     }
 
     /** @test */
@@ -91,14 +85,14 @@ class RouteEndpointTypeTest extends TestCase
 
         $route = $this->fakeRouter->route(['GET', 'HEAD'], '', $action);
 
-        $endpoints = RouteEndpointType::make($route)->getEndpoints();
+        $links = RouteLinkType::make($route)->getLinks();
 
         $this->assertEquals([
             'index' => [
                 'method' => 'GET',
                 'action' => action($action),
             ],
-        ], $endpoints);
+        ], $links);
     }
 
     /** @test */
@@ -113,9 +107,9 @@ class RouteEndpointTypeTest extends TestCase
             'name' => 'secondTestModel',
         ]);
 
-        $endpoints = RouteEndpointType::make($route)
+        $links = RouteLinkType::make($route)
             ->parameters([$secondTestModel])
-            ->getEndpoints($this->testModel);
+            ->getLinks($this->testModel);
 
         $this->assertEquals([
             'copy' => [
@@ -125,7 +119,7 @@ class RouteEndpointTypeTest extends TestCase
                     [$this->testModel, $secondTestModel]
                 ),
             ],
-        ], $endpoints);
+        ], $links);
     }
 
     /** @test */
@@ -142,7 +136,7 @@ class RouteEndpointTypeTest extends TestCase
 
         app('url')->defaults(['secondTestModel' => $secondTestModel->id]);
 
-        $endpoints = RouteEndpointType::make($route)->getEndpoints($this->testModel);
+        $links = RouteLinkType::make($route)->getLinks($this->testModel);
 
         $this->assertEquals([
             'copy' => [
@@ -152,56 +146,56 @@ class RouteEndpointTypeTest extends TestCase
                     [$this->testModel]
                 ),
             ],
-        ], $endpoints);
+        ], $links);
     }
 
     /** @test */
-    public function it_can_prefix_endpoints()
+    public function it_can_prefix_links()
     {
         $action = [TestController::class, 'index'];
 
         $route = $this->fakeRouter->get('', $action);
 
-        $endpoints = RouteEndpointType::make($route)
+        $links = RouteLinkType::make($route)
             ->prefix('this-')
-            ->getEndpoints();
+            ->getLinks();
 
         $this->assertEquals([
             'this-index' => [
                 'method' => 'GET',
                 'action' => action($action),
             ],
-        ], $endpoints);
+        ], $links);
     }
 
     /** @test */
-    public function it_can_change_the_formatter()
+    public function it_can_change_the_serializer()
     {
         $action = [TestController::class, 'index'];
 
         $route = $this->fakeRouter->get('', $action);
 
-        $endpoints = RouteEndpointType::make($route)
-            ->formatter(UrlSerializer::class)
-            ->getEndpoints();
+        $links = RouteLinkType::make($route)
+            ->serializer(UrlSerializer::class)
+            ->getLinks();
 
         $this->assertEquals([
             'index' => action($action),
-        ], $endpoints);
+        ], $links);
     }
 
     /** @test */
-    public function it_uses_the_global_formatter_when_no_formatter_was_explicitly_defined()
+    public function it_uses_the_global_serializer_when_no_serializer_was_explicitly_defined()
     {
         $action = [TestController::class, 'index'];
 
         $route = $this->fakeRouter->get('', $action);
 
-        app(config()->set('resource-links.formatter', UrlSerializer::class));
+        app(config()->set('resource-links.serializer', UrlSerializer::class));
 
-        $endpoints = RouteEndpointType::make($route)->getEndpoints();
+        $links = RouteLinkType::make($route)->getLinks();
 
-        $this->assertEquals(['index' => action($action)], $endpoints);
+        $this->assertEquals(['index' => action($action)], $links);
     }
 
     /** @test */
@@ -211,15 +205,15 @@ class RouteEndpointTypeTest extends TestCase
 
         $route = $this->fakeRouter->get('/{secondTestModel}/{testModel}', $action);
 
-        $endpoints = RouteEndpointType::make($route)
-            ->getEndpoints($this->testModel);
+        $links = RouteLinkType::make($route)
+            ->getLinks($this->testModel);
 
         $this->assertEquals([
             'copy' => [
                 'method' => 'GET',
                 'action' => 'http://localhost/{secondTestModel}/1',
             ],
-        ], $endpoints);
+        ], $links);
     }
 
     /** @test */
@@ -229,14 +223,14 @@ class RouteEndpointTypeTest extends TestCase
 
         $route = $this->fakeRouter->get('/{secondTestModel}/{testModel}', $action);
 
-        $endpoints = RouteEndpointType::make($route)->getEndpoints();
+        $links = RouteLinkType::make($route)->getLinks();
 
         $this->assertEquals([
             'copy' => [
                 'method' => 'GET',
                 'action' => 'http://localhost/{secondTestModel}/{testModel}',
             ],
-        ], $endpoints);
+        ], $links);
     }
 
     /** @test */
@@ -246,11 +240,11 @@ class RouteEndpointTypeTest extends TestCase
 
         $route = $this->fakeRouter->get('{testModel}/{action}', $action);
 
-        $endpoints = RouteEndpointType::make($route)
+        $links = RouteLinkType::make($route)
             ->parameters([
                 'action' => 'dump-and-die'
             ])
-            ->getEndpoints($this->testModel);
+            ->getLinks($this->testModel);
 
         $this->assertEquals([
             'edit' => [
@@ -260,7 +254,6 @@ class RouteEndpointTypeTest extends TestCase
                     'action' => 'dump-and-die'
                 ]),
             ],
-        ], $endpoints);
+        ], $links);
     }
-
 }

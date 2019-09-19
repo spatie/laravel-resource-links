@@ -1,20 +1,15 @@
 <?php
 
-namespace Spatie\ResourceLinks\EndpointTypes;
+namespace Spatie\ResourceLinks\LinkTypes;
 
-use Illuminate\Routing\RouteUrlGenerator;
-use Spatie\ResourceLinks\Exceptions\EndpointGenerationException;
-use Spatie\ResourceLinks\Serializers\LayeredSerializer;
-use Spatie\ResourceLinks\Serializers\Endpoint;
-use Spatie\ResourceLinks\Serializers\DefaultSerializer;
+use Spatie\ResourceLinks\Serializers\LinkContainer;
 use Spatie\ResourceLinks\Serializers\Serializer;
 use Spatie\ResourceLinks\ParameterResolver;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Routing\Exceptions\UrlGenerationException;
 use Illuminate\Routing\Route;
 use Spatie\ResourceLinks\UrlResolver;
 
-class RouteEndpointType extends EndpointType
+class RouteLinkType extends LinkType
 {
     /** @var \Illuminate\Routing\Route */
     protected $route;
@@ -25,7 +20,7 @@ class RouteEndpointType extends EndpointType
     /** @var string|null */
     protected $name;
 
-    public static function make(Route $route): RouteEndpointType
+    public static function make(Route $route): RouteLinkType
     {
         return new self($route);
     }
@@ -35,34 +30,34 @@ class RouteEndpointType extends EndpointType
         $this->route = $route;
     }
 
-    public function httpVerb(?string $httpVerb): RouteEndpointType
+    public function httpVerb(?string $httpVerb): RouteLinkType
     {
         $this->httpVerb = $httpVerb;
 
         return $this;
     }
 
-    public function name(?string $name): RouteEndpointType
+    public function name(?string $name): RouteLinkType
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getEndpoints(Model $model = null): array
+    public function getLinks(Model $model = null): array
     {
         $parameterResolver = new ParameterResolver($model, $this->parameters);
 
         $urlResolver = new UrlResolver(app('url'));
 
-        $endpoint = Endpoint::make(
+        $linkContainer = LinkContainer::make(
             $this->name ?? $this->route->getActionMethod(),
             $this->httpVerb ?? $this->getHttpVerbForRoute($this->route),
             $urlResolver->resolve($this->route, $parameterResolver->forRoute($this->route)),
             $this->prefix
         );
 
-        return $this->resolveFormatter()->format($endpoint);
+        return $this->resolveSerializer()->format($linkContainer);
     }
 
     private function getHttpVerbForRoute(Route $route): string
@@ -76,12 +71,12 @@ class RouteEndpointType extends EndpointType
         return $httpVerbs[0];
     }
 
-    private function resolveFormatter(): Serializer
+    private function resolveSerializer(): Serializer
     {
-        $formatter = is_null($this->formatter)
-            ? config('resource-links.formatter')
-            : $this->formatter;
+        $serializer = is_null($this->serializer)
+            ? config('resource-links.serializer')
+            : $this->serializer;
 
-        return new $formatter;
+        return new $serializer;
     }
 }

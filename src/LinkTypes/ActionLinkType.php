@@ -1,13 +1,13 @@
 <?php
 
-namespace Spatie\ResourceLinks\EndpointTypes;
+namespace Spatie\ResourceLinks\LinkTypes;
 
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
 
-class ActionEndpointType extends EndpointType
+class ActionLinkType extends LinkType
 {
     /** @var array */
     private $action;
@@ -18,7 +18,7 @@ class ActionEndpointType extends EndpointType
     /** @var string|null */
     private $name;
 
-    public static function make(array $action): ActionEndpointType
+    public static function make(array $action): ActionLinkType
     {
         return new self($action);
     }
@@ -28,21 +28,21 @@ class ActionEndpointType extends EndpointType
         $this->action = $action;
     }
 
-    public function httpVerb(?string $httpVerb): ActionEndpointType
+    public function httpVerb(?string $httpVerb): ActionLinkType
     {
         $this->httpVerb = $httpVerb;
 
         return $this;
     }
 
-    public function name(?string $name): ActionEndpointType
+    public function name(?string $name): ActionLinkType
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getEndpoints(Model $model = null): array
+    public function getLinks(Model $model = null): array
     {
         $formattedAction = $this->formatAction();
 
@@ -54,13 +54,13 @@ class ActionEndpointType extends EndpointType
             throw new Exception("Route `{$formattedAction}` does not exist!");
         }
 
-        return RouteEndpointType::make($route)
+        return RouteLinkType::make($route)
             ->name($this->name)
             ->httpVerb($this->httpVerb)
             ->prefix($this->prefix)
             ->parameters($this->getParameters($model))
-            ->formatter($this->formatter)
-            ->getEndpoints($model);
+            ->serializer($this->serializer)
+            ->getLinks($model);
     }
 
     private function formatAction(): string

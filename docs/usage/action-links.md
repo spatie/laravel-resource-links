@@ -1,19 +1,19 @@
 ---
-title: Action endpoints
+title: Action links
 weight: 2
 ---
 
-Sometimes you want to add endpoints not belonging to a specific controller. Then it is possible to add an action as an endpoint. They look just like a standard Laravel action:
+Sometimes you want to add links not belonging to a specific controller. Then it is possible to add an action as an link. They look just like a standard Laravel action:
 
 ``` php
 class OtherResource extends JsonResource
 {
-    use HasEndpoints;
+    use HasLinks;
 
     public function toArray($request)
     {
         return [
-            'endpoints' => $this->endpoints()->addAction([UsersController::class, 'create']),
+            'links' => $this->links()->addAction([UsersController::class, 'create']),
         ];
     }
 }
@@ -24,26 +24,26 @@ The HTTP verb for the action will be resolved from the route in Laravel. Should 
 ``` php
 class OtherResource extends JsonResource
 {
-    use HasEndpoints;
+    use HasLinks;
 
     public function toArray($request)
     {
         $user = Auth::user();
 
         return [
-            'endpoints' => $this->endpoints()
+            'links' => $this->links()
                 ->addAction([UsersController::class, 'update'], [], 'PUT'),
         ];
     }
 }
 ```
 
-Of course, it is also possible to use this with collection endpoints:
+Of course, it is also possible to use this with collection links:
 
 ``` php
 class UserResource extends JsonResource
 {
-    use HasEndpoints;
+    use HasLinks;
 
     //
 
@@ -51,7 +51,7 @@ class UserResource extends JsonResource
     {
         return parent::collection($resource)->additional([
             'meta' => [
-                'endpoints' => self::collectionEndpoints(UsersController::class)
+                'links' => self::collectionLinks(UsersController::class)
                     ->addAction([UsersController::class, 'update'], [], 'PUT'),
              ],
          ]);

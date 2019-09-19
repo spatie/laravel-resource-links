@@ -4,7 +4,6 @@ namespace Spatie\ResourceLinks\Tests;
 
 use Spatie\ResourceLinks\ParameterResolver;
 use Spatie\ResourceLinks\Tests\Fakes\TestController;
-use Spatie\ResourceLinks\Tests\Fakes\TestControllerWithSpecifiedEndpoints;
 use Spatie\ResourceLinks\Tests\Fakes\TestModel;
 use Spatie\ResourceLinks\Tests\Fakes\SecondTestModel;
 
@@ -157,7 +156,8 @@ class ParameterResolverTest extends TestCase
             'name' => 'otherTestModel',
         ]);
 
-        $route = $this->fakeRouter->get('{testModel}/{secondTestModel}/{aString}/{aNumber}/{aBool}',
+        $route = $this->fakeRouter->get(
+            '{testModel}/{secondTestModel}/{aString}/{aNumber}/{aBool}',
             function (
                 TestModel $testModel,
                 SecondTestModel $secondTestModel,
@@ -165,8 +165,8 @@ class ParameterResolverTest extends TestCase
                 int $aNumber,
                 bool $aBool
             ) {
-
-            });
+            }
+        );
 
         $parameterResolver = new ParameterResolver($testModel, [
             'secondTestModel' => $secondTestModel,

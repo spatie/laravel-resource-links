@@ -3,56 +3,56 @@
 namespace Spatie\ResourceLinks;
 
 use Illuminate\Support\Collection;
-use Spatie\ResourceLinks\EndpointTypes\ActionEndpointType;
-use Spatie\ResourceLinks\EndpointTypes\ControllerEndpointType;
-use Spatie\ResourceLinks\EndpointTypes\InvokableControllerEndpointType;
+use Spatie\ResourceLinks\LinkTypes\ActionLinkType;
+use Spatie\ResourceLinks\LinkTypes\ControllerLinkType;
+use Spatie\ResourceLinks\LinkTypes\InvokableControllerLinkType;
 
 class Links
 {
     /** @var \Illuminate\Support\Collection */
-    private $endpointTypes;
+    private $linkTypes;
 
     public function __construct()
     {
-        $this->endpointTypes = new Collection();
+        $this->linkTypes = new Collection();
     }
 
-    public function controller(string $controller): ControllerEndpointType
+    public function controller(string $controller): ControllerLinkType
     {
-        $controllerEndpointType = ControllerEndpointType::make($controller);
+        $controllerLinkType = ControllerLinkType::make($controller);
 
-        $this->endpointTypes[] = $controllerEndpointType;
+        $this->linkTypes[] = $controllerLinkType;
 
-        return $controllerEndpointType;
+        return $controllerLinkType;
     }
 
-    public function invokableController(string $controller): InvokableControllerEndpointType
+    public function invokableController(string $controller): InvokableControllerLinkType
     {
-        $invokableControllerEndpointType = InvokableControllerEndpointType::make($controller);
+        $invokableControllerLinkType = InvokableControllerLinkType::make($controller);
 
-        $this->endpointTypes[] = $invokableControllerEndpointType;
+        $this->linkTypes[] = $invokableControllerLinkType;
 
-        return $invokableControllerEndpointType;
+        return $invokableControllerLinkType;
     }
 
-    public function action(array $action): ActionEndpointType
+    public function action(array $action): ActionLinkType
     {
-        $actionEndpointType = ActionEndpointType::make($action);
+        $actionLinkType = ActionLinkType::make($action);
 
-        $this->endpointTypes[] = $actionEndpointType;
+        $this->linkTypes[] = $actionLinkType;
 
-        return $actionEndpointType;
+        return $actionLinkType;
     }
 
-    public function endpointsGroup(Links $endpointsGroup)
+    public function links(Links $links)
     {
-        $this->endpointTypes = $this->endpointTypes->merge(
-            $endpointsGroup->getEndpointTypes()
+        $this->linkTypes = $this->linkTypes->merge(
+            $links->getLinkTypes()
         );
     }
 
-    public function getEndpointTypes(): Collection
+    public function getLinkTypes(): Collection
     {
-        return $this->endpointTypes;
+        return $this->linkTypes;
     }
 }

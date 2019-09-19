@@ -4,10 +4,10 @@ namespace Spatie\ResourceLinks\Serializers;
 
 class UrlSerializer implements Serializer
 {
-    public function format(Endpoint $endpoint): array
+    public function format(LinkContainer $linkContainer): array
     {
         return [
-            $endpoint->name => $endpoint->action,
+            $linkContainer->name => $linkContainer->action,
         ];
     }
 }

@@ -3,36 +3,36 @@ title: Controllers
 weight: 2
 ---
 
-A controller can be added to an endpoint group as such:
+A controller can be added to an link group as such:
 
 ``` php
 class UserResource extends JsonResource
 {
-    use HasEndpoints;
+    use HasLinks;
 
     public function toArray($request)
     {
         return [
-            'endpoints' => $this->endpoints(function (EndpointsGroup $endpoints) {
-                $endpoints->controller(UsersController::class);
+            'links' => $this->links(function (Links $links) {
+                $links->controller(UsersController::class);
             }),
         ];
     }
 }
 ```
 
-It is possible to specify the parameters for the endpoints:
+It is possible to specify the parameters for the links:
 
 ```php
-$endpoints
+$links
     ->controller(UsersController::class)
     ->parameters(User::first());
 ```
 
-Or prefix all the endpoints of the controller:
+Or prefix all the links of the controller:
 
 ```php
-$endpoints
+$links
     ->controller(UsersController::class)
     ->prefix('admin');
 ```
@@ -40,7 +40,7 @@ $endpoints
 This will produce the following JSON:
 
 ``` json
-"endpoints": {
+"links": {
     "admin.show": {
        "method": "GET",
        "action": "https://laravel.app/admin/users/1"
@@ -54,10 +54,10 @@ This will produce the following JSON:
 }
 ```
 
-You can also choose the methods of the controller to include as endpoints:
+You can also choose the methods of the controller to include as links:
 
 ```php
-$endpoints
+$links
     ->controller(UsersController::class)
     ->methods(['create', 'index', 'show']);
 ```
@@ -65,7 +65,7 @@ $endpoints
 Or even alias the name of methods:
 
 ```php
-$endpoints
+$links
     ->controller(UsersController::class)
     ->names(['index' => 'list']);
 ```
@@ -73,7 +73,7 @@ $endpoints
 This will produce the following JSON:
 
 ``` json
-"endpoints": {
+"links": {
     "list": {
        "method": "GET",
        "action": "https://laravel.app/admin/users"

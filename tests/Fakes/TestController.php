@@ -24,16 +24,13 @@ class TestController
 
     public function copy(SecondTestModel $secondTestModel, TestModel $testModel)
     {
-
     }
 
     public function sync(TestModel $testModel, TestModel $otherTestModel)
     {
-
     }
 
     public function read($withoutType)
     {
-
     }
 }

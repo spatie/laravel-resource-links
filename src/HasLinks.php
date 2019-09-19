@@ -13,12 +13,12 @@ trait HasLinks
      *
      * @return \Spatie\ResourceLinks\LinkResource
      */
-    public function endpoints($controller = null, $parameters = null): LinkResource
+    public function links($controller = null, $parameters = null): LinkResource
     {
-        $resource = LinkResource::create($this->resource, LinkResourceType::ITEM)->endpoint($controller, $parameters);
+        $resource = LinkResource::create($this->resource, LinkResourceType::ITEM)->link($controller, $parameters);
 
-        if (property_exists($this, 'mergeCollectionEndpoints') && $this->mergeCollectionEndpoints === true) {
-            $resource->mergeCollectionEndpoints();
+        if (property_exists($this, 'withCollectionLinks') && $this->withCollectionLinks === true) {
+            $resource->withCollectionLinks();
         }
 
         return $resource;
@@ -30,8 +30,8 @@ trait HasLinks
      *
      * @return \Spatie\ResourceLinks\LinkResource
      */
-    public static function collectionEndpoints($controller = null, $parameters = null): LinkResource
+    public static function collectionLinks($controller = null, $parameters = null): LinkResource
     {
-        return LinkResource::create(null, LinkResourceType::COLLECTION)->endpoint($controller, $parameters);
+        return LinkResource::create(null, LinkResourceType::COLLECTION)->link($controller, $parameters);
     }
 }

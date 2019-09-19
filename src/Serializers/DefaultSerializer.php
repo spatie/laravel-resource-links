@@ -4,12 +4,12 @@ namespace Spatie\ResourceLinks\Serializers;
 
 class DefaultSerializer implements Serializer
 {
-    public function format(Endpoint $endpoint): array
+    public function format(LinkContainer $linkContainer): array
     {
         return [
-            "{$endpoint->prefix}{$endpoint->name}" => [
-                'method' => $endpoint->method,
-                'action' => $endpoint->action,
+            "{$linkContainer->prefix}{$linkContainer->name}" => [
+                'method' => $linkContainer->method,
+                'action' => $linkContainer->action,
             ],
         ];
     }
