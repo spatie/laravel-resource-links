@@ -1,9 +1,9 @@
 ---
 title: Invokable controllers
-weight: 3
+weight: 4
 ---
 
-An invokable controller can be added as such:
+Invokable controllers can be written as actions
 
 ``` php
 class UserResource extends JsonResource
@@ -14,14 +14,14 @@ class UserResource extends JsonResource
     {
         return [
             'links' => $this->links(function (Links $links) {
-                $links->invokableController(DownloadUserController::class);
+                $links->action(DownloadUserController::class);
             }),
         ];
     }
 }
 ```
 
-By default the `__invoke()` method of this controller will be the only link that will be created named `invoke. This will produce following JSON:
+By default the `__invoke()` method of this controller will be created with the name `invoke. This will produce following JSON:
 
 ``` json
 "links": {
@@ -32,37 +32,16 @@ By default the `__invoke()` method of this controller will be the only link that
 }
 ```
 
-You can alias `invoke` to another name:
+Want to be more explicit? You can also add an invokable controller as such
+
+```php
+$links->invokableController(DownloadUserController::class);
+```
+
+Off course you can use the methods defined by an action on this controller:
 
 ```php
 $links
-    ->invokableController(DownloadUserController::class)
+    ->action(DownloadUserController::class)
     ->name('download');
-```
-
-Now your JSON will look like this:
-
-``` json
-"links": {
-    "download": {
-       "method": "GET",
-       "action": "https://laravel.app/admin/users/1/download"
-    },
-}
-```
-
-Just like a regular controller it is possible to specify the parameters for the links:
-
-```php
-$links
-    ->invokableController(DownloadUserController::class)
-    ->parameters(User::first());
-```
-
-Or prefix the link:
-
-```php
-$links
-    ->invokableController(DownloadUserController::class)
-    ->prefix('admin');
 ```

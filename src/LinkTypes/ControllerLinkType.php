@@ -65,7 +65,7 @@ class ControllerLinkType extends LinkType
         return $this->resolveLinks($methodsToInclude);
     }
 
-    public static function clearCache()
+    public static function clearCache(): void
     {
         self::$cachedRoutes = [];
     }

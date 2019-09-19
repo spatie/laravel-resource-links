@@ -26,13 +26,13 @@ class Links
         return $controllerLinkType;
     }
 
-    public function invokableController(string $controller): InvokableControllerLinkType
+    public function invokableController(string $controller): ActionLinkType
     {
-        $invokableControllerLinkType = InvokableControllerLinkType::make($controller);
+        $actionLinkType = ActionLinkType::make($controller);
 
-        $this->linkTypes[] = $invokableControllerLinkType;
+        $this->linkTypes[] = $actionLinkType;
 
-        return $invokableControllerLinkType;
+        return $actionLinkType;
     }
 
     public function action(array $action): ActionLinkType

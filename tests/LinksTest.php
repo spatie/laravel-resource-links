@@ -47,7 +47,7 @@ class LinksTest extends TestCase
 
         $this->assertTrue(
             $links->getLinkTypes()
-                ->contains(InvokableControllerLinkType::make(TestInvokableController::class))
+                ->contains(ActionLinkType::make(TestInvokableController::class))
         );
     }
     
@@ -64,7 +64,7 @@ class LinksTest extends TestCase
 
         $this->assertTrue(
             $links->getLinkTypes()
-                ->contains(InvokableControllerLinkType::make(TestInvokableController::class))
+                ->contains(ActionLinkType::make(TestInvokableController::class))
         );
         $this->assertTrue(
             $links->getLinkTypes()

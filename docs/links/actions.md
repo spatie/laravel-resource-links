@@ -1,9 +1,9 @@
 ---
 title: Actions
-weight: 4
+weight: 3
 ---
 
-Next to controller, you can also add actions to an links group:
+Next to controllers, you can also add actions to an links group:
 
 ``` php
 class UserResource extends JsonResource

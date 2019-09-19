@@ -13,7 +13,7 @@ class OtherResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'links' => $this->links()->addAction([UsersController::class, 'create']),
+            'links' => $this->links()->action([UsersController::class, 'create']),
         ];
     }
 }
@@ -32,7 +32,7 @@ class OtherResource extends JsonResource
 
         return [
             'links' => $this->links()
-                ->addAction([UsersController::class, 'update'], [], 'PUT'),
+                ->action([UsersController::class, 'update'], [], 'PUT'),
         ];
     }
 }
@@ -52,7 +52,7 @@ class UserResource extends JsonResource
         return parent::collection($resource)->additional([
             'meta' => [
                 'links' => self::collectionLinks(UsersController::class)
-                    ->addAction([UsersController::class, 'update'], [], 'PUT'),
+                    ->action([UsersController::class, 'update'], [], 'PUT'),
              ],
          ]);
     }

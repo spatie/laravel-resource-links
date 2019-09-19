@@ -57,7 +57,7 @@ class OtherResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'links' => $this->links()->addAction([UsersController::class, 'show'], [
+            'links' => $this->links()->action([UsersController::class, 'show'], [
                 'user' => Auth::user(),
             ]),
         ];

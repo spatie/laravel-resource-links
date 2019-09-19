@@ -6,6 +6,7 @@ use Exception;
 use Spatie\ResourceLinks\LinkTypes\ActionLinkType;
 use Spatie\ResourceLinks\Serializers\LayeredSerializer;
 use Spatie\ResourceLinks\Tests\Fakes\TestController;
+use Spatie\ResourceLinks\Tests\Fakes\TestInvokableController;
 use Spatie\ResourceLinks\Tests\Fakes\TestModel;
 use Spatie\ResourceLinks\Tests\Fakes\SecondTestModel;
 use Spatie\ResourceLinks\Tests\TestCase;
@@ -188,5 +189,43 @@ class ActionLinkTypeTest extends TestCase
                 ],
             ],
         ], $layeredLinks);
+    }
+
+    /** @test */
+    public function it_will_generate_links_for_invokable_controllers()
+    {
+        $action = TestInvokableController::class;
+
+        $this->fakeRouter->invokableGet('{testModel}', $action);
+
+        $linkType = ActionLinkType::make(TestInvokableController::class);
+
+        $links = $linkType->getLinks($this->testModel);
+
+        $this->assertEquals([
+            'invoke' => [
+                'method' => 'GET',
+                'action' => action($action, $this->testModel),
+            ],
+        ], $links);
+    }
+
+    /** @test */
+    public function it_will_also_accept_an_invokable_controller_in_an_array()
+    {
+        $action = TestInvokableController::class;
+
+        $this->fakeRouter->invokableGet('{testModel}', $action);
+
+        $linkType = ActionLinkType::make([TestInvokableController::class]);
+
+        $links = $linkType->getLinks($this->testModel);
+
+        $this->assertEquals([
+            'invoke' => [
+                'method' => 'GET',
+                'action' => action($action, $this->testModel),
+            ],
+        ], $links);
     }
 }

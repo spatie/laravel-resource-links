@@ -6,10 +6,12 @@ use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class ActionLinkType extends LinkType
 {
-    /** @var array */
+    /** @var array|string */
     private $action;
 
     /** @var string|null */
@@ -18,12 +20,12 @@ class ActionLinkType extends LinkType
     /** @var string|null */
     private $name;
 
-    public static function make(array $action): ActionLinkType
+    public static function make($action): ActionLinkType
     {
         return new self($action);
     }
 
-    public function __construct(array $action)
+    public function __construct($action)
     {
         $this->action = $action;
     }
@@ -55,7 +57,7 @@ class ActionLinkType extends LinkType
         }
 
         return RouteLinkType::make($route)
-            ->name($this->name)
+            ->name($this->resolveName())
             ->httpVerb($this->httpVerb)
             ->prefix($this->prefix)
             ->parameters($this->getParameters($model))
@@ -65,7 +67,33 @@ class ActionLinkType extends LinkType
 
     private function formatAction(): string
     {
-        return trim('\\' . implode('@', $this->action), '\\');
+        return is_array($this->action)
+            ? trim('\\'.implode('@', $this->action), '\\')
+            : $this->action;
+    }
+
+    private function resolveName(): ?string
+    {
+        if ($this->name) {
+            return $this->name;
+        }
+
+        if ($this->isInvokableController()) {
+            return 'invoke';
+        }
+
+        return null;
+    }
+
+    private function isInvokableController(): bool
+    {
+        if (is_array($this->action) && count($this->action) > 1) {
+            return false;
+        }
+
+        $action = is_array($this->action) ? $this->action[0] : $this->action;
+
+        return ! Str::contains($action, '@');
     }
 
     private function getParameters(?Model $model)

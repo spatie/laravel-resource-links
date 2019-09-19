@@ -66,6 +66,21 @@ class LinkResource extends JsonResource
         return $this;
     }
 
+    public function action(array $action, $parameters = null, $httpVerb = null): LinkResource
+    {
+        return $this->link($action, $parameters, $httpVerb);
+    }
+
+    public function controller(string $controller, $parameters = null): LinkResource
+    {
+        return $this->link($controller, $parameters);
+    }
+
+    public function links(Closure $closure): LinkResource
+    {
+        return $this->link($closure);
+    }
+
     public function withCollectionLinks(): LinkResource
     {
         $this->linkResourceType = LinkResourceType::MULTI;
