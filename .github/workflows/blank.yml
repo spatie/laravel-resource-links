@@ -21,5 +21,3 @@ jobs:
             - uses: actions/checkout@master
             - name: PHP-CS-Fixer
               uses: docker://oskarstark/php-cs-fixer-ga
-              with:
-                  args: src tests
