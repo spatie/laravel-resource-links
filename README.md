@@ -1,99 +1,75 @@
-# Laravel Resource Endpoints
+# Laravel Resource Links
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-resource-endpoints.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-resource-endpoints)
-[![Build Status](https://travis-ci.org/spatie/laravel-resource-endpoints.svg?branch=master)](https://travis-ci.org/spatie/laravel-resource-endpoints)
-[![Quality Score](https://img.shields.io/scrutinizer/g/spatie/laravel-resource-endpoints.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/laravel-resource-endpoints)
-[![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-resource-endpoints.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-resource-endpoints)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-resource-links.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-resource-links)
+[![Build Status](https://travis-ci.org/spatie/laravel-resource-links.svg?branch=master)](https://travis-ci.org/spatie/laravel-resource-links)
+[![Quality Score](https://img.shields.io/scrutinizer/g/spatie/laravel-resource-links.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/laravel-resource-links)
+[![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-resource-links.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-resource-links)
 
 **This package is under development and will change drastically**
 
-Let's say you have a `UsersController` with the usual `index`, `show`, `create`, `edit`, `store`, `update`, and `delete` methods. Wouldn't it be nice if you had the URLs to these methods readily available in your `UserResource` without having to construct them from scratch?
+Let's say you have a `UsersController` with `index`, `show`, `create`, `edit`, `store`, `update` and `delete` methods and an `UserResource`. Wouldn't it be nice if you had the URL's to these methods immediately in your `UserResource` without having to construct them from scratch?
 
-This package will add these endpoints to your resource based upon a controller or actions you define. Let's look at an example of a resource.
+This package will add these links to your resource based upon a controller or actions you define. Let's look at an example of a resource.
 
 ``` php
-use Spatie\ResourceEndpoints\HasEndpoints;
-use Spatie\ResourceEndpoints\HasMeta;
-
 class UserResource extends JsonResource
 {
-    use HasEndpoints;
-    use HasMeta;
+    use Spatie\ResourceLinks\HasLinks;
+    use Spatie\ResourceLinks\HasMeta;
 
     public function toArray($request): array
     {
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'endpoints' => $this->endpoints(UsersController::class),
+            'links' => $this->links(UsersController::class),
         ];
     }
 
     public static function meta()
     {
         return [
-            'endpoints' => self::collectionEndpoints(UsersController::class),
+            'links' => self::collectionLinks(UsersController::class),
         ];
     }
 }
 ```
 
-Now when creating an `UserResource` collection, you will have all the endpoints from the `UserController` available:
+Now when creating an `UserResource` collection, you will have all the links from the `UserController` available:
 
 ```json
 {
-   "data": [
+   "data":[
       {
-         "id": 1,
+         "id":1,
          "name": "Ruben Van Assche",
-         "endpoints": {
-            "show": {
-               "method": "GET",
-               "action": "https://laravel.app/users/1"
-            },
-            "edit": {
-               "method": "GET",
-               "action": "https://laravel.app/users/1/edit"
-            },
-            "update": {
-               "method": "PUT",
-               "action": "https://laravel.app/users/1"
-            },
-            "delete": {
-               "method": "DELETE",
-               "action": "https://laravel.app/users/1"
-            }
+         "links": {
+            "show": "https://laravel.app/users/1",
+            "edit": "https://laravel.app/users/1/edit",
+            "update": "https://laravel.app/users/1",
+            "delete": "https://laravel.app/users/1"
          }
       }
    ],
    "meta": {
-      "endpoints": {
-         "index": {
-            "method": "GET",
-            "action": "https://laravel.app/users"
-         },
-         "create": {
-            "method": "GET",
-            "action": "https://laravel.app/users/create"
-         },
-         "store": {
-            "method": "POST",
-            "action": "https://laravel.app/users"
-         }
+      "links": {
+         "index": "https://laravel.app/users",
+         "create": "https://laravel.app/users/create",
+         "store":  "https://laravel.app/users"
       }
    }
 }
 ```
 
-## Why include endpoints in your resources?
+## Why include links in your resources?
 
-When building a SPA or an application with [Inertia](https://inertiajs.com), you'll have PHP running on the server and Javascript on the client. These applications communicate with each other via an API or by passing JSON. The client doesn't have access to the `action` and `route` helpers like Blade does.
+Let's say you're building a single-page application or an application built with [Inertia](https://inertiajs.com), then you have a PHP application running at the backend and a Javascript application at the front. These applications communicate with each other via an api but what if the frontend wants to route a user to another page?
 
-You could hard code URLs in the JavaScript app, but that makes it difficult to refactor. This package streamlines the process of passing URLs to the client in your Laravel resources.
+Since routes are defined in the backend, the frontend has no idea where it has to route the user to. We could just write the url's in the javascript code but what if a route is changed? So why not pass these routes from the backend to the frontend? You could just manually write down all these routes, or let this package do that job for you.
 
-## Setting up resource endpoints
+## Setting up resource links
 
-We have a dedicated [docs](https://docs.spatie.be/laravel-resource-endpoints/v1/usage/resource-setup/) site for this package.
+We have a dedicated [docs](https://docs.spatie.be/laravel-resource-links/v1/usage/resource-setup/) site for this package.
 
 ### Testing
 
@@ -103,11 +79,11 @@ composer test
 
 ### Changelog
 
-Please see [CHANGELOG](https://github.com/spatie/laravel-resource-endpoints/blob/master/CHANGELOG.md) for more information on what has changed recently.
+Please see [CHANGELOG](https://github.com/spatie/laravel-resource-links/blob/master/CHANGELOG.md) for more information on what has changed recently.
 
 ## Contributing
 
-Please see [CONTRIBUTING](https://github.com/spatie/laravel-resource-endpoints/blob/master/CONTRIBUTING.md) for details.
+Please see [CONTRIBUTING](https://github.com/spatie/laravel-resource-links/blob/master/CONTRIBUTING.md) for details.
 
 ### Security
 
@@ -124,7 +100,7 @@ We publish all received postcards [on our company website](https://spatie.be/en/
 ## Credits
 
 - [Ruben Van Assche](https://github.com/rubenvanassche)
-- [All Contributors](https://github.com/spatie/laravel-resource-endpoints/contributors)
+- [All Contributors](https://github.com/spatie/laravel-resource-links/contributors)
 
 ## Support us
 
@@ -135,4 +111,4 @@ All pledges will be dedicated to allocating workforce on maintenance and new awe
 
 ## License
 
-The MIT License (MIT). Please see [License File](https://github.com/spatie/laravel-resource-endpoints/blob/master/LICENSE.md) for more information.
+The MIT License (MIT). Please see [License File](https://github.com/spatie/laravel-resource-links/blob/master/LICENSE.md) for more information.
