@@ -41,39 +41,18 @@ Now when creating an `UserResource` collection, you will have all the links from
          "id":1,
          "name": "Ruben Van Assche",
          "links": {
-            "show": {
-               "method": "GET",
-               "action": "https://laravel.app/users/1"
-            },
-            "edit": {
-               "method": "GET",
-               "action": "https://laravel.app/users/1/edit"
-            },
-            "update": {
-               "method": "PUT",
-               "action": "https://laravel.app/users/1"
-            },
-            "delete": {
-               "method": "DELETE",
-               "action": "https://laravel.app/users/1"
-            }
+            "show": "https://laravel.app/users/1",
+            "edit": "https://laravel.app/users/1/edit",
+            "update": "https://laravel.app/users/1",
+            "delete": "https://laravel.app/users/1"
          }
       }
    ],
    "meta": {
       "links": {
-         "index": {
-            "method": "GET",
-            "action": "https://laravel.app/users"
-         },
-         "create": {
-            "method": "GET",
-            "action": "https://laravel.app/users/create"
-         },
-         "store": {
-            "method": "POST",
-            "action": "https://laravel.app/users"
-         }
+         "index": "https://laravel.app/users",
+         "create": "https://laravel.app/users/create",
+         "store":  "https://laravel.app/users"
       }
    }
 }

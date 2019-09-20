@@ -3,7 +3,7 @@
 namespace Spatie\ResourceLinks\Tests\LinkTypes;
 
 use Spatie\ResourceLinks\LinkTypes\ControllerLinkType;
-use Spatie\ResourceLinks\Serializers\LayeredSerializer;
+use Spatie\ResourceLinks\Serializers\LayeredExtendedLinkSerializer;
 use Spatie\ResourceLinks\Tests\Fakes\SecondTestModel;
 use Spatie\ResourceLinks\Tests\Fakes\TestController;
 use Spatie\ResourceLinks\Tests\Fakes\TestModel;
@@ -138,7 +138,7 @@ class ControllerLinkTypeTest extends TestCase
         $links = ControllerLinkType::make(TestController::class)
             ->methods(['show', 'update'])
             ->prefix('filter')
-            ->serializer(LayeredSerializer::class)
+            ->serializer(LayeredExtendedLinkSerializer::class)
             ->getLinks($this->testModel);
 
         $this->assertEquals([

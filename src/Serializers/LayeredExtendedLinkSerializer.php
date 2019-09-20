@@ -2,7 +2,7 @@
 
 namespace Spatie\ResourceLinks\Serializers;
 
-class LayeredSerializer implements Serializer
+class LayeredExtendedLinkSerializer implements Serializer
 {
     public function format(LinkContainer $linkContainer): array
     {

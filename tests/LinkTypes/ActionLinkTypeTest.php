@@ -4,7 +4,7 @@ namespace Spatie\ResourceLinks\Tests\LinkTypes;
 
 use Exception;
 use Spatie\ResourceLinks\LinkTypes\ActionLinkType;
-use Spatie\ResourceLinks\Serializers\LayeredSerializer;
+use Spatie\ResourceLinks\Serializers\LayeredExtendedLinkSerializer;
 use Spatie\ResourceLinks\Tests\Fakes\TestController;
 use Spatie\ResourceLinks\Tests\Fakes\TestInvokableController;
 use Spatie\ResourceLinks\Tests\Fakes\TestModel;
@@ -166,11 +166,11 @@ class ActionLinkTypeTest extends TestCase
         $this->fakeRouter->get('', $action);
 
         $links = ActionLinkType::make($action)
-            ->serializer(LayeredSerializer::class)
+            ->serializer(LayeredExtendedLinkSerializer::class)
             ->getLinks();
 
         $layeredLinks = ActionLinkType::make($action)
-            ->serializer(LayeredSerializer::class)
+            ->serializer(LayeredExtendedLinkSerializer::class)
             ->prefix('tests')
             ->getLinks();
 

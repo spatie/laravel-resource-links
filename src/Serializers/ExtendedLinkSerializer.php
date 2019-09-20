@@ -2,7 +2,7 @@
 
 namespace Spatie\ResourceLinks\Serializers;
 
-class DefaultSerializer implements Serializer
+class ExtendedLinkSerializer implements Serializer
 {
     public function format(LinkContainer $linkContainer): array
     {

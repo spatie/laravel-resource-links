@@ -27,22 +27,14 @@ class UserResource extends JsonResource
 Now every `UserResource` has an additional `LinkResource` which in the responses will look like:
 
 ``` json
-"links": {
-    "show": {
-       "method": "GET",
-       "action": "https://laravel.app/admin/users/1"
-    },
-    "edit": {
-       "method": "GET",
-       "action": "https://laravel.app/admin/users/1/edit"
-    },
-    "update": {
-       "method": "PUT",
-       "action": "https://laravel.app/admin/users/1"
-    },
-    "delete": {
-       "method": "DELETE",
-       "action": "https://laravel.app/admin/users/1"
+{
+    'id': 1,
+    'name': 'Ruben'
+    'links': {
+        "show": "https://laravel.app/users/1",
+        "edit": "https://laravel.app/users/1/edit",
+        "update": "https://laravel.app/users/1",
+        "delete": "https://laravel.app/users/1"
     }
 }
 ```
@@ -85,20 +77,10 @@ Now when we create an `UserResource` collection, the meta section will look like
 ``` json
 "meta": {
    "links": {
-      "index": {
-         "method": "GET",
-         "action": "https://laravel.app/admin/users"
-      },
-         "create": {
-         "method": "POST",
-         "action": "https://laravel.app/admin/users/create"
-      },
-      "store": {
-         "method": "POST",
-         "action": "https://laravel.app/admin/users"
-      }
-   },
-   //
+        "index": "https://laravel.app/users",
+        "create": "https://laravel.app/users/create",
+        "store":  "https://laravel.app/users"
+   }
 }
 ```
 

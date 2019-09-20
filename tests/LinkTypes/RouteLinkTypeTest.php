@@ -4,7 +4,7 @@ namespace Spatie\ResourceLinks\Tests\LinkTypes;
 
 
 use Spatie\ResourceLinks\LinkTypes\RouteLinkType;
-use Spatie\ResourceLinks\Serializers\UrlSerializer;
+use Spatie\ResourceLinks\Serializers\LinkSerializer;
 use Spatie\ResourceLinks\Tests\Fakes\TestController;
 use Spatie\ResourceLinks\Tests\Fakes\TestModel;
 use Spatie\ResourceLinks\Tests\Fakes\SecondTestModel;
@@ -176,7 +176,7 @@ class RouteLinkTypeTest extends TestCase
         $route = $this->fakeRouter->get('', $action);
 
         $links = RouteLinkType::make($route)
-            ->serializer(UrlSerializer::class)
+            ->serializer(LinkSerializer::class)
             ->getLinks();
 
         $this->assertEquals([
@@ -191,7 +191,7 @@ class RouteLinkTypeTest extends TestCase
 
         $route = $this->fakeRouter->get('', $action);
 
-        app(config()->set('resource-links.serializer', UrlSerializer::class));
+        app(config()->set('resource-links.serializer', LinkSerializer::class));
 
         $links = RouteLinkType::make($route)->getLinks();
 

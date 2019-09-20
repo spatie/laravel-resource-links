@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Spatie\ResourceLinks\LinkTypes\ControllerLinkType;
 use Spatie\ResourceLinks\ResourceLinksServiceProvider;
+use Spatie\ResourceLinks\Serializers\ExtendedLinkSerializer;
 use Spatie\ResourceLinks\Tests\Fakes\TestModel;
 use Spatie\ResourceLinks\Tests\Fakes\FakeRouter;
 use Spatie\ResourceLinks\Tests\Fakes\SecondTestModel;
@@ -57,6 +58,8 @@ abstract class TestCase extends BaseTestCase
         ]);
 
         config()->set('app.key', 'kuFyUdCwrgWJjLWURIbkemJlFLGatcmo');
+
+        config()->set('resource-links.serializer', ExtendedLinkSerializer::class);
 
         Model::unguard();
     }

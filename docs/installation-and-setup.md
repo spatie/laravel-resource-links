@@ -35,6 +35,6 @@ return [
     |
     */
 
-    'serializer' => Spatie\ResourceLinks\Serializers\DefaultSerializer::class,
+    'serializer' => Spatie\ResourceLinks\Serializers\LinkSerializer::class,
 ];
 ```

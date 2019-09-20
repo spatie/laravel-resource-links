@@ -32,8 +32,6 @@ class UserResource extends JsonResource
 {
     use HasLinks;
 
-    //
-
     public static function collection($resource)
     {
         return parent::collection($resource)->additional([

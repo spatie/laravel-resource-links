@@ -41,16 +41,8 @@ This will produce the following JSON:
 
 ``` json
 "links": {
-    "admin.show": {
-       "method": "GET",
-       "action": "https://laravel.app/admin/users/1"
-    },
-    "admin.edit": {
-       "method": "GET",
-       "action": "https://laravel.app/admin/users/1/edit"
-    },
-
-    //
+    "admin.show": "https://laravel.app/admin/users/1",
+    "admin.edit": "https://laravel.app/admin/users/1/edit"
 }
 ```
 
@@ -74,11 +66,6 @@ This will produce the following JSON:
 
 ``` json
 "links": {
-    "list": {
-       "method": "GET",
-       "action": "https://laravel.app/admin/users"
-    },
-
-    //
+    "list": "https://laravel.app/admin/users"
 }
 ```

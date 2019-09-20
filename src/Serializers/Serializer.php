@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Spatie\ResourceLinks\Serializers;
 
 interface Serializer
