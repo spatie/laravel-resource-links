@@ -32,16 +32,16 @@ By default the `__invoke()` method of this controller will be created with the n
 }
 ```
 
-Want to be more explicit? You can also add an invokable controller as such
+Want to be more explicit? You can also add an invokable controller to a link group as such:
 
 ```php
-$links->invokableController(DownloadUserController::class);
+$links->controller(DownloadUserController::class);
 ```
 
 Off course you can use the methods defined by an action on this controller:
 
 ```php
 $links
-    ->action(DownloadUserController::class)
+    ->controller(DownloadUserController::class)
     ->name('download');
 ```

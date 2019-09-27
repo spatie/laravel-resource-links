@@ -43,11 +43,11 @@ class LinksTest extends TestCase
     {
         $links = new Links();
 
-        $links->invokableController(TestInvokableController::class);
+        $links->controller(TestInvokableController::class);
 
         $this->assertTrue(
             $links->getLinkTypes()
-                ->contains(ActionLinkType::make(TestInvokableController::class))
+                ->contains(ActionLinkType::make([TestInvokableController::class]))
         );
     }
     
@@ -55,7 +55,7 @@ class LinksTest extends TestCase
     public function it_can_add_a_links_group()
     {
         $links = new Links();
-        $links->invokableController(TestInvokableController::class);
+        $links->controller(TestInvokableController::class);
 
         $secondLinks = new Links();
         $secondLinks->action([TestController::class, 'index']);
@@ -64,7 +64,7 @@ class LinksTest extends TestCase
 
         $this->assertTrue(
             $links->getLinkTypes()
-                ->contains(ActionLinkType::make(TestInvokableController::class))
+                ->contains(ActionLinkType::make([TestInvokableController::class]))
         );
         $this->assertTrue(
             $links->getLinkTypes()

@@ -17,22 +17,20 @@ class Links
         $this->linkTypes = new Collection();
     }
 
-    public function controller(string $controller): ControllerLinkType
+    /**
+     * @param string $controller
+     *
+     * @return \Spatie\ResourceLinks\LinkTypes\ControllerLinkType|\Spatie\ResourceLinks\LinkTypes\ActionLinkType
+     */
+    public function controller(string $controller)
     {
-        $controllerLinkType = ControllerLinkType::make($controller);
+        $linkType = method_exists($controller, '__invoke')
+            ? ActionLinkType::make([$controller])
+            : ControllerLinkType::make($controller);
 
-        $this->linkTypes[] = $controllerLinkType;
+        $this->linkTypes[] = $linkType;
 
-        return $controllerLinkType;
-    }
-
-    public function invokableController(string $controller): ActionLinkType
-    {
-        $actionLinkType = ActionLinkType::make($controller);
-
-        $this->linkTypes[] = $actionLinkType;
-
-        return $actionLinkType;
+        return $linkType;
     }
 
     public function action(array $action): ActionLinkType

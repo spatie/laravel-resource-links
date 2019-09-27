@@ -49,7 +49,7 @@ class LinkResource extends JsonResource
 
         if (is_string($link) && method_exists($link, '__invoke')) {
             $this->linksGroup
-                ->invokableController($link)
+                ->action([$link])
                 ->parameters(Arr::wrap($parameters));
 
             return $this;

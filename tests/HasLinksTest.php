@@ -37,7 +37,7 @@ class HasLinksTest extends TestCase
             public function toArray($request)
             {
                 return [
-                    'linkss' => $this->links(TestController::class),
+                    'links' => $this->links(TestController::class),
                 ];
             }
         };
@@ -48,7 +48,7 @@ class HasLinksTest extends TestCase
 
         $this->get('/resource')->assertExactJson([
             'data' => [
-                'linkss' => [
+                'links' => [
                     'show' => [
                         'method' => 'GET',
                         'action' => action([TestController::class, 'show'], $this->testModel),
@@ -71,14 +71,14 @@ class HasLinksTest extends TestCase
             public function toArray($request)
             {
                 return [
-                    'linkss' => $this->links(TestController::class),
+                    'links' => $this->links(TestController::class),
                 ];
             }
 
             public static function meta()
             {
                 return [
-                    'linkss' => self::collectionLinks(TestController::class),
+                    'links' => self::collectionLinks(TestController::class),
                 ];
             }
         };
@@ -90,7 +90,7 @@ class HasLinksTest extends TestCase
         $this->get('/resource')->assertExactJson([
             'data' => [
                 0 => [
-                    'linkss' => [
+                    'links' => [
                         'show' => [
                             'method' => 'GET',
                             'action' => action([TestController::class, 'show'], $this->testModel),
@@ -99,7 +99,7 @@ class HasLinksTest extends TestCase
                 ],
             ],
             'meta' => [
-                'linkss' => [
+                'links' => [
                     'index' => [
                         'method' => 'GET',
                         'action' => action([TestController::class, 'index']),
@@ -120,7 +120,7 @@ class HasLinksTest extends TestCase
             public function toArray($request)
             {
                 return [
-                    'linkss' => $this->links(TestInvokableController::class),
+                    'links' => $this->links(TestInvokableController::class),
                 ];
             }
         };
@@ -131,7 +131,7 @@ class HasLinksTest extends TestCase
 
         $this->get('/resource')->assertExactJson([
             'data' => [
-                'linkss' => [
+                'links' => [
                     'invoke' => [
                         'method' => 'GET',
                         'action' => action(TestInvokableController::class, $this->testModel),
@@ -152,9 +152,9 @@ class HasLinksTest extends TestCase
             public function toArray($request)
             {
                 return [
-                    'linkss' => $this->links(function (Links $links) {
+                    'links' => $this->links(function (Links $links) {
                         $links->controller(TestController::class);
-                        $links->invokableController(TestInvokableController::class)->name('invoke');
+                        $links->controller(TestInvokableController::class)->name('invoke');
                     }),
                 ];
             }
@@ -162,7 +162,7 @@ class HasLinksTest extends TestCase
             public static function meta()
             {
                 return [
-                    'linkss' => self::collectionLinks(function (Links $links) {
+                    'links' => self::collectionLinks(function (Links $links) {
                         $links->controller(TestController::class);
                         $links->action([TestController::class, 'index'])->name('action');
                     }),
@@ -177,7 +177,7 @@ class HasLinksTest extends TestCase
         $this->get('/resource')->assertExactJson([
             'data' => [
                 [
-                    'linkss' => [
+                    'links' => [
                         'show' => [
                             'method' => 'GET',
                             'action' => action([TestController::class, 'show'], $this->testModel),
@@ -190,7 +190,7 @@ class HasLinksTest extends TestCase
                 ],
             ],
             'meta' => [
-                'linkss' => [
+                'links' => [
                     'index' => [
                         'method' => 'GET',
                         'action' => action([TestController::class, 'index']),
@@ -219,14 +219,14 @@ class HasLinksTest extends TestCase
             {
                 return [
                     'id' => $this->id,
-                    'linkss' => $this->links(TestController::class),
+                    'links' => $this->links(TestController::class),
                 ];
             }
 
             public static function meta()
             {
                 return [
-                    'linkss' => self::collectionLinks(TestController::class),
+                    'links' => self::collectionLinks(TestController::class),
                 ];
             }
         };
@@ -239,7 +239,7 @@ class HasLinksTest extends TestCase
             'data' => [
                 [
                     'id' => 1,
-                    'linkss' => [
+                    'links' => [
                         'show' => [
                             'method' => 'GET',
                             'action' => action([TestController::class, 'show'], $this->testModel),
@@ -248,7 +248,7 @@ class HasLinksTest extends TestCase
                 ],
                 [
                     'id' => 2,
-                    'linkss' => [
+                    'links' => [
                         'show' => [
                             'method' => 'GET',
                             'action' => action([TestController::class, 'show'], $otherTestModel),
@@ -257,7 +257,7 @@ class HasLinksTest extends TestCase
                 ],
             ],
             'meta' => [
-                'linkss' => [
+                'links' => [
                     'index' => [
                         'method' => 'GET',
                         'action' => action([TestController::class, 'index']),
