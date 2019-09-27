@@ -17,7 +17,7 @@ trait HasLinks
     {
         $resource = LinkResource::create($this->resource, LinkResourceType::ITEM)->link($controller, $parameters);
 
-        if (property_exists($this, 'withCollectionLinks') && $this->withCollectionLinks === true) {
+        if (property_exists($this, 'withCollectionLinks') && $this->withCollectionLinks) {
             $resource->withCollectionLinks();
         }
 
