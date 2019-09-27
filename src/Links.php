@@ -5,7 +5,6 @@ namespace Spatie\ResourceLinks;
 use Illuminate\Support\Collection;
 use Spatie\ResourceLinks\LinkTypes\ActionLinkType;
 use Spatie\ResourceLinks\LinkTypes\ControllerLinkType;
-use Spatie\ResourceLinks\LinkTypes\InvokableControllerLinkType;
 
 class Links
 {
