@@ -5,6 +5,9 @@ namespace Spatie\ResourceLinks;
 /** @mixin \Illuminate\Http\Resources\Json\JsonResource */
 trait HasLinks
 {
+    /** @var bool  */
+    private $withCollectionLinks = false;
+
     /**
      * @param string|\Closure|null|array $controller
      * @param null $parameters
@@ -31,5 +34,12 @@ trait HasLinks
     public static function collectionLinks($controller = null, $parameters = null): LinkResource
     {
         return LinkResource::create(null, LinkResourceType::COLLECTION)->link($controller, $parameters);
+    }
+
+    public function withCollectionLinks()
+    {
+        $this->withCollectionLinks = true;
+
+        return $this;
     }
 }

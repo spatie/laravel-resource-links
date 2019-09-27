@@ -5,9 +5,6 @@ namespace Spatie\ResourceLinks;
 /** @mixin \Illuminate\Http\Resources\Json\JsonResource */
 trait HasMeta
 {
-    /** @var bool  */
-    private $withCollectionLinks = false;
-
     public static function collection($resource)
     {
         $meta = self::meta();
@@ -24,13 +21,6 @@ trait HasMeta
     public static function make(...$parameters)
     {
         return parent::make(...$parameters)->withCollectionLinks();
-    }
-
-    public function withCollectionLinks()
-    {
-        $this->withCollectionLinks = true;
-
-        return $this;
     }
 
     public static function meta()
