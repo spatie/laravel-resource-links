@@ -3,6 +3,7 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-resource-links.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-resource-links)
 [![Build Status](https://travis-ci.org/spatie/laravel-resource-links.svg?branch=master)](https://travis-ci.org/spatie/laravel-resource-links)
 [![Quality Score](https://img.shields.io/scrutinizer/g/spatie/laravel-resource-links.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/laravel-resource-links)
+[![StyleCI](https://github.styleci.io/repos/181018859/shield?branch=master)](https://github.styleci.io/repos/181018859)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-resource-links.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-resource-links)
 
 Let's say you have a `UsersController` with `index`, `show`, `create`, `edit`, `store`, `update` and `delete` methods and an `UserResource`. Wouldn't it be nice if you had the URL's to these methods immediately in your `UserResource` without having to construct them from scratch?
