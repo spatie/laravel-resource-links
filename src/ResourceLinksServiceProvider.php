@@ -13,7 +13,7 @@ class ResourceLinksServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/resource-links.php' => config_path('resource-links.php'),
+                __DIR__.'/../config/resource-links.php' => config_path('resource-links.php'),
             ], 'config');
         }
     }
@@ -23,6 +23,6 @@ class ResourceLinksServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/resource-links.php', 'resource-links');
+        $this->mergeConfigFrom(__DIR__.'/../config/resource-links.php', 'resource-links');
     }
 }

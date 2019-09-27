@@ -2,10 +2,10 @@
 
 namespace Spatie\ResourceLinks;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Routing\Route;
-use Illuminate\Support\Arr;
 use ReflectionParameter;
+use Illuminate\Support\Arr;
+use Illuminate\Routing\Route;
+use Illuminate\Database\Eloquent\Model;
 
 class ParameterResolver
 {
@@ -69,8 +69,6 @@ class ParameterResolver
                 return Arr::pull($providedParameters, $index);
             }
         }
-
-        return null;
     }
 
     private function expectsModelAsParameter(ReflectionParameter $signatureParameter): bool
@@ -115,8 +113,6 @@ class ParameterResolver
                 return Arr::pull($providedParameters, $index);
             }
         }
-
-        return null;
     }
 
     private function getParameterPrimitiveType($parameter): string

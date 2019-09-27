@@ -2,12 +2,12 @@
 
 namespace Spatie\ResourceLinks\LinkTypes;
 
-use Spatie\ResourceLinks\LinkContainer;
-use Spatie\ResourceLinks\Serializers\Serializer;
-use Spatie\ResourceLinks\ParameterResolver;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Route;
 use Spatie\ResourceLinks\UrlResolver;
+use Illuminate\Database\Eloquent\Model;
+use Spatie\ResourceLinks\LinkContainer;
+use Spatie\ResourceLinks\ParameterResolver;
+use Spatie\ResourceLinks\Serializers\Serializer;
 
 class RouteLinkType extends LinkType
 {
