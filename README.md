@@ -1,4 +1,4 @@
-# Laravel Resource Links
+# Add links to Laravel API resources
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-resource-links.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-resource-links)
 [![Build Status](https://travis-ci.org/spatie/laravel-resource-links.svg?branch=master)](https://travis-ci.org/spatie/laravel-resource-links)
