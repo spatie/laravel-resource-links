@@ -2,8 +2,6 @@
 
 namespace Spatie\ResourceLinks;
 
-use Closure;
-
 /** @mixin \Illuminate\Http\Resources\Json\JsonResource */
 trait HasLinks
 {
