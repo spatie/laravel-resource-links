@@ -75,7 +75,8 @@ class ControllerLinkType extends LinkType
         $links = self::getRoutesForController($this->controller)
             ->filter(function (Route $route) use ($methodsToInclude) {
                 return in_array($route->getActionMethod(), $methodsToInclude);
-            })->map(function (Route $route) use ($model) {
+            })
+            ->map(function (Route $route) use ($model) {
                 $route = RouteLinkType::make($route)
                     ->parameters($this->parameters)
                     ->name($this->resolveNameForRoute($route))
@@ -84,7 +85,8 @@ class ControllerLinkType extends LinkType
                     ->getLinks($model);
 
                 return $route;
-            })->toArray();
+            })
+            ->toArray();
 
         return ! empty($links)
             ? array_merge_recursive(...$links)

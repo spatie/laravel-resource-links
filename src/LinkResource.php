@@ -83,7 +83,7 @@ class LinkResource extends JsonResource
 
     public function withCollectionLinks(): LinkResource
     {
-        $this->linkResourceType = LinkResourceType::MULTI;
+        $this->linkResourceType = LinkResourceType::ALL;
 
         return $this;
     }
@@ -113,7 +113,7 @@ class LinkResource extends JsonResource
             return $controllerLinkType->getCollectionLinks();
         }
 
-        if ($this->linkResourceType === LinkResourceType::MULTI) {
+        if ($this->linkResourceType === LinkResourceType::ALL) {
             return array_merge(
                 $controllerLinkType->getLinks($this->resource),
                 $controllerLinkType->getCollectionLinks()

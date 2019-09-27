@@ -6,7 +6,6 @@ use Illuminate\Routing\Exceptions\UrlGenerationException;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\RouteUrlGenerator;
 use Illuminate\Routing\UrlGenerator;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 class UrlResolver extends RouteUrlGenerator
@@ -15,7 +14,6 @@ class UrlResolver extends RouteUrlGenerator
     {
         parent::__construct($urlGenerator, $urlGenerator->getRequest());
 
-        // The URL defaults are not given through automatically
         $this->defaults($urlGenerator->getDefaultParameters());
     }
 
@@ -26,11 +24,11 @@ class UrlResolver extends RouteUrlGenerator
         try {
             return $this->to($route, $parameters, true);
         } catch (UrlGenerationException $exception) {
-            // Create an uri with missing parameters between brackets
+            // Create a URI with missing parameters between brackets
             $domain = $this->getRouteDomain($route, $parameters);
 
             return $this->addQueryString($this->url->format(
-                $root = $this->replaceRootParameters($route, $domain, $parameters),
+                $this->replaceRootParameters($route, $domain, $parameters),
                 $this->replaceRouteParameters($route->uri(), $parameters),
                 $route
             ), $parameters);
@@ -39,11 +37,9 @@ class UrlResolver extends RouteUrlGenerator
 
     protected function replaceRouteParameters($path, array &$parameters)
     {
-        /**
-         * We should try to find a solution to not including this function,
-         * this had to be added to support Laravel 6:
-         * https://github.com/laravel/framework/issues/29736
-         */
+        // We should try to find a solution to not including this function,
+        // this had to be added to support Laravel 6:
+        // https://github.com/laravel/framework/issues/29736
 
         $path = $this->replaceNamedParameters($path, $parameters);
 

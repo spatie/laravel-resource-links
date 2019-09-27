@@ -37,7 +37,8 @@ class ParameterResolver
             })
             ->reject(function ($parameter) {
                 return $parameter === null;
-            })->all();
+            })
+            ->all();
     }
 
     private function getProvidedParameters(): array
