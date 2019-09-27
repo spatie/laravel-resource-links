@@ -2,13 +2,13 @@
 
 namespace Spatie\ResourceLinks\Tests;
 
-use Illuminate\Http\Resources\Json\JsonResource;
 use Spatie\ResourceLinks\Links;
-use Spatie\ResourceLinks\HasLinks;
 use Spatie\ResourceLinks\HasMeta;
+use Spatie\ResourceLinks\HasLinks;
+use Spatie\ResourceLinks\Tests\Fakes\TestModel;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Spatie\ResourceLinks\Tests\Fakes\TestController;
 use Spatie\ResourceLinks\Tests\Fakes\TestInvokableController;
-use Spatie\ResourceLinks\Tests\Fakes\TestModel;
 
 class HasLinksTest extends TestCase
 {

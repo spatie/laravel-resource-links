@@ -4,10 +4,8 @@ namespace Spatie\ResourceLinks\Tests;
 
 use Spatie\ResourceLinks\Links;
 use Spatie\ResourceLinks\LinkTypes\ActionLinkType;
-use Spatie\ResourceLinks\LinkTypes\ControllerLinkType;
-use Spatie\ResourceLinks\LinkTypes\InvokableControllerLinkType;
 use Spatie\ResourceLinks\Tests\Fakes\TestController;
-use Spatie\ResourceLinks\Tests\Fakes\TestInvokableCollectionController;
+use Spatie\ResourceLinks\LinkTypes\ControllerLinkType;
 use Spatie\ResourceLinks\Tests\Fakes\TestInvokableController;
 
 class LinksTest extends TestCase
@@ -24,7 +22,7 @@ class LinksTest extends TestCase
                 ->contains(ActionLinkType::make([TestInvokableController::class]))
         );
     }
-    
+
     /** @test */
     public function it_can_add_a_controller()
     {
@@ -50,7 +48,7 @@ class LinksTest extends TestCase
                 ->contains(ActionLinkType::make([TestInvokableController::class]))
         );
     }
-    
+
     /** @test */
     public function it_can_add_a_links_group()
     {

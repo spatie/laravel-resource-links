@@ -2,12 +2,12 @@
 
 namespace Spatie\ResourceLinks\Tests\LinkTypes;
 
+use Spatie\ResourceLinks\Tests\TestCase;
+use Spatie\ResourceLinks\Tests\Fakes\TestModel;
+use Spatie\ResourceLinks\Tests\Fakes\TestController;
+use Spatie\ResourceLinks\Tests\Fakes\SecondTestModel;
 use Spatie\ResourceLinks\LinkTypes\ControllerLinkType;
 use Spatie\ResourceLinks\Serializers\LayeredExtendedLinkSerializer;
-use Spatie\ResourceLinks\Tests\Fakes\SecondTestModel;
-use Spatie\ResourceLinks\Tests\Fakes\TestController;
-use Spatie\ResourceLinks\Tests\Fakes\TestModel;
-use Spatie\ResourceLinks\Tests\TestCase;
 
 class ControllerLinkTypeTest extends TestCase
 {
@@ -31,7 +31,6 @@ class ControllerLinkTypeTest extends TestCase
             'name' => 'SecondTestModel',
         ]);
     }
-
 
     /** @test */
     public function it_will_create_all_possible_routes_when_a_model_is_available()

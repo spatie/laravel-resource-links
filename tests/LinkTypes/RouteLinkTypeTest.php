@@ -2,13 +2,12 @@
 
 namespace Spatie\ResourceLinks\Tests\LinkTypes;
 
-
+use Spatie\ResourceLinks\Tests\TestCase;
+use Spatie\ResourceLinks\Tests\Fakes\TestModel;
 use Spatie\ResourceLinks\LinkTypes\RouteLinkType;
 use Spatie\ResourceLinks\Serializers\LinkSerializer;
 use Spatie\ResourceLinks\Tests\Fakes\TestController;
-use Spatie\ResourceLinks\Tests\Fakes\TestModel;
 use Spatie\ResourceLinks\Tests\Fakes\SecondTestModel;
-use Spatie\ResourceLinks\Tests\TestCase;
 
 class RouteLinkTypeTest extends TestCase
 {
@@ -242,7 +241,7 @@ class RouteLinkTypeTest extends TestCase
 
         $links = RouteLinkType::make($route)
             ->parameters([
-                'action' => 'dump-and-die'
+                'action' => 'dump-and-die',
             ])
             ->getLinks($this->testModel);
 
@@ -251,7 +250,7 @@ class RouteLinkTypeTest extends TestCase
                 'method' => 'GET',
                 'action' => action($action, [
                     'testModel' => $this->testModel,
-                    'action' => 'dump-and-die'
+                    'action' => 'dump-and-die',
                 ]),
             ],
         ], $links);

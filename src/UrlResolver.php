@@ -2,11 +2,11 @@
 
 namespace Spatie\ResourceLinks;
 
-use Illuminate\Routing\Exceptions\UrlGenerationException;
-use Illuminate\Routing\Route;
-use Illuminate\Routing\RouteUrlGenerator;
-use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\Str;
+use Illuminate\Routing\Route;
+use Illuminate\Routing\UrlGenerator;
+use Illuminate\Routing\RouteUrlGenerator;
+use Illuminate\Routing\Exceptions\UrlGenerationException;
 
 class UrlResolver extends RouteUrlGenerator
 {

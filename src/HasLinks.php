@@ -5,7 +5,7 @@ namespace Spatie\ResourceLinks;
 /** @mixin \Illuminate\Http\Resources\Json\JsonResource */
 trait HasLinks
 {
-    /** @var bool  */
+    /** @var bool */
     private $withCollectionLinks = false;
 
     /**

@@ -4,10 +4,10 @@ namespace Spatie\ResourceLinks;
 
 use Closure;
 use Illuminate\Support\Arr;
-use Spatie\ResourceLinks\LinkTypes\ControllerLinkType;
-use Spatie\ResourceLinks\LinkTypes\LinkType;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\ResourceLinks\LinkTypes\LinkType;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Spatie\ResourceLinks\LinkTypes\ControllerLinkType;
 
 class LinkResource extends JsonResource
 {

@@ -2,16 +2,14 @@
 
 namespace Spatie\ResourceLinks\Tests;
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use Spatie\ResourceLinks\Tests\Fakes\FakeRouter;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Spatie\ResourceLinks\LinkTypes\ControllerLinkType;
 use Spatie\ResourceLinks\ResourceLinksServiceProvider;
 use Spatie\ResourceLinks\Serializers\ExtendedLinkSerializer;
-use Spatie\ResourceLinks\Tests\Fakes\TestModel;
-use Spatie\ResourceLinks\Tests\Fakes\FakeRouter;
-use Spatie\ResourceLinks\Tests\Fakes\SecondTestModel;
 
 abstract class TestCase extends BaseTestCase
 {

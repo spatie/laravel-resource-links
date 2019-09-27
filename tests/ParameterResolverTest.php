@@ -3,8 +3,8 @@
 namespace Spatie\ResourceLinks\Tests;
 
 use Spatie\ResourceLinks\ParameterResolver;
-use Spatie\ResourceLinks\Tests\Fakes\TestController;
 use Spatie\ResourceLinks\Tests\Fakes\TestModel;
+use Spatie\ResourceLinks\Tests\Fakes\TestController;
 use Spatie\ResourceLinks\Tests\Fakes\SecondTestModel;
 
 class ParameterResolverTest extends TestCase
