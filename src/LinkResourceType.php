@@ -6,5 +6,5 @@ class LinkResourceType
 {
     public const COLLECTION = 'collection';
     public const ITEM = 'item';
-    public const MULTI = 'multi';
+    public const ALL = 'all';
 }
