@@ -2,7 +2,7 @@
 
 namespace Spatie\ResourceLinks\LinkTypes;
 
-use Spatie\ResourceLinks\Serializers\LinkContainer;
+use Spatie\ResourceLinks\LinkContainer;
 use Spatie\ResourceLinks\Serializers\Serializer;
 use Spatie\ResourceLinks\ParameterResolver;
 use Illuminate\Database\Eloquent\Model;

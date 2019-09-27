@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\ResourceLinks\Serializers;
+namespace Spatie\ResourceLinks;
 
 class LinkContainer
 {
