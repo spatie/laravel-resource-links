@@ -8,7 +8,7 @@ use Closure;
 trait HasLinks
 {
     /**
-     * @param string|Closure|null|array $controller
+     * @param string|\Closure|null|array $controller
      * @param null $parameters
      *
      * @return \Spatie\ResourceLinks\LinkResource
@@ -25,7 +25,7 @@ trait HasLinks
     }
 
     /**
-     * @param string|Closure|null|array $controller
+     * @param string|\Closure|null|array $controller
      * @param null $parameters
      *
      * @return \Spatie\ResourceLinks\LinkResource
