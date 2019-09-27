@@ -74,7 +74,7 @@ class ActionLinkType extends LinkType
 
     private function resolveName(): ?string
     {
-        if ($this->name) {
+        if ($this->name !== null) {
             return $this->name;
         }
 

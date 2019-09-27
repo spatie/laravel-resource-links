@@ -5,8 +5,6 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/spatie/laravel-resource-links.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/laravel-resource-links)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-resource-links.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-resource-links)
 
-**This package is under development and will change drastically**
-
 Let's say you have a `UsersController` with `index`, `show`, `create`, `edit`, `store`, `update` and `delete` methods and an `UserResource`. Wouldn't it be nice if you had the URL's to these methods immediately in your `UserResource` without having to construct them from scratch?
 
 This package will add these links to your resource based upon a controller or actions you define. Let's look at an example of a resource.

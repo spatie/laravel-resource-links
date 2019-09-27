@@ -1,7 +1,7 @@
 # Changelog
 
-All notable changes to `laravel-resource-endpoints` will be documented in this file
+All notable changes to `laravel-resource-links` will be documented in this file
 
-## 1.0.0 - 201X-XX-XX
+## 1.0.0 - 2019-09-27
 
 - initial release

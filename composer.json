@@ -1,6 +1,6 @@
 {
     "name" : "spatie/laravel-resource-links",
-    "description" : "Add endpoints to your Laravel Resources",
+    "description" : "Add links to your Laravel Resources",
     "keywords" : [
         "spatie",
         "laravel-resource-links"
