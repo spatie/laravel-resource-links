@@ -5,6 +5,8 @@ weight: 6
 
 Want to change how links are structured in your resources? You can use serializers to output links different formats and even write your own custom serializes!
 
+You can specify the serializer to be used in the config file of the package.
+
 On a default installation we use the `LinkSerializer`:
 
 ```json
