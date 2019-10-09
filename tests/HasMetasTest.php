@@ -19,8 +19,8 @@ class HasMetasTest extends TestCase
             'name' => 'testModel',
         ]);
 
-        $this->fakeRouter->get('/index', [FakeController::class, 'index']);
-        $this->fakeRouter->get('/show/{id}', [FakeController::class, 'show']);
+        $this->fakeRouter->get('/TestModel/index', [FakeController::class, 'index']);
+        $this->fakeRouter->get('/TestModel/show/{TestModel}', [FakeController::class, 'show']);
     }
 
     /** @test */
