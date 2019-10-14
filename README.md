@@ -34,7 +34,7 @@ class UserResource extends JsonResource
 }
 ```
 
-Now when creating an `UserResource` collection, you will have all the links from the `UserController` available:
+Now when creating a `UserResource` collection, you will have all the links from the `UserController` available:
 
 ```json
 {
