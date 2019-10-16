@@ -10,11 +10,15 @@ class FakeController
 {
     public function index()
     {
-        $TestModel = new Item;
-        $queries = [];
-        $TestModel = $TestModel->paginate(2)->appends($queries);
-        return new ItemResourceCollection($TestModel);
-    }
+//        $TestModel = new Item;
+//        $queries = [];
+//        $TestModel = $TestModel->paginate(2)->appends($queries);
+//
+//
+//        return new ItemResourceCollection(TestModel::all());
+
+        return FakeResource::collection(TestModel::all());
+}
 
     public function show(TestModel $testModel)
     {

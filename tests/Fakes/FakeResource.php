@@ -12,15 +12,17 @@ class FakeResource extends Resource
 
     public function toArray($request)
     {
-      return [
-              'links' => $this->links(TestController::class),
-            ];
+        return [
+            'links' => $this->links(FakeController::class),
+        ];
     }
 
     public static function meta()
     {
         return [
-            'links' => self::collectionLinks(TestController::class),
+            'links' => self::collectionLinks(FakeController::class),
         ];
     }
-};
+}
+
+;

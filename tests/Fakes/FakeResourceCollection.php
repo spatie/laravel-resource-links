@@ -12,6 +12,6 @@ class FakeResourceCollection extends ResourceCollection
 
     public function toArray($request)
     {
-      return  FakeResource::collection($this->collection);
+      return FakeResource::collection($this->collection);
     }
 };
