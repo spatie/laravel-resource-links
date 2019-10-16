@@ -255,4 +255,21 @@ class RouteLinkTypeTest extends TestCase
             ],
         ], $links);
     }
+
+    /** @test */
+    public function it_can_use_a_query_string()
+    {
+        $action = [TestController::class, 'index'];
+
+        $route = $this->fakeRouter->get('', $action);
+
+        $links = RouteLinkType::make($route)->query('filter=disabled')->getLinks();
+
+        $this->assertEquals([
+            'index' => [
+                'method' => 'GET',
+                'action' => action($action).'?filter=disabled',
+            ],
+        ], $links);
+    }
 }

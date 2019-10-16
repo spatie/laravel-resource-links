@@ -228,4 +228,21 @@ class ActionLinkTypeTest extends TestCase
             ],
         ], $links);
     }
+
+    /** @test */
+    public function it_can_add_a_query_string()
+    {
+        $action = [TestController::class, 'index'];
+
+        $this->fakeRouter->get('', $action);
+
+        $links = ActionLinkType::make($action)->query('filter=disabled')->getLinks();
+
+        $this->assertEquals([
+            'index' => [
+                'method' => 'GET',
+                'action' => action($action).'?filter=disabled',
+            ],
+        ], $links);
+    }
 }

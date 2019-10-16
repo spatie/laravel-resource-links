@@ -81,6 +81,7 @@ class ControllerLinkType extends LinkType
                     ->parameters($this->parameters)
                     ->name($this->resolveNameForRoute($route))
                     ->prefix($this->prefix)
+                    ->query($this->query)
                     ->serializer($this->serializer)
                     ->getLinks($model);
 

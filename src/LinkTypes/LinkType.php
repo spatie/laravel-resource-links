@@ -16,6 +16,9 @@ abstract class LinkType
     /** @var string|null */
     protected $serializer;
 
+    /** @var string|null */
+    protected $query;
+
     abstract public function getLinks(Model $model = null): array;
 
     public function parameters(...$parameters)
@@ -37,6 +40,13 @@ abstract class LinkType
     public function serializer(?string $serializer)
     {
         $this->serializer = $serializer;
+
+        return $this;
+    }
+
+    public function query(?string $query)
+    {
+        $this->query = $query;
 
         return $this;
     }

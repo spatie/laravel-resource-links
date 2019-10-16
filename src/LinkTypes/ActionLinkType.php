@@ -60,6 +60,7 @@ class ActionLinkType extends LinkType
             ->prefix($this->prefix)
             ->parameters($this->getParameters($model))
             ->serializer($this->serializer)
+            ->query($this->query)
             ->getLinks($model);
     }
 

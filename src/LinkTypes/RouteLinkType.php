@@ -53,7 +53,7 @@ class RouteLinkType extends LinkType
         $linkContainer = LinkContainer::make(
             $this->name ?? $this->route->getActionMethod(),
             $this->httpVerb ?? $this->getHttpVerbForRoute($this->route),
-            $urlResolver->resolve($this->route, $parameterResolver->forRoute($this->route)),
+            $this->getAction($urlResolver, $parameterResolver),
             $this->prefix
         );
 
@@ -69,6 +69,20 @@ class RouteLinkType extends LinkType
         }
 
         return $httpVerbs[0];
+    }
+
+    private function getAction(
+        UrlResolver $urlResolver,
+        ParameterResolver $parameterResolver
+    ): string {
+        $action = $urlResolver->resolve(
+            $this->route,
+            $parameterResolver->forRoute($this->route)
+        );
+
+        return $this->query !== null
+            ? "{$action}?{$this->query}"
+            : $action;
     }
 
     private function resolveSerializer(): Serializer

@@ -218,4 +218,24 @@ class ControllerLinkTypeTest extends TestCase
                 ->getLinks()
         );
     }
+
+    /** @test */
+    public function it_can_use_a_query_string()
+    {
+        $indexAction = [TestController::class, 'index'];
+
+        $this->fakeRouter->get('', $indexAction);
+
+        $links = ControllerLinkType::make(TestController::class)
+            ->methods(['index'])
+            ->query('filter=disabled')
+            ->getLinks($this->testModel);
+
+        $this->assertEquals([
+            'index' => [
+                'method' => 'GET',
+                'action' => action($indexAction).'?filter=disabled',
+            ],
+        ], $links);
+    }
 }
