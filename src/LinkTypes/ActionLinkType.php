@@ -3,9 +3,9 @@
 namespace Spatie\ResourceLinks\LinkTypes;
 
 use Exception;
-use Illuminate\Support\Str;
-use Illuminate\Routing\Router;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Routing\Router;
+use Illuminate\Support\Str;
 
 class ActionLinkType extends LinkType
 {

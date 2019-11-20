@@ -3,12 +3,12 @@
 namespace Spatie\ResourceLinks\LinkTypes;
 
 use Exception;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class ControllerLinkType extends LinkType
 {

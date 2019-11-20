@@ -3,8 +3,8 @@
 namespace Spatie\ResourceLinks\Tests\Fakes;
 
 use Illuminate\Routing\Route;
-use Illuminate\Routing\Router;
 use Illuminate\Routing\RouteCollection;
+use Illuminate\Routing\Router;
 
 class FakeRouter
 {

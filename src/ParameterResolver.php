@@ -2,10 +2,10 @@
 
 namespace Spatie\ResourceLinks;
 
-use ReflectionParameter;
-use Illuminate\Support\Arr;
-use Illuminate\Routing\Route;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Routing\Route;
+use Illuminate\Support\Arr;
+use ReflectionParameter;
 
 class ParameterResolver
 {

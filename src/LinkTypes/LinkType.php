@@ -2,8 +2,8 @@
 
 namespace Spatie\ResourceLinks\LinkTypes;
 
-use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 abstract class LinkType
 {
