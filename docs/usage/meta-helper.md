@@ -41,3 +41,8 @@ class UserResource extends JsonResource
 ```
 
 You can use this little helper by including the `Spatie\ResourceLinks\HasMeta` trait in your resource.
+
+<div class="alert -warning">
+When you include the `HasMeta` trait we overwrite following methods of the Laravel Resource: `toResponse`, `make` and `collection`.
+If you overwrite these methods in your Resource, be sure to take account of the methods in the trait.
+</div>
