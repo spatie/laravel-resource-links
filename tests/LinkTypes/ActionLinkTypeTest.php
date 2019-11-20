@@ -3,13 +3,13 @@
 namespace Spatie\ResourceLinks\Tests\LinkTypes;
 
 use Exception;
-use Spatie\ResourceLinks\Tests\TestCase;
-use Spatie\ResourceLinks\Tests\Fakes\TestModel;
 use Spatie\ResourceLinks\LinkTypes\ActionLinkType;
-use Spatie\ResourceLinks\Tests\Fakes\TestController;
-use Spatie\ResourceLinks\Tests\Fakes\SecondTestModel;
-use Spatie\ResourceLinks\Tests\Fakes\TestInvokableController;
 use Spatie\ResourceLinks\Serializers\LayeredExtendedLinkSerializer;
+use Spatie\ResourceLinks\Tests\Fakes\SecondTestModel;
+use Spatie\ResourceLinks\Tests\Fakes\TestController;
+use Spatie\ResourceLinks\Tests\Fakes\TestInvokableController;
+use Spatie\ResourceLinks\Tests\Fakes\TestModel;
+use Spatie\ResourceLinks\Tests\TestCase;
 
 class ActionLinkTypeTest extends TestCase
 {

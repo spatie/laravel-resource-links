@@ -4,8 +4,8 @@ namespace Spatie\ResourceLinks\Tests;
 
 use Spatie\ResourceLinks\Links;
 use Spatie\ResourceLinks\LinkTypes\ActionLinkType;
-use Spatie\ResourceLinks\Tests\Fakes\TestController;
 use Spatie\ResourceLinks\LinkTypes\ControllerLinkType;
+use Spatie\ResourceLinks\Tests\Fakes\TestController;
 use Spatie\ResourceLinks\Tests\Fakes\TestInvokableController;
 
 class LinksTest extends TestCase

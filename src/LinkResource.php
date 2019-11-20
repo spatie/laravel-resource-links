@@ -3,11 +3,11 @@
 namespace Spatie\ResourceLinks;
 
 use Closure;
-use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\ResourceLinks\LinkTypes\LinkType;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Arr;
 use Spatie\ResourceLinks\LinkTypes\ControllerLinkType;
+use Spatie\ResourceLinks\LinkTypes\LinkType;
 
 class LinkResource extends JsonResource
 {
