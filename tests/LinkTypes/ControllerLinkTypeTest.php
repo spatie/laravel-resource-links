@@ -2,6 +2,7 @@
 
 namespace Spatie\ResourceLinks\Tests\LinkTypes;
 
+use Exception;
 use Spatie\ResourceLinks\Tests\TestCase;
 use Spatie\ResourceLinks\Tests\Fakes\TestModel;
 use Spatie\ResourceLinks\Tests\Fakes\TestController;
@@ -237,5 +238,16 @@ class ControllerLinkTypeTest extends TestCase
                 'action' => action($indexAction).'?filter=disabled',
             ],
         ], $links);
+    }
+
+    /** @test */
+    public function it_will_throw_an_exception_if_a_specified_method_does_not_exist_on_the_controller()
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Resource links tried to check non-existing method does-not-exist on controller: Spatie\ResourceLinks\Tests\Fakes\TestController');
+
+        ControllerLinkType::make(TestController::class)
+            ->methods(['does-not-exist'])
+            ->getLinks($this->testModel);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Spatie\ResourceLinks\LinkTypes;
 
+use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Routing\Route;
@@ -49,6 +50,8 @@ class ControllerLinkType extends LinkType
 
     public function getLinks(Model $model = null): array
     {
+        $this->ensureUserDefinedMethodsExist();
+
         $methodsToInclude = empty($this->methods)
             ? ['show', 'edit', 'update', 'destroy']
             : $this->methods;
@@ -58,6 +61,8 @@ class ControllerLinkType extends LinkType
 
     public function getCollectionLinks(): array
     {
+        $this->ensureUserDefinedMethodsExist();
+
         $methodsToInclude = empty($this->methods)
             ? ['index', 'store', 'create']
             : $this->methods;
@@ -119,5 +124,14 @@ class ControllerLinkType extends LinkType
         }
 
         return $method;
+    }
+
+    private function ensureUserDefinedMethodsExist()
+    {
+        foreach ($this->methods as $method) {
+            if (! method_exists($this->controller, $method)) {
+                throw new Exception("Resource links tried to check non-existing method {$method} on controller: {$this->controller}");
+            }
+        }
     }
 }
