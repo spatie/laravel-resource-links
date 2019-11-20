@@ -10,7 +10,7 @@ trait HasMeta
         $meta = self::meta();
 
         if (! count($meta)) {
-            parent::collection($resource);
+            return parent::collection($resource);
         }
 
         return parent::collection($resource)->additional([
