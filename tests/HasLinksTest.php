@@ -2,14 +2,14 @@
 
 namespace Spatie\ResourceLinks\Tests;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
-use Spatie\ResourceLinks\Links;
-use Spatie\ResourceLinks\HasMeta;
-use Spatie\ResourceLinks\HasLinks;
-use Spatie\ResourceLinks\Tests\Fakes\TestModel;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use Spatie\ResourceLinks\HasLinks;
+use Spatie\ResourceLinks\HasMeta;
+use Spatie\ResourceLinks\Links;
 use Spatie\ResourceLinks\Tests\Fakes\TestController;
 use Spatie\ResourceLinks\Tests\Fakes\TestInvokableController;
+use Spatie\ResourceLinks\Tests\Fakes\TestModel;
 use Spatie\ResourceLinks\Tests\Fakes\TestResource;
 
 class HasLinksTest extends TestCase
@@ -33,8 +33,7 @@ class HasLinksTest extends TestCase
     /** @test */
     public function it_will_generate_links_when_making_a_resource()
     {
-        $testResource = new class(null) extends JsonResource
-        {
+        $testResource = new class(null) extends JsonResource {
             use HasLinks, HasMeta;
 
             public function toArray($request)
@@ -68,8 +67,7 @@ class HasLinksTest extends TestCase
     /** @test */
     public function it_will_generate_links_when_collecting_a_resource()
     {
-        $testResource = new class(null) extends JsonResource
-        {
+        $testResource = new class(null) extends JsonResource {
             use HasLinks, HasMeta;
 
             public function toArray($request)
@@ -118,8 +116,7 @@ class HasLinksTest extends TestCase
     {
         $this->fakeRouter->invokableGet('/show/{testModel}', TestInvokableController::class);
 
-        $testResource = new class(null) extends JsonResource
-        {
+        $testResource = new class(null) extends JsonResource {
             use HasLinks, HasMeta;
 
             public function toArray($request)
@@ -151,8 +148,7 @@ class HasLinksTest extends TestCase
     {
         $this->fakeRouter->invokableGet('/invoke/{testModel}', TestInvokableController::class);
 
-        $testResource = new class(null) extends JsonResource
-        {
+        $testResource = new class(null) extends JsonResource {
             use HasLinks, HasMeta;
 
             public function toArray($request)
@@ -218,8 +214,7 @@ class HasLinksTest extends TestCase
             'name' => 'testModel',
         ]);
 
-        $testResource = new class(null) extends JsonResource
-        {
+        $testResource = new class(null) extends JsonResource {
             use HasLinks, HasMeta;
 
             public function toArray($request)
@@ -277,8 +272,7 @@ class HasLinksTest extends TestCase
     /** @test */
     public function it_can_use_collections()
     {
-        $testResourceCollection = new class(TestModel::all()) extends ResourceCollection
-        {
+        $testResourceCollection = new class(TestModel::all()) extends ResourceCollection {
             use HasMeta, HasLinks;
 
             public $collects = TestResource::class;
