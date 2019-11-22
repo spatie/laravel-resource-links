@@ -18,22 +18,3 @@ jobs:
 
             -   name: Execute tests (Unit and Feature tests) via PHPUnit
                 run: vendor/bin/phpunit
-
-    style:
-        runs-on: ubuntu-latest
-
-        steps:
-            -   uses: actions/checkout@v1
-
-            -   name: Fix style
-                uses: docker://oskarstark/php-cs-fixer-ga
-                with:
-                    args: --config=.php_cs --allow-risky=yes --quiet
-
-            -   uses: stefanzweifel/git-auto-commit-action@v2.3.0
-                with:
-                    commit_message: Fix styling
-                    branch: ${{ github.ref }}
-
-                env:
-                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
