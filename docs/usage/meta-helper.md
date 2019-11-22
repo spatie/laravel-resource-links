@@ -44,5 +44,5 @@ You can use this little helper by including the `Spatie\ResourceLinks\HasMeta` t
 
 <div class="alert -warning">
 When you include the `HasMeta` trait we overwrite following methods of the Laravel Resource: `toResponse`, `make` and `collection`.
-If you overwrite these methods in your Resource, be sure to take account of the methods in the trait.
+If you overwrite these methods in your Resource, be sure to take the methods of the trait into account.
 </div>
