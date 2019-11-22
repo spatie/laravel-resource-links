@@ -28,7 +28,7 @@ jobs:
             -   name: Fix style
                 uses: docker://oskarstark/php-cs-fixer-ga
                 with:
-                    args: --config=.php_cs --allow-risky=yes --dry-run
+                    args: --config=.php_cs --allow-risky=yes --quiet
 
             -   uses: stefanzweifel/git-auto-commit-action@v2.3.0
                 with:
