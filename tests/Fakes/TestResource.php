@@ -5,6 +5,7 @@ namespace Spatie\ResourceLinks\Tests\Fakes;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Spatie\ResourceLinks\HasLinks;
 use Spatie\ResourceLinks\HasMeta;
+use Illuminate\Support\Collection;
 
 class TestResource extends JsonResource
 {
