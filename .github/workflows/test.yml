@@ -10,7 +10,8 @@ jobs:
             matrix:
                 operating-system: [ ubuntu-latest ]
                 php: [ '7.2', '7.3']
-                versions: ['prefer-lowest', 'prefer-stable']
+                composer-flags: ['--prefer-lowest', '--prefer-stable']
+                laravel: ['5.8.*', '6.*']
 
         name: PHP ${{ matrix.php }}
 
@@ -18,11 +19,14 @@ jobs:
             -   name: Checkout code
                 uses: actions/checkout@v1
 
-            -   name: Validate composer.json and composer.lock
-                run: composer validate
+            -   name: Update composer
+                run: composer self-update
+
+            -   name: Require Laravel & Testbench
+                run: composer require "laravel/framework:${{ matrix.laravel }}" --no-interaction --no-update
 
             -   name: Install dependencies
-                run: composer install --no-progress --no-suggest --${{ matrix.versions }}
+                run: composer update ${{ matrix.composer-flags }} --prefer-dist --no-interaction --no-suggest
 
             -   name: Setup PHP
                 uses: nanasess/setup-php@master
