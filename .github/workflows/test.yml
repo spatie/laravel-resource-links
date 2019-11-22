@@ -16,17 +16,21 @@ jobs:
                     [
                         'laravel' : '5.8.*',
                         'testbench': '3.8.*'
+                    ],
+                    [
+                        'laravel': '6.*',
+                        'testbench': '4.*'
                     ]
                 ]
 
-        name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - ${{ matrix.composer-version }}
+        name: PHP ${{ matrix.php }} - Laravel ${{ matrix.dependencies['laravel'] }}
 
         steps:
             -   name: Checkout code
                 uses: actions/checkout@v1
 
             -   name: Require Laravel & Testbench
-                run: composer require "laravel/framework:${{ matrix.dependencies.laravel }}" --no-interaction --no-update
+                run: composer require "laravel/framework:${{ matrix.dependencies['laravel'] }}" --no-interaction --no-update
 
             -   name: Install dependencies
                 run: composer update --${{ matrix.composer-version }} --prefer-dist --no-interaction --no-suggest
