@@ -1,6 +1,6 @@
 name: Test
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
     test:
@@ -9,7 +9,8 @@ jobs:
         strategy:
             matrix:
                 operating-system: [ ubuntu-latest ]
-                php: [ '7.2', '7.3',]
+                php: [ '7.2', '7.3']
+                versions: ['prefer-lowest', 'prefer-stable']
 
         name: PHP ${{ matrix.php }}
 
@@ -21,7 +22,7 @@ jobs:
                 run: composer validate
 
             -   name: Install dependencies
-                run: composer install --prefer-dist --no-progress --no-suggest
+                run: composer install --no-progress --no-suggest --${{ matrix.versions }}
 
             -   name: Setup PHP
                 uses: nanasess/setup-php@master
