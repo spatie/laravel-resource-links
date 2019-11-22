@@ -6,6 +6,10 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Spatie\ResourceLinks\HasLinks;
 use Spatie\ResourceLinks\HasMeta;
 
+
+
+
+
 class TestResource extends JsonResource
 {
     use HasLinks, HasMeta;
