@@ -30,10 +30,9 @@ jobs:
                 with:
                     args: --config=.php_cs --allow-risky=yes --dry-run
 
-            -   name: Commit report
-                run: |
-                    git config --global user.name 'Spatie bot'
-                    git config --global user.email 'commit-bot@spatie.be'
-                    git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-                    git diff-index --quiet HEAD || git commit -am "Fix styling"
-                    git push
+            -   uses: stefanzweifel/git-auto-commit-action@v2.3.0
+                with:
+                    commit_message: Fix styling
+                    branch: ${{ github.head_ref }}
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
