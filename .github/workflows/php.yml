@@ -35,6 +35,5 @@ jobs:
                     git config --global user.name 'Spatie bot'
                     git config --global user.email 'commit-bot@spatie.be'
                     git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-                    git commit -am "Fix styling"
-                    git add .
+                    git diff-index --quiet HEAD || git commit -am "Fix styling"
                     git push
