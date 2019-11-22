@@ -5,10 +5,17 @@ on: [push, pull_request]
 jobs:
     test:
 
-        runs-on: ubuntu-latest
+        runs-on: ${{ matrix.operating-system }}
+        strategy:
+            matrix:
+                operating-system: [ ubuntu-latest ]
+                php: [ '7.2', '7.3',]
+
+        name: PHP ${{ matrix.php }}
 
         steps:
-            -   uses: actions/checkout@v1
+            -   name: Checkout code
+                uses: actions/checkout@v1
 
             -   name: Validate composer.json and composer.lock
                 run: composer validate
@@ -16,5 +23,10 @@ jobs:
             -   name: Install dependencies
                 run: composer install --prefer-dist --no-progress --no-suggest
 
-            -   name: Execute tests (Unit and Feature tests) via PHPUnit
+            -   name: Setup PHP
+                uses: nanasess/setup-php@master
+                with:
+                    php-version: ${{ matrix.php }}
+
+            -   name: Execute tests
                 run: vendor/bin/phpunit
