@@ -23,16 +23,16 @@ jobs:
                     ]
                 ]
 
-        name: PHP ${{ matrix.php }} - Laravel ${{ matrix.dependencies[laravel] }}
+        name: PHP ${{ matrix.php }} - Laravel ${{ matrix.dependencies['laravel'] }}
 
         steps:
-            -   run: echo ${{ matrix.dependencies}}
+            -   run: echo ${{ toJSON(matrix.dependencies)}}
 
             -   name: Checkout code
                 uses: actions/checkout@v1
 
             -   name: Require Laravel & Testbench
-                run: composer require "laravel/framework:${{ matrix.dependencies[laravel] }}" --no-interaction --no-update
+                run: composer require "laravel/framework:${{ matrix.dependencies['laravel'] }}" --no-interaction --no-update
 
             -   name: Install dependencies
                 run: composer update --${{ matrix.composer-version }} --prefer-dist --no-interaction --no-suggest
