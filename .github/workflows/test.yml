@@ -28,20 +28,13 @@ jobs:
             -   name: Cache dependencies
                 uses: actions/cache@v1
                 with:
-                    path: vendor
+                    path: ${{ HOME }}/.composer/cache/files
                     key: initial-build-${{ matrix.php }}-${{ matrix.laravel }}-${{ matrix.testbench }}
 
-            -   name: Require Laravel & Testbench
-                run: composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
-
-            -   name: Cache dependencies
-                uses: actions/cache@v1
-                with:
-                    path: vendor
-                    key: build-${{ hashFiles('**/composer.json') }}
-
             -   name: Install dependencies
-                run: composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
+                run: |
+                    composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+                    composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
 
             -   name: Setup PHP
                 uses: nanasess/setup-php@master
