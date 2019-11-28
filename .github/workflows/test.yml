@@ -5,25 +5,22 @@ on: [push]
 jobs:
     test:
 
-        runs-on: ${{ matrix.operating-system }}
+        runs-on: ubuntu-latest
         strategy:
             fail-fast: true
             matrix:
-                operating-system: [ ubuntu-latest ]
                 php: [ '7.2', '7.3']
-                composer-version: ['prefer-lowest', 'prefer-stable']
-                dependencies: [
-                    [
-                        laravel : '5.8.*',
-                        testbench: '3.8.*'
-                    ],
-                    [
-                        laravel: '6.*',
+                laravel: ['5.8.*', '6.*']
+                testbench: ['3.8.*', '4.*']
+                dependency-version: ['prefer-lowest', 'prefer-stable']
+                include:
+                    -   laravel: '6.*'
                         testbench: '4.*'
-                    ]
-                ]
+                    -   laravel: '5.8.*'
+                        testbench: '3.8.*'
 
-        name: PHP ${{ matrix.php }} - Laravel ${{ matrix.dependencies['laravel'] }}
+
+        name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
 
         steps:
             -   run: echo ${{ toJSON(matrix.dependencies)}}
@@ -32,10 +29,10 @@ jobs:
                 uses: actions/checkout@v1
 
             -   name: Require Laravel & Testbench
-                run: composer require "laravel/framework:${{ matrix.dependencies['laravel'] }}" --no-interaction --no-update
+                run: composer require "laravel/framework:${{ matrix.laravel }}" --no-interaction --no-update
 
             -   name: Install dependencies
-                run: composer update --${{ matrix.composer-version }} --prefer-dist --no-interaction --no-suggest
+                run: composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
 
             -   name: Setup PHP
                 uses: nanasess/setup-php@master
