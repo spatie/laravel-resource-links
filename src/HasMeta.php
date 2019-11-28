@@ -3,6 +3,7 @@
 namespace Spatie\ResourceLinks;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Spatie\ResourceLinks\Tests\HasLinksTest;
 
 /** @mixin \Illuminate\Http\Resources\Json\JsonResource */
 trait HasMeta
