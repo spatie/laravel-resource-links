@@ -19,7 +19,7 @@ jobs:
                         testbench: 3.8.*
 
 
-        name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
+        name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - Laravel ${{ matrix.dependency-version }}
 
         steps:
             -   run: echo ${{ toJSON(matrix.dependencies)}}
@@ -28,7 +28,7 @@ jobs:
                 uses: actions/checkout@v1
 
             -   name: Require Laravel & Testbench
-                run: composer require "laravel/framework:${{ matrix.laravel }}" --no-interaction --no-update
+                run: composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
 
             -   name: Install dependencies
                 run: composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
