@@ -15,22 +15,25 @@ jobs:
                 with:
                     args: --config=.php_cs --allow-risky=yes
 
-            -   run: |
-                    if ! git diff --no-ext-diff --quiet --exit-code; then
-                        git add .
-                        git config --local user.email "spatieb-bot@spatie.be"
-                        git config --local user.name "Spatie bot"
-                        git commit -a -m "Fix code styling"
-                        git remote set-url origin "$(git config --get remote.origin.url | sed 's#http.*com/#git@github.com:#g')"
-                        git push
-                    fi
+            - name: Extract branch name
+                  shell: bash
+                  run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+                  id: extract_branch
 
-                #            -   name: Commit changes
-                #                uses: stefanzweifel/git-auto-commit-action@v2.3.0
-                #                with:
-                #                    commit_message: Fix styling
-            #                    branch: ${{ github.head_ref }}
-#
-#
-#                env:
-#                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#            -   run: |
+#                    if ! git diff --no-ext-diff --quiet --exit-code; then
+#                        git add .
+#                        git config --local user.email "spatieb-bot@spatie.be"
+#                        git config --local user.name "Spatie bot"
+#                        git commit -a -m "Fix code styling"
+#                        git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+#                        git push
+#                        fi
+
+                -   name: Commit changes
+                    uses: stefanzweifel/git-auto-commit-action@v2.3.0
+                    with:
+                        commit_message: Fix styling
+                        branch: ${{ steps.extract_branch.outputs.branch }}
+                    env:
+                        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
