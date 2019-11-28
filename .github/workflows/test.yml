@@ -28,8 +28,8 @@ jobs:
             -   name: Cache dependencies
                 uses: actions/cache@v1
                 with:
-                    path: HOME/.composer/cache/files
-                    key: dependencies-${{ matrix.php }}-${{ matrix.laravel }}-${{ matrix.testbench }}
+                    path: $HOME/.composer/cache/files
+                    key: dependencies-${{ hashFiles('composer.json') }}
 
             -   name: Install dependencies
                 run: |
