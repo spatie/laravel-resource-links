@@ -19,7 +19,7 @@ jobs:
                         testbench: 3.8.*
 
 
-        name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - Laravel ${{ matrix.dependency-version }}
+        name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - ${{ matrix.dependency-version }}
 
         steps:
             -   name: Checkout code
@@ -28,8 +28,8 @@ jobs:
             -   name: Cache dependencies
                 uses: actions/cache@v1
                 with:
-                    path: $HOME/.composer/cache/files
-                    key: dependencies-${{ hashFiles('composer.json') }}
+                    path: ${HOME}/.composer/cache/files
+                    key: dependencies-laravel-${{ matrix.laravel }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
 
             -   name: Install dependencies
                 run: |
