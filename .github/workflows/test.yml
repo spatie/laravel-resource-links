@@ -28,7 +28,7 @@ jobs:
             -   name: Cache dependencies
                 uses: actions/cache@v1
                 with:
-                    path: ${{ HOME }}/.composer/cache/files
+                    path: HOME/.composer/cache/files
                     key: initial-build-${{ matrix.php }}-${{ matrix.laravel }}-${{ matrix.testbench }}
 
             -   name: Install dependencies
