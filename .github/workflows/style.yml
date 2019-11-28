@@ -15,11 +15,22 @@ jobs:
                 with:
                     args: --config=.php_cs --allow-risky=yes
 
-            -   name: Commit changes
-                uses: stefanzweifel/git-auto-commit-action@v2.3.0
-                with:
-                    commit_message: Fix styling
-                    branch: ${{ github.head_ref }}
+            -   run: |
+                    if ! git diff --no-ext-diff --quiet --exit-code; then
+                        git add .
+                        git config --local user.email "spatieb-bot@spatie.be"
+                        git config --local user.name "Spatie bot"
+                        git commit -a -m "Fix code styling"
+                        git remote set-url origin "$(git config --get remote.origin.url | sed 's#http.*com/#git@github.com:#g')"
+                        git push
+                    fi
 
-                env:
-                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                #            -   name: Commit changes
+                #                uses: stefanzweifel/git-auto-commit-action@v2.3.0
+                #                with:
+                #                    commit_message: Fix styling
+            #                    branch: ${{ github.head_ref }}
+#
+#
+#                env:
+#                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

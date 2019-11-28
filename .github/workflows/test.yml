@@ -22,8 +22,6 @@ jobs:
         name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - Laravel ${{ matrix.dependency-version }}
 
         steps:
-            -   run: echo ${{ toJSON(matrix.dependencies)}}
-
             -   name: Checkout code
                 uses: actions/checkout@v1
 
