@@ -9,10 +9,10 @@ jobs:
         strategy:
             fail-fast: true
             matrix:
-                php: [ '7.2', '7.3']
-                laravel: ['5.8.*', '6.*']
-                testbench: ['3.8.*', '4.*']
-                dependency-version: ['prefer-lowest', 'prefer-stable']
+                php: [ 7.2, 7.3]
+                laravel: [5.8.*, 6.*]
+                testbench: [3.8.*, 4.*]
+                dependency-version: [prefer-lowest, prefer-stable]
                 include:
                     -   laravel: '6.*'
                         testbench: '4.*'
