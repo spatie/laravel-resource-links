@@ -27,7 +27,7 @@ jobs:
                 uses: shivammathur/setup-php@v1
                 with:
                     php-version: ${{ matrix.php }}
-                    extensions: mbstring
+                    extensions: mbstring, sqlite, pdo, pdo_sqlite
 
             -   name: Cache dependencies
                 uses: actions/cache@v1
