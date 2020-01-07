@@ -9,7 +9,7 @@ jobs:
         strategy:
             fail-fast: true
             matrix:
-                php: [ 7.2, 7.3]
+                php: [7.2, 7.3, 7.4]
                 laravel: [5.8.*, 6.*]
                 dependency-version: [prefer-lowest, prefer-stable]
                 include:
@@ -19,12 +19,17 @@ jobs:
                         testbench: 3.8.*
 
 
-        name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - ${{ matrix.dependency-version }}
+        name: P ${{ matrix.php }} - L ${{ matrix.laravel }} - ${{ matrix.dependency-version }}
 
         steps:
             -   name: Checkout code
                 uses: actions/checkout@v1
 
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v1
+                with:
+                    php-version: ${{ matrix.php }}
+                    
             -   name: Cache dependencies
                 uses: actions/cache@v1
                 with:
@@ -35,11 +40,6 @@ jobs:
                 run: |
                     composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
                     composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
-
-            -   name: Setup PHP
-                uses: nanasess/setup-php@master
-                with:
-                    php-version: ${{ matrix.php }}
 
             -   name: Execute tests
                 run: vendor/bin/phpunit
