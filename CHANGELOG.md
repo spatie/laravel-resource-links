@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-resource-links` will be documented in this file
 
+## 1.1.0 - 2020-03-04
+
+- add support for Laravel 7
+
 ## 1.0.2 - 2019-10-16
 
 - add support for query strings
