@@ -7,12 +7,14 @@ jobs:
 
         runs-on: ubuntu-latest
         strategy:
-            fail-fast: true
+            fail-fast: false
             matrix:
                 php: [7.2, 7.3, 7.4]
-                laravel: [5.8.*, 6.*]
+                laravel: [5.8.*, 6.*, 7.*]
                 dependency-version: [prefer-lowest, prefer-stable]
                 include:
+                    -   laravel: 7.*
+                        testbench: 4.*
                     -   laravel: 6.*
                         testbench: 4.*
                     -   laravel: 5.8.*
@@ -30,7 +32,7 @@ jobs:
                 with:
                     php-version: ${{ matrix.php }}
                     extensions: mbstring, intl, pdo, pdo_sqlite, sqlite
-                    
+
             -   name: Cache dependencies
                 uses: actions/cache@v1
                 with:
