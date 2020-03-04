@@ -16,7 +16,7 @@ abstract class TestCase extends BaseTestCase
     /** @var \Spatie\ResourceLinks\Tests\Fakes\FakeRouter */
     protected $fakeRouter;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         parent::setUp();
 
