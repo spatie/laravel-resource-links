@@ -3,7 +3,7 @@ title: Link parameters
 weight: 4
 ---
 
-An link resource will try to deduce the parameters for a route as best as possible when generating the link to that route. Without extra configuration the parameters of the current request and the current model given to the resource are used to construct the links.
+A link resource will try to deduce the parameters for a route as best as possible when generating the link to that route. Without extra configuration the parameters of the current request and the current model given to the resource are used to construct the links.
 
 But it is also possible to specify your own parameters:
 
@@ -65,7 +65,7 @@ class OtherResource extends JsonResource
 
 ### Parameter resolving rules
 
-An link has zero or more signature parameters(i.e. the parameters of your function you're routing to) that should be filled in when creating a url to an link.
+A link has zero or more signature parameters(i.e. the parameters of your function you're routing to) that should be filled in when creating a url to an link.
 
 We use a set of rules to deduce a correct value for the signature parameters. For each signature parameter these rules are checked: when a value of a rule fits the signature parameter it will be used.
 
