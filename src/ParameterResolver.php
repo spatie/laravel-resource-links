@@ -61,14 +61,14 @@ class ParameterResolver
             return $this->searchPrimitiveParameter($signatureParameter, $providedParameters);
         }
 
-        foreach ($providedParameters as $index => $providedParameter) {
-            if (! is_object($providedParameter) || $signatureParameter->getType()->getName() === null) {
-                continue;
-            }
-
-            $reflectionClass = $signatureParameter->getType() && !$signatureParameter->getType()->isBuiltin()
+        $reflectionClass = $signatureParameter->getType() && !$signatureParameter->getType()->isBuiltin()
                 ? new ReflectionClass($signatureParameter->getType()->getName())
                 : null;
+
+        foreach ($providedParameters as $index => $providedParameter) {
+            if (! is_object($providedParameter) || $reflectionClass === null) {
+                continue;
+            }
 
             if (!is_null($reflectionClass) && $reflectionClass->isInstance($providedParameter)) {
                 return Arr::pull($providedParameters, $index);
