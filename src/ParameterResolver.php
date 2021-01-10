@@ -5,6 +5,7 @@ namespace Spatie\ResourceLinks;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Arr;
+use ReflectionClass;
 use ReflectionParameter;
 
 class ParameterResolver
@@ -61,11 +62,15 @@ class ParameterResolver
         }
 
         foreach ($providedParameters as $index => $providedParameter) {
-            if (! is_object($providedParameter) || $signatureParameter->getClass() === null) {
+            if (! is_object($providedParameter) || $signatureParameter->getType()->getName() === null) {
                 continue;
             }
 
-            if ($signatureParameter->getClass()->isInstance($providedParameter)) {
+            $reflectionClass = $signatureParameter->getType() && !$signatureParameter->getType()->isBuiltin()
+                ? new ReflectionClass($signatureParameter->getType()->getName())
+                : null;
+
+            if (!is_null($reflectionClass) && $reflectionClass->isInstance($providedParameter)) {
                 return Arr::pull($providedParameters, $index);
             }
         }
@@ -77,11 +82,15 @@ class ParameterResolver
             return false;
         }
 
-        if ($signatureParameter->getClass() === null) {
+        $reflectionClass = $signatureParameter->getType() && !$signatureParameter->getType()->isBuiltin()
+            ? new ReflectionClass($signatureParameter->getType()->getName())
+            : null;
+
+        if ($reflectionClass === null) {
             return false;
         }
 
-        return $signatureParameter->getClass()->isInstance($this->model);
+        return $reflectionClass->isInstance($this->model);
     }
 
     private function parameterWithKeyExists(
