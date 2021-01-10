@@ -65,8 +65,8 @@ class ParameterResolver
                 ? new ReflectionClass($signatureParameter->getType()->getName())
                 : null;
 
-        foreach ($providedParameters as $index => $providedParameter) {
-            if (! is_object($providedParameter) || $reflectionClass === null) {
+        if (!is_object($providedParameter) || $reflectionClass === null) {
+            if (!is_object($providedParameter) || $reflectionClass === null) {
                 continue;
             }
 
