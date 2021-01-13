@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-resource-links` will be documented in this file
 
+## 1.1.2 - 2021-01-13
+
+- Add support for PHP 8
+
 ## 1.1.1 - 2020-09-09
 
 - Add support for Laravel 8
