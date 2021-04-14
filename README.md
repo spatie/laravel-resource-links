@@ -1,4 +1,4 @@
-This package is abandoned: [Laravel resource links two years later](https://rubenvanassche.com/laravel-resource-links-two-years-later/)
+**This package is abandoned: [Laravel resource links two years later](https://rubenvanassche.com/laravel-resource-links-two-years-later/)**
 
 # Add links to Laravel API resources
 
