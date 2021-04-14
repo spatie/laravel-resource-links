@@ -1,3 +1,5 @@
+This package is abandoned: [Laravel resource links two years later](https://rubenvanassche.com/laravel-resource-links-two-years-later/)
+
 # Add links to Laravel API resources
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-resource-links.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-resource-links)
